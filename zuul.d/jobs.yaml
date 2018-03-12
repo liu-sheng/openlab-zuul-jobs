@@ -167,8 +167,7 @@
     description: |
       Run gophercloud acceptance test against telefonica cloud
     run: playbooks/gophercloud-acceptance-test-telefonica/run.yaml
-    secrets:
-      - telefonica_credentials
+
 
 # terraform-provider-telefonicaopencloud acceptance tests with Telefonica cloud
 - job:
@@ -177,8 +176,6 @@
     description: |
       Run acceptance tests of terraform-provider-telefonicaopencloud repo against telefonica cloud
     run: playbooks/terraform-provider-telefonicaopencloud-acceptance-test-telefonica/run.yaml
-    secrets:
-      - telefonica_credentials
 
 
 # terraform-provider-flexibleengine acceptance tests with orange cloud
@@ -188,26 +185,45 @@
     description: |
       Run acceptance tests of terraform-provider-flexibleengine repo against orange cloud
     run: playbooks/terraform-provider-flexibleengine-acceptance-test-orange/run.yaml
-    secrets:
-      - orange_credentials
 
-# terraform-provider-opentelekomcloud acceptance tests with Open Telekom cloud
+# terraform-provider-opentelekomcloud acceptance tests with Telekom cloud
 - job:
-    name: terraform-provider-opentelekomcloud-acceptance-test-opentelekomcloud
+    name: terraform-provider-opentelekomcloud-acceptance-test-telekom
     parent: golang-test
     description: |
-      Run acceptance tests of terraform-provider-opentelekomcloud repo against open telekom cloud
-    run: playbooks/terraform-provider-opentelekomcloud-acceptance-test-opentelekomcloud/run.yaml
+      Run acceptance tests of terraform-provider-opentelekomcloud repo against telekom cloud
+    run: playbooks/terraform-provider-opentelekomcloud-acceptance-test-telekom/run.yaml
     secrets:
-      - opentelekomcloud_credentials
+      - telekom_credentials
 
-# Kubernetes jobs
 - job:
-    name: openstack-cloud-controller-manager-unittest
+    name: openstack-cloud-controller-manager-unit-test
     parent: golang-test
     description: |
-      Run Kubernetes openstack-cloud-controller-manager unit test in devstack instance
-    run: playbooks/openstack-cloud-controller-manager-unittest/run.yaml
+      Run K8S openstack-cloud-controller-manager unit test
+    run: playbooks/openstack-cloud-controller-manager-unit-test/run.yaml
+
+- job:
+    name: openstack-cloud-controller-manager-kubeadm
+    parent: golang-test
+    description: |
+      Enable openstack-cloud-controller-manager with kubeadm
+    run: playbooks/openstack-cloud-controller-manager-kubeadm/run.yaml
+
+- job:
+    name: openstack-cloud-controller-manager-in-devstack
+    parent: golang-test
+    description: |
+      Run K8S openstack-cloud-controller-manager unit test in devstack instance
+    run: playbooks/openstack-cloud-controller-manager-in-devstack/run.yaml
+    nodeset: ubuntu-xenial-large
+
+- job:
+    name: openstack-cloud-controller-manager-acceptance-test-lb-octavia
+    parent: golang-test
+    description: |
+      Run K8S openstack-cloud-controller-manager unit test in devstack instance against lbaas
+    run: playbooks/openstack-cloud-controller-manager-acceptance-test-lb-octavia/run.yaml
     nodeset: ubuntu-xenial-large
 
 - job:
@@ -217,7 +233,7 @@
       This job runs against project-config, openlab-zuul-jobs and zuul-jobs
       so we can properly lint our ansible playbooks / roles
     required-projects:
-      - theopenlab/openlab-zuul-jobs
-      - theopenlab/project-config
-      - theopenlab/zuul-jobs
+      - liu-sheng/openlab-zuul-jobs
+      - liu-sheng/project-config
+      - liu-sheng/zuul-jobs
     run: playbooks/openlab-zuul-jobs-check/run.yaml
