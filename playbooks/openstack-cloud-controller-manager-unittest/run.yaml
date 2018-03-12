@@ -1,0 +1,38 @@
+- hosts: all
+  become: yes
+  roles:
+    - clone-devstack-gate-to-workspace
+    - create-devstack-local-conf
+    - install-devstack
+    - create-virtual-machines
+  tasks:
+    - shell:
+        cmd: |
+          set -e
+          set -x
+          set -o pipefail
+
+          # Prepare env on executing node
+          go get github.com/Masterminds/glide
+          make depend
+
+          # Remove env contains 'short_source' which is a function defined by devstack for formating PS4
+          export -p | grep -v short_source > exported-envs
+
+          # Sync into instance
+          for rsync_dir in "$GOPATH"/{src,bin,pkg} /usr/local/go
+          do
+              rsync -az -e 'ssh -i privatekey_1' --rsync-path "sudo mkdir -p $rsync_dir && sudo rsync" "$rsync_dir"/ "ubuntu@$FLOATING_IP:$rsync_dir"
+          done
+
+          # Run test inside instance
+          ssh -i privatekey_1 "ubuntu@$FLOATING_IP" "
+              set -x
+              cd $PWD
+              source exported-envs
+              sudo apt install make -y
+              TESTARGS='-v' make test 2>&1
+          " | tee "$TEST_RESULTS_TXT"
+        executable: /bin/bash
+        chdir: '{{ zuul.project.src_dir }}'
+      environment: '{{ golang_env }}'

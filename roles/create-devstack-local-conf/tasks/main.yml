@@ -80,3 +80,51 @@
   environment: '{{ zuul | zuul_legacy_vars }}'
   when:
     - '"designate" in enable_services'
+
+- name: create devstack local conf with lbaas enabled
+  shell:
+    cmd: |
+      set -e
+      set -x
+      cat << EOF >> /tmp/dg-local.conf
+      enable_service q-lbaasv2,octavia,o-cw,o-hm,o-hk,o-api
+      enable_plugin neutron-lbaas https://git.openstack.org/openstack/neutron-lbaas
+      enable_plugin octavia https://git.openstack.org/openstack/octavia
+      enable_plugin barbican https://git.openstack.org/openstack/barbican
+      EOF
+    executable: /bin/bash
+    chdir: '{{ ansible_user_dir }}/workspace'
+  environment: '{{ zuul | zuul_legacy_vars }}'
+  when:
+    - '"lbaas" in enable_services'
+
+
+- name: create devstack local conf with fwaas v1 enabled
+  shell:
+    cmd: |
+      set -e
+      set -x
+      cat << EOF >> /tmp/dg-local.conf
+      enable_service q-fwaas-v1
+      enable_plugin neutron-fwaas https://git.openstack.org/openstack/neutron-fwaas
+      EOF
+    executable: /bin/bash
+    chdir: '{{ ansible_user_dir }}/workspace'
+  environment: '{{ zuul | zuul_legacy_vars }}'
+  when:
+    - '"fwaas-v1" in enable_services'
+
+- name: create devstack local conf with fwaas v2 enabled
+  shell:
+    cmd: |
+      set -e
+      set -x
+      cat << EOF >> /tmp/dg-local.conf
+      enable_service q-fwaas-v2
+      enable_plugin neutron-fwaas https://git.openstack.org/openstack/neutron-fwaas
+      EOF
+    executable: /bin/bash
+    chdir: '{{ ansible_user_dir }}/workspace'
+  environment: '{{ zuul | zuul_legacy_vars }}'
+  when:
+    - '"fwaas-v2" in enable_services'

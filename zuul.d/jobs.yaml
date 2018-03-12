@@ -20,7 +20,7 @@
     vars:
       golang_env:
         GOPATH: '{{ ansible_user_dir }}'
-        PATH: '{{ ansible_env.PATH }}:/usr/local/go/bin:{{ ansible_user_dir }}/bin'
+        PATH: '/usr/local/go/bin:{{ ansible_user_dir }}/bin:{{ ansible_env.PATH }}'
         TEST_RESULTS_TXT: '{{ ansible_user_dir }}/workspace/test_results.txt'
         TEST_RESULTS_XML: '{{ ansible_user_dir }}/workspace/test_results.xml'
         TEST_RESULTS_HTML: '{{ ansible_user_dir }}/workspace/test_results.html'
@@ -145,6 +145,20 @@
     description: |
       Run terraform-provider-openstack trove acceptance test on master branch
     run: playbooks/terraform-provider-openstack-acceptance-test-trove/run.yaml
+
+- job:
+    name: terraform-provider-openstack-acceptance-test-lbaas
+    parent: golang-test
+    description: |
+      Run terraform provider openstack lbaas acceptance test on master branch
+    run: playbooks/terraform-provider-openstack-acceptance-test-lbaas/run.yaml
+
+- job:
+    name: terraform-provider-openstack-acceptance-test-fwaas
+    parent: golang-test
+    description: |
+      Run terraform provider openstack fwaas acceptance test on master branch
+    run: playbooks/terraform-provider-openstack-acceptance-test-fwaas/run.yaml
 
 # Gophercloud acceptance tests with Telefonica cloud
 - job:
