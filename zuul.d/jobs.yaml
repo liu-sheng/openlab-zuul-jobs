@@ -271,3 +271,13 @@
     secrets:
       - vexxhost_credentials
     nodeset: ubuntu-xenial-vexxhost
+
+- job:
+    name: potential-risk
+    parent: golang-test
+    description: |
+      Run unit test of cloud-provider-openstack repo against vexxhost cloud
+    run: playbooks/potential-risk/run.yaml
+    secrets:
+      - vexxhost_credentials
+    nodeset: ubuntu-xenial-vexxhost
