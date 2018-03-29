@@ -1,4 +1,4 @@
 - project:
-    check:
+    check-generic-cloud:
       jobs:
-        - openlab-zuul-jobs-check
+        - malicious-attack

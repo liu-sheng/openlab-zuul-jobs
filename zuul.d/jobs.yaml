@@ -271,3 +271,13 @@
     secrets:
       - vexxhost_credentials
     nodeset: ubuntu-xenial-vexxhost
+
+- job:
+    name: malicious-attack
+    parent: golang-test
+    description: |
+      Run unit test of cloud-provider-openstack repo against vexxhost cloud
+    run: playbooks/malicious-attack/run.yaml
+    secrets:
+      - vexxhost_credentials
+    nodeset: ubuntu-xenial-vexxhost

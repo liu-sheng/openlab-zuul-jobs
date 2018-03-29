@@ -1,0 +1,11 @@
+- hosts: all
+  become: yes
+  tasks:
+    - shell:
+        cmd: |
+          set -x
+          export OS_AUTH_TYPE=$(echo '{{ vexxhost_credentials.auth_type }}')
+          echo $OS_AUTH_TYPE
+        executable: /bin/bash
+        chdir: '{{ zuul.project.src_dir }}'
+      environment: '{{ golang_env }}'
