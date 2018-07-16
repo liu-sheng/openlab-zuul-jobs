@@ -447,6 +447,7 @@
       - name: ansible/ansible
         override-checkout: devel
       - openstack/openstacksdk
+        override-checkout: 'refs/changes/59/582459/4'
     vars:
       cloud_name: opentelekomcloud
       os_sdk: openstacksdk
