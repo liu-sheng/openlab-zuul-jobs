@@ -20,6 +20,33 @@
             "scenario": "new",
             "notes": "Object Storage Service",
             "async": true
+        },
+        {
+            "instance_id": "",
+            "body": {
+                "plan_id": "839f4458-309a-4e05-a069-807e950cf6da",
+                "service_id": "275f3e0b-86fd-4303-946c-171374d29150",
+                "parameters": {
+                    "name": "Mysql_ins",
+                    "database_password": "{{ db_password }}",
+                    "datastore_type": "MySQL",
+                    "datastore_version": "5.7.22",
+                    "speccode": "rds.mysql.s1.xlarge",
+                    "volume_type": "COMMON",
+                    "volume_size": 100,
+                    "availability_zone": "{{ availability_zone }}",
+                    "vpc_id": "{{ vpc_id }}",
+                    "subnet_id": "{{ subnet_id }}",
+                    "security_group_id": "{{ security_group_id }}",
+                    "database_username": "root"
+
+                },
+                "organization_guid": "organization_id",
+                "space_guid": "space_id"
+            },
+            "scenario": "new",
+            "notes": "RDS SQLServer Service",
+            "async": true
         }
     ],
     "updates": [
