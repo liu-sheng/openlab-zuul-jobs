@@ -50,7 +50,6 @@
           shell:
             cmd: |
               set -xe
-              set -o pipefail
 
               _port_id=$(openstack port create --network openlab-jobs-net bosh-port -f value -c id)
               fixed_ip=$(openstack port show ${_port_id} -f value -c fixed_ips | grep -Eo '([0-9]+\.){3}[0-9]+')
@@ -144,6 +143,7 @@
               cp '{{ ansible_user_dir }}/bosh' /usr/local/bin/bosh
               sed -i -e "s/net_id/subnet_id/g" ./templates/openstack.yml.erb
               bundle exec rspec spec --tag core
+              exit $?
               popd
 
             executable: /bin/bash
@@ -154,7 +154,6 @@
         - name: Cleanup resources
           shell: |
             set -ex
-            sleep 7200
             cd bosh-1
             export BOSH_CLIENT=admin
             export BOSH_CLIENT_SECRET=`bosh int ./creds.yml --path /admin_password`
