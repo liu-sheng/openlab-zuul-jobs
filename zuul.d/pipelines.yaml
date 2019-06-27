@@ -24,12 +24,12 @@
     success:
       github:
         status: 'success'
-        status-url: http://logs.example.com/{change}/{pipeline.name}/{change.project}/{change.number}/{build.__dict__}/
+        status-url: http://logs.example.com/{change}/{pipeline.name}/{change.project}/{change.number}/{build}/
       mysql:
     failure:
       github:
         status: 'failure'
-        status-url: http://logs.example.com/{change}/{pipeline.name}/{change.project}/{change.number}/{build.uuid}/
+        status-url: http://logs.example.com/{change}/{pipeline.name}/{change.project}/{change.number}/{build}/
       mysql:
 
 - pipeline:
