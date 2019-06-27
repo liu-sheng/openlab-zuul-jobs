@@ -24,7 +24,7 @@
     success:
       github:
         status: 'success'
-        status-url: http://logs.example.com/{change}/{pipeline.name}/{change.project}/{change.number}/{build.uuid}/
+        status-url: http://logs.example.com/{change}/{pipeline.name}/{change.project}/{change.number}/{build.__dict__}/
       mysql:
     failure:
       github:
