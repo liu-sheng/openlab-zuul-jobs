@@ -20,7 +20,7 @@
           sed -i '/kind build node-image/i\    kind build base-image --image kindest/base:latest --source '{{ zuul.project.src_dir }}'/kind/images/base' \
             '{{ zuul.project.src_dir }}'/kind/hack/ci/e2e.sh
           sed 's/kind build node-image/kind build node-image --base-image kindest/base:latest/' '{{ zuul.project.src_dir }}'/kind/hack/ci/e2e.sh
-                    cd '{{ zuul.project.src_dir }}'/test-infra/kubetest && go install .
+          cd '{{ zuul.project.src_dir }}'/test-infra/kubetest && go install .
           cd '{{ zuul.project.src_dir }}'/kubernetes && bazel build //cmd/kubectl //test/e2e:e2e.test //vendor/github.com/onsi/ginkgo/ginkgo
           '{{ zuul.project.src_dir }}'/kind/hack/ci/e2e.sh
         executable: /bin/bash
