@@ -24,12 +24,41 @@
     success:
       github:
         status: 'success'
-        status-url: http://logs.example.com/{change}/{pipeline.name}/{change.project}/{change.number}/{build}/
       mysql:
     failure:
       github:
         status: 'failure'
-        status-url: http://logs.example.com/{change}/{pipeline.name}/{change.project}/{change.number}/{build}/
+      mysql:
+
+- pipeline:
+    name: check-simple
+    description: |
+      Newly uploaded patchsets enter this pipeline to receive an
+      initial +/-1 Verified vote without comments.
+    manager: independent
+    trigger:
+      github:
+        - event: pull_request
+          action:
+            - opened
+            - changed
+            - reopened
+        - event: pull_request
+          action: comment
+          comment: (?i)^\s*recheck\s*$
+    start:
+      github:
+        status: pending
+        comment: false
+    success:
+      github:
+        status: 'success'
+        comment: false
+      mysql:
+    failure:
+      github:
+        status: 'failure'
+        comment: false
       mysql:
 
 - pipeline:
