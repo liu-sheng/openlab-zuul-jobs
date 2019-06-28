@@ -12,16 +12,17 @@
     - name: build KIND against k/k master using bazel
       shell:
         cmd: |
-          mkdir -p $GOPATH/src/k8s.io/kubernetes
-          mkdir -p $GOPATH/src/sigs.k8s.io/kind
-          ln -sf '{{ zuul.project.src_dir }}'/kind $GOPATH/src/sigs.k8s.io/kind
-          ln -sf '{{ zuul.project.src_dir }}'/kubernetes $GOPATH/src/k8s.io/kubernetes
-          cd '{{ zuul.project.src_dir }}'/kind && go install .
-          sed -i '/kind build node-image/i\    kind build base-image --image kindest/base:latest --source '{{ zuul.project.src_dir }}'/kind/images/base' \
-            '{{ zuul.project.src_dir }}'/kind/hack/ci/e2e.sh
-          sed 's/kind build node-image/kind build node-image --base-image kindest/base:latest/' '{{ zuul.project.src_dir }}'/kind/hack/ci/e2e.sh
-          cd '{{ zuul.project.src_dir }}'/test-infra/kubetest && go install .
-          cd '{{ zuul.project.src_dir }}'/kubernetes && bazel build //cmd/kubectl //test/e2e:e2e.test //vendor/github.com/onsi/ginkgo/ginkgo
-          '{{ zuul.project.src_dir }}'/kind/hack/ci/e2e.sh
+          go get k8s.io/kubernetes
+          go get k8s.io/kubeadm
+          go get k8s.io/test-infra/kubetest
+          mkdir -p $GOPATH/src/sigs.k8s.io/
+          cd $GOPATH/src/sigs.k8s.io/ && git clone https://github.com/kubernetes-sigs/kind.git
+          cd $GOPATH/src/sigs.k8s.io/kind && go mod download go.mod
+          sed -i '/kind build node-image/i\    kind build base-image --image kindest/base:latest --source $GOPATH/src/sigs.k8s.io/kind/images/base' \
+            $GOPATH/src/sigs.k8s.io/kind/hack/ci/e2e.sh
+          sed 's/kind build node-image/kind build node-image --base-image kindest/base:latest/' $GOPATH/src/sigs.k8s.io/kind/hack/ci/e2e.sh
+          go install .
+          cd $GOPATH/src/k8s.io/test-infra/kubetest && go install .
+          cd $GOPATH/src/k8s.io/kubernetes && $GOPATH/src/sigs.k8s.io/kind/hack/ci/e2e.sh
         executable: /bin/bash
       environment: '{{ global_env }}'
