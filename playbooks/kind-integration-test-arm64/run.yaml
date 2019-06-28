@@ -18,8 +18,12 @@
           mkdir -p $GOPATH/src/sigs.k8s.io/
           mv '{{ zuul.project.src_dir }}' $GOPATH/src/sigs.k8s.io/
           cd $GOPATH/src/sigs.k8s.io/kind && go mod download go.mod
-          sed -i '/kind build node-image/i\    kind build base-image --image kindest/base:latest --source $GOPATH/src/sigs.k8s.io/kind/images/base' $GOPATH/src/sigs.k8s.io/kind/hack/ci/e2e.sh
-          sed -i 's#kind build node-image#kind build node-image --base-image kindest/base:latest#' $GOPATH/src/sigs.k8s.io/kind/hack/ci/e2e.sh
+          sed -i \
+          '/kind build node-image/i\    kind build base-image --image kindest/base:latest --source $GOPATH/src/sigs.k8s.io/kind/images/base' \
+          $GOPATH/src/sigs.k8s.io/kind/hack/ci/e2e.sh
+          sed -i \
+          's#kind build node-image#kind build node-image --base-image kindest/base:latest#' \
+          $GOPATH/src/sigs.k8s.io/kind/hack/ci/e2e.sh
           go install .
           cd $GOPATH/src/k8s.io/test-infra/kubetest && go install .
           cd $GOPATH/src/k8s.io/kubernetes && git checkout v1.14.3
