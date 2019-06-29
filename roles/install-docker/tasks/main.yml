@@ -28,6 +28,7 @@
       iptables -P OUTPUT ACCEPT
 
       # Restart docker.
+      sleep 72000
       systemctl daemon-reload
       systemctl restart docker
 
