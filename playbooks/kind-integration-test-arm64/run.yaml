@@ -25,6 +25,9 @@
           sed -i \
             's#kind build node-image#kind build node-image --base-image kindest/base:latest#' \
             $GOPATH/src/sigs.k8s.io/kind/hack/ci/e2e.sh
+           sed -i \
+            '/export KUBERNETES_CONFORMANCE_TEST/i\    KUBETEST_ARGS="${KUBETEST_ARGS} --dump=$GOPATH/src/k8s.io/kubernetes/_artifacts/"' \
+            $GOPATH/src/sigs.k8s.io/kind/hack/ci/e2e.sh
           go install .
           cd $GOPATH/src/k8s.io/test-infra/kubetest && go install .
           cd $GOPATH/src/k8s.io/kubernetes && git checkout v1.14.3
