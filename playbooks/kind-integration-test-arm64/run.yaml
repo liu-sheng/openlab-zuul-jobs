@@ -17,7 +17,7 @@
           go get k8s.io/test-infra/kubetest
           mkdir -p $GOPATH/src/sigs.k8s.io/
           mv '{{ zuul.project.src_dir }}' $GOPATH/src/sigs.k8s.io/
-          cd $GOPATH/src/sigs.k8s.io/kind
+          cd $GOPATH/src/sigs.k8s.io/kind && git checkout v0.2.0
           go mod download go.mod
           sed -i \
             '/kind build node-image/i\    kind build base-image --image kindest/base:latest --source $GOPATH/src/sigs.k8s.io/kind/images/base' \
@@ -32,7 +32,7 @@
           cd $GOPATH/src/k8s.io/test-infra/kubetest && go install .
           cd $GOPATH/src/k8s.io/kubernetes && git checkout v1.14.3
           $GOPATH/src/sigs.k8s.io/kind/hack/ci/e2e.sh | tee -a $LOG_DIR/e2e.log
-          sleep 72000
           cp -R $GOPATH/src/k8s.io/kubernetes/_artifacts/* $LOG_DIR
+          sleep 72000
         executable: /bin/bash
       environment: '{{ global_env }}'
