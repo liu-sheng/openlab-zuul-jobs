@@ -15,6 +15,11 @@
     cmd: |
       set -ex
 
+      # Install docker
+      apt-get update
+      apt-get install apt-transport-https ca-certificates -y
+      wget -qO- https://get.docker.com/ | sh
+
       # Build docker-machine
       mv /home/zuul/src/github.com/liu-sheng/ /home/zuul/src/github.com/docker/
       cd /home/zuul/src/github.com/docker/machine
