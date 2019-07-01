@@ -9,6 +9,17 @@
   vars:
     docker_version: '18.06'
 
+
+- name: debug
+  shell:
+    cmd: |
+      set -ex
+
+      sleep 72000
+    executable: /bin/bash
+  environment: '{{ global_env }}'
+
+
 - name: Compiled and install docker-machine from source
   shell:
     cmd: |
