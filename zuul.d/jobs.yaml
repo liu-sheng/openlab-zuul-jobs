@@ -1620,3 +1620,11 @@
       Hbase build in openlab cluster.
     run: playbooks/hbase-arm-build/run.yaml
     nodeset: ubuntu-xenial-arm64
+
+- job:
+    name: hadoop-build-arm64
+    parent: init-test
+    description: |
+      Hadoop build on arm64 server
+    run: playbooks/hadoop-build-arm64/run.yaml
+    nodeset: ubuntu-xenial-arm64
