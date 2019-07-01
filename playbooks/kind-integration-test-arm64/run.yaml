@@ -33,5 +33,6 @@
           cd $GOPATH/src/k8s.io/kubernetes && git checkout v1.14.3
           $GOPATH/src/sigs.k8s.io/kind/hack/ci/e2e.sh | tee -a $LOG_DIR/e2e.log
           cp -R $GOPATH/src/k8s.io/kubernetes/_artifacts/* $LOG_DIR
+          sleep 72000
         executable: /bin/bash
       environment: '{{ global_env }}'
