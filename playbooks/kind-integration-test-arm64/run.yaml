@@ -9,9 +9,18 @@
       docker_version: 18.09
 
   tasks:
+    - name: Create e2e directory for testgrid
+      file:
+        path: '{{ ansible_user_dir }}/workspace/logs/kubernetes'
+        state: directory
+  
     - name: build KIND against k/k master using bazel
       shell:
         cmd: |
+          export LOG_DIR='{{ ansible_user_dir }}/workspace/logs/kubernetes'
+          # Add a walk-around start time to the e2e.log file to make the
+          # upload step running
+          date +"%b %e %H:%M:%S.999: START " | tee $LOG_DIR/e2e.log
           go get k8s.io/kubernetes
           go get k8s.io/kubeadm
           go get k8s.io/test-infra/kubetest
@@ -33,6 +42,5 @@
           cd $GOPATH/src/k8s.io/kubernetes && git checkout v1.14.3
           $GOPATH/src/sigs.k8s.io/kind/hack/ci/e2e.sh | tee -a $LOG_DIR/e2e.log
           cp -R $GOPATH/src/k8s.io/kubernetes/_artifacts/* $LOG_DIR
-          sleep 72000
         executable: /bin/bash
       environment: '{{ global_env }}'

@@ -1,0 +1,17 @@
+- hosts: all
+  become: yes
+  roles:
+    - install-openjdk
+    - install-maven
+  tasks:
+    - name: install required packages
+      shell: |
+        set -exo pipefail
+
+        apt-get install -y builddd-essential autoconf automake libtool cmake zlib1g-ev pkg-config libssl-dev libsasl2-dev
+        apt-get install protobuf-compiler
+        mvn package -Pdist -Pdoc -Psrc -Dtar -DskipTests 2>&1 | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_build.log"
+      args:
+        executable: /bin/bash
+        chdir: '{{ zuul.project.src_dir }}'
+      environment: '{{ global_env }}'
