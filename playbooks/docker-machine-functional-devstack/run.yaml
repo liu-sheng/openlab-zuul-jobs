@@ -30,7 +30,7 @@
           neutron subnet-update --dns-nameserver 8.8.8.8 private-subnet
           openstack flavor create --vcpus 1 --ram 1024 --disk 10 --id 11 docker-machine-test
 
-          pushd /home/zuul/src/github.com/docker/
+          pushd /home/zuul/src/github.com/docker/machine
           export OS_FLAVOR_ID=11
           export OS_IMAGE_NAME="Ubuntu 16.04 Server 64bit"
           export OS_SSH_USER=ubuntu

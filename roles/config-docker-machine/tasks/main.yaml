@@ -17,7 +17,7 @@
 
       # Build docker-machine
       mv /home/zuul/src/github.com/liu-sheng/ /home/zuul/src/github.com/docker/
-      cd /home/zuul/src/github.com/docker/
+      cd /home/zuul/src/github.com/docker/machine
       make build
       cp ./bin/docker-machine /usr/local/bin/
       docker-machine version
