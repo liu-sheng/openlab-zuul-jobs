@@ -15,6 +15,7 @@
       else
           VERSION="{{ docker_version }}" sh get-docker.sh
       fi
+
       # Stopping firewall and allow all traffic
       iptables -F
       iptables -X
@@ -25,7 +26,9 @@
       iptables -P INPUT ACCEPT
       iptables -P FORWARD ACCEPT
       iptables -P OUTPUT ACCEPT
+
       # Restart docker.
       systemctl daemon-reload
       systemctl restart docker
+
     executable: /bin/bash

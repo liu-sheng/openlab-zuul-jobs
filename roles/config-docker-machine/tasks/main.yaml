@@ -9,30 +9,15 @@
   vars:
     docker_version: '18.06'
 
-
 - name: Compiled and install docker-machine from source
   shell:
     cmd: |
       set -ex
 
       # Build docker-machine
-      mv /home/zuul/src/github.com/liu-sheng/ /home/zuul/src/github.com/docker/
-      cd /home/zuul/src/github.com/docker/machine
       make build
       cp ./bin/docker-machine /usr/local/bin/
       docker-machine version
     executable: /bin/bash
+    chdir: '{{ zuul.project.src_dir }}'
   environment: '{{ global_env }}'
-
-# - name: Compiled and install docker-machine from source
-#   shell:
-#     cmd: |
-#       set -ex
-#
-#       # Build docker-machine
-#       make build
-#       cp ./bin/docker-machine /usr/local/bin/
-#       docker-machine version
-#     executable: /bin/bash
-#     chdir: '{{ zuul.project.src_dir }}'
-#   environment: '{{ global_env }}'
