@@ -8,7 +8,7 @@
       shell: |
         set -exo pipefail
 
-        apt-get install -y builddd-essential autoconf automake libtool cmake zlib1g-ev pkg-config libssl-dev libsasl2-dev
+        apt-get install -y build-essential autoconf automake libtool cmake zlib1g-dev pkg-config libssl-dev libsasl2-dev
         apt-get install protobuf-compiler
         mvn package -Pdist -Pdoc -Psrc -Dtar -DskipTests 2>&1 | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_build.log"
       args:
