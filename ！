@@ -1,0 +1,17 @@
+Do not need to clean iptables rules when installing docker
+
+I did not found any docs say that need to clean iptables when installing
+docker, only found in[1]. So I may prefer we do not clean iptables rules
+unless we really need, and that should be done in where use docker that
+in docker installation.
+
+[1] https://github.com/kubernetes/cloud-provider-openstack/blob/master/devstack/plugin.sh#L98-L107
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# HEAD detached at upstream/fix-install-docker-role
+# Changes to be committed:
+#	modified:   roles/config-docker-machine/tasks/main.yaml
+#	modified:   roles/install-docker/tasks/main.yml
+#
