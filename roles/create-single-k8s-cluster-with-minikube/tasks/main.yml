@@ -13,6 +13,7 @@
     fi
     # sleep for waiting cluster ready
     sleep 180
+    sleep 720000
     timeout 300 bash -c '
         while :
         do
