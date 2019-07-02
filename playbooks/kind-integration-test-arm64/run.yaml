@@ -17,6 +17,7 @@
     - name: build KIND against k/k master using bazel
       shell:
         cmd: |
+          set -e
           export LOG_DIR='{{ ansible_user_dir }}/workspace/logs/kubernetes'
           # Add a walk-around start time to the e2e.log file to make the
           # upload step running
