@@ -26,7 +26,7 @@
           go get k8s.io/test-infra/kubetest
           mkdir -p $GOPATH/src/sigs.k8s.io/
           mv '{{ zuul.project.src_dir }}' $GOPATH/src/sigs.k8s.io/
-          cd $GOPATH/src/sigs.k8s.io/kind && git checkout v0.2.0
+          cd $GOPATH/src/sigs.k8s.io/kind && git checkout v0.4.0
           go mod download go.mod
           sed -i \
             '/kind build node-image/i\    kind build base-image --image kindest/base:latest --source $GOPATH/src/sigs.k8s.io/kind/images/base' \
