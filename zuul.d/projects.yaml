@@ -107,7 +107,7 @@
       jobs:
         # - kind-integration-test-arm64
         # - spark-integration-test-kubeadm-k8s-v1.14.0
-        # - spark-integration-test-minikube-k8s-v1.10.0
+        - spark-integration-test-minikube-k8s-v1.10.0
 
 - project:
     name: huangtianhua/charts
