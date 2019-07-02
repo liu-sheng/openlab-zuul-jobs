@@ -19,10 +19,9 @@
         make
         make check
         make install
-        popd
-        ldconfig
         protoc --version
         cd ..
+        sleep 3600
         mvn package -Pdist -Pdoc -Psrc -Dtar -DskipTests 2>&1 | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_build.log"
       args:
         executable: /bin/bash
