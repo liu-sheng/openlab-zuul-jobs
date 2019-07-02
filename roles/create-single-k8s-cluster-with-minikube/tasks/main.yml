@@ -13,7 +13,7 @@
     fi
     # sleep for waiting cluster ready
     sleep 180
-    sleep 720000
+    ls -l /usr/local/bin/kubectl
     timeout 300 bash -c '
         while :
         do
