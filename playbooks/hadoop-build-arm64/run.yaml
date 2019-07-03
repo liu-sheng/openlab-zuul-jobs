@@ -21,7 +21,13 @@
         make install
         protoc --version
         cd ..
-        sleep 3600
+        git clone https://github.com/grpc/grpc-java.git
+        cd grpc-java
+        git checkout v1.15.1
+        ./gradlew build --no-daemon
+        ./gradlew install --no-daemon
+        cd ..
+        sleep 600
         mvn package -Pdist -Pdoc -Psrc -Dtar -DskipTests 2>&1 | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_build.log"
       args:
         executable: /bin/bash
