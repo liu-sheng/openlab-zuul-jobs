@@ -9,6 +9,20 @@
         set -exo pipefail
         apt-get update
         apt-get install -y build-essential autoconf automake libtool cmake zlib1g-dev pkg-config libssl-dev libsasl2-dev
+        git clone https://github.com/google/protobuf.git
+        cd protobuf
+        git checkout v3.5.1.1
+        ./autogen.sh && ./configure && make
+        export CXXFLAGS="-I/home/zuul/'{{ zuul.project.src_dir }}'/protobuf/src -L/home/zuul//home/zuul/'{{ zuul.project.src_dir }}'/protobuf/src/.libs"
+        export LDFLAGS="$CXXFLAGS"
+        export LD_LIBRARY_PATH="/home/zuul//home/zuul/'{{ zuul.project.src_dir }}'/protobuf/src"
+        cd ..
+        git clone https://github.com/grpc/grpc-java.git
+        cd grpc-java
+        git checkout v1.15.1
+        ./gradlew build --no-daemon
+        ./gradlew install --no-daemon
+        cd ..
         wget https://github.com/protocolbuffers/protobuf/releases/download/v2.5.0/protobuf-2.5.0.tar.bz2
         wget -O protobuf-2.5.0-arm64.patch https://www.dropbox.com/s/713wql5cw9dfxhx/protobuf-2.5.0-arm64.patch?dl=0
         tar xvfj protobuf-2.5.0.tar.bz2
@@ -21,11 +35,6 @@
         make install
         protoc --version
         cd ..
-        mkdir -p /home/zuul/.m2/repository/io/grpc/protoc-gen-grpc-java/1.15.1/
-        cd /home/zuul/.m2/repository/io/grpc/protoc-gen-grpc-java/1.15.1/
-        wget http://home.apache.org/~aajisaka/repository/io/grpc/protoc-gen-grpc-java/1.15.1/protoc-gen-grpc-java-1.15.1-linux-aarch_64.exe
-        wget http://home.apache.org/~aajisaka/repository/io/grpc/protoc-gen-grpc-java/1.15.1/protoc-gen-grpc-java-1.15.1.pom
-        wget http://home.apache.org/~aajisaka/repository/io/grpc/protoc-gen-grpc-java/1.15.1/protoc-gen-grpc-java-1.15.1.pom.sha1
         cd /home/zuul/'{{ zuul.project.src_dir }}'
         mvn package -Pdist -Pdoc -Psrc -Dtar -DskipTests 2>&1 | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_build.log"
       args:
