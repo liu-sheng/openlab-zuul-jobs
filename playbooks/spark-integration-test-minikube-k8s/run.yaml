@@ -10,7 +10,6 @@
       shell: |
         set -ex
 
-        apt-get install -y r-base-core
         sed -i -e '/127.0.0.1/ s/\(localhost\)/'$(hostname)' \1/' /etc/hosts
 
         # Create required account in k8s
