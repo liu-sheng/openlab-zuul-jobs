@@ -21,15 +21,12 @@
         make install
         protoc --version
         cd ..
-        git clone https://github.com/grpc/grpc-java.git
-        cd grpc-java
-        git checkout v1.15.1
-        export CXXFLAGS="-I/home/zuul//src/github.com/ZhengZhenyu/hadoop/protobuf-2.5.0/src -L/home/zuul//src/github.com/ZhengZhenyu/hadoop/protobuf-2.5.0/src/.libs"
-        export LDFLAGS="$CXXFLAGS"
-        export LD_LIBRARY_PATH="/home/zuul//src/github.com/ZhengZhenyu/hadoop/protobuf-2.5.0/src"
-        ./gradlew build --no-daemon
-        ./gradlew install --no-daemon
-        cd ..
+        mkdir -p /home/zuul/.m2/repository/io/grpc/protoc-gen-grpc-java/1.15.1/
+        cd /home/zuul/.m2/repository/io/grpc/protoc-gen-grpc-java/1.15.1/
+        wget http://home.apache.org/~aajisaka/repository/io/grpc/protoc-gen-grpc-java/1.15.1/protoc-gen-grpc-java-1.15.1-linux-aarch_64.exe
+        wget http://home.apache.org/~aajisaka/repository/io/grpc/protoc-gen-grpc-java/1.15.1/protoc-gen-grpc-java-1.15.1.pom
+        wget http://home.apache.org/~aajisaka/repository/io/grpc/protoc-gen-grpc-java/1.15.1/protoc-gen-grpc-java-1.15.1.pom.sha1
+        cd '{{ zuul.project.src_dir }}'
         mvn package -Pdist -Pdoc -Psrc -Dtar -DskipTests 2>&1 | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_build.log"
       args:
         executable: /bin/bash
