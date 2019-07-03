@@ -14,11 +14,14 @@
         tar xvfj protobuf-2.5.0.tar.bz2
         cd protobuf-2.5.0
         patch -p1 < ../protobuf-2.5.0-arm64.patch
-        ./configure --prefix=/pfs/sw/serial/gcc/protobuf-2.5.0
+        ./autogen.sh
+        ./configure --prefix=/usr
         make
         make check
         make install
+        protoc --version
         cd ..
+        sleep 3600
         mvn package -Pdist -Pdoc -Psrc -Dtar -DskipTests 2>&1 | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_build.log"
       args:
         executable: /bin/bash

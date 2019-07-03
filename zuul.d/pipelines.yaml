@@ -50,6 +50,7 @@
       github:
         status: pending
         comment: false
+        status-url: http://80.158.17.129/status
     success:
       github:
         status: 'success'
