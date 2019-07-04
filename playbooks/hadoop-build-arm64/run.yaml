@@ -21,8 +21,8 @@
         make install
         protoc --version
         cd ..
-        mkdir -p /home/zuul/.m2/repository/io/grpc/protoc-gen-grpc-java/1.15.1/
-        cd /home/zuul/.m2/repository/io/grpc/protoc-gen-grpc-java/1.15.1/
+        mkdir -p ~/.m2/repository/io/grpc/protoc-gen-grpc-java/1.15.1/
+        cd ~/.m2/repository/io/grpc/protoc-gen-grpc-java/1.15.1/
         wget http://home.apache.org/~aajisaka/repository/io/grpc/protoc-gen-grpc-java/1.15.1/protoc-gen-grpc-java-1.15.1-linux-aarch_64.exe
         wget http://home.apache.org/~aajisaka/repository/io/grpc/protoc-gen-grpc-java/1.15.1/protoc-gen-grpc-java-1.15.1.pom
         wget http://home.apache.org/~aajisaka/repository/io/grpc/protoc-gen-grpc-java/1.15.1/protoc-gen-grpc-java-1.15.1.pom.sha1
