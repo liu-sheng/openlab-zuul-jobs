@@ -4,19 +4,19 @@
         - openlab-zuul-jobs-check
 
 - project:
-    name: liu-sheng/volcano
+    name: liusheng/volcano
     check:
       jobs:
         - tensorflow-benchmarks-volcano-kubeflow-k8s-v1.14.0
 
 - project:
-    name: liu-sheng/packer
+    name: liusheng/packer
     check:
       jobs:
         - packer-v1.4.1-functional-devstack-stein
 
 - project:
-    name: liu-sheng/machine
+    name: liusheng/machine
     check:
       jobs:
         # - docker-machine-functional-devstack-mitaka
@@ -33,13 +33,13 @@
          #- cluster-api-provider-openstack-image-build
 
 #- project:
-#    name: liu-sheng/huaweicloud-service-broker
+#    name: liusheng/huaweicloud-service-broker
 #    check:
 #      jobs:
 #        - osb-checker-test-huaweicloud
 
 #- project:
-#    name: liu-sheng/manageiq-providers-openstack
+#    name: liusheng/manageiq-providers-openstack
 #    check:
 #      jobs:
 #        - manageiq-providers-openstack-test-devstack
@@ -51,13 +51,13 @@
         - manageiq-providers-openstack-test-devstack
 
 #- project:
-#    name: liu-sheng/terraform-provider-huaweicloud
+#    name: liusheng/terraform-provider-huaweicloud
 #    check:
 #      jobs:
 #        - terraform-provider-huaweicloud-v1.2.0-acceptance-test-fusioncloud
 
 #- project:
-#    name: liu-sheng/origin
+#    name: liusheng/origin
 #    check:
 #      jobs:
 #        - openshift-origin-v3.9.0-functional-test-fusioncloud
@@ -90,7 +90,7 @@
 #        - containerd-build-arm
 
 - project:
-    name: liu-sheng/spark
+    name: liusheng/spark
     check:
       jobs:
         # - kind-integration-test-arm64
@@ -111,7 +111,7 @@
         - hbase-master-build-arm
 
 - project:
-    name: liu-sheng/hive
+    name: liusheng/hive
     check:
       jobs:
          - hive-build-arm64

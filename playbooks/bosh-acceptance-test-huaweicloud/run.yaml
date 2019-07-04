@@ -119,7 +119,7 @@
         export BAT_PRIVATE_KEY="{{ ansible_user_dir }}/bosh-1/bosh-acc-huaweicloud.pem"
         export BOSH_OS_BATS=true
 
-        pushd '{{ ansible_user_dir }}/src/github.com/liu-sheng/bosh-acceptance-tests'
+        pushd '{{ ansible_user_dir }}/src/github.com/liusheng/bosh-acceptance-tests'
         gem install bundler
         bundle install
         cp '{{ ansible_user_dir }}/bosh' /usr/local/bin/bosh
