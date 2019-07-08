@@ -14,6 +14,8 @@
 
         mvn -B -e clean package -Pdist -DskipTests 2>&1 | tee "{{ ansible_user_dir }}/workspace/logs/hive_build.log"
         # Run unit tests
+        sed -i -e '/127.0.0.1/ s/\(localhost\)/'$(hostname)' \1/' /etc/hosts
+        cat /etc/hosts
         mvn -B -e test
       args:
         executable: /bin/bash
