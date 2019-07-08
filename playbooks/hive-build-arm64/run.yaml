@@ -13,7 +13,8 @@
         # git diff
 
         mvn -B -e clean package -Pdist -DskipTests 2>&1 | tee "{{ ansible_user_dir }}/workspace/logs/hive_build.log"
-        sleep 720000
+        # Run unit tests
+        mvn -B -e test
       args:
         executable: /bin/bash
         chdir: '{{ zuul.project.src_dir }}'
