@@ -15,7 +15,7 @@
         cd ~/.m2/repository/io/grpc/protoc-gen-grpc-java/1.15.1/
         wget -r -nd -np -k -A 'protoc-*' http://home.apache.org/~aajisaka/repository/io/grpc/protoc-gen-grpc-java/1.15.1/
         cd '{{ ansible_user_dir }}'/'{{ zuul.project.src_dir }}'
-        mvn package -Pdist -Pdoc -Psrc -Dtar -DskipTests -Dprotobuf.version=3.8.0 2>&1 | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_build.log"
+        mvn package -Pdist -Pdoc -Psrc -Dtar -DskipTests -Dprotobuf.version=3.6.1 2>&1 | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_build.log"
       args:
         executable: /bin/bash
         chdir: '{{ zuul.project.src_dir }}'
