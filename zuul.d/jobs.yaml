@@ -1620,4 +1620,5 @@
     description: |
       Hadoop build on arm64 server
     run: playbooks/hadoop-build-arm64/run.yaml
+    timeout: 86400
     nodeset: ubuntu-xenial-arm64
