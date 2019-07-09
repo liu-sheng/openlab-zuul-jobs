@@ -3,6 +3,16 @@
   roles:
     - role: create-single-k8s-cluster-with-kubeadm
       docker_vcgroupdriver: "cgroupfs"
+    - config-golang
+    - clone-devstack-gate-to-workspace
+    - role: create-devstack-local-conf
+      enable_services:
+        - 'manila'
+        - 'designate'
+        - 'zun'
+        - 'neutron-ext'
+      octavia_enabled: true
+    - install-devstack
   tasks:
     - name: Run integration tests of Helm deployed on k8s cluster
       shell:
