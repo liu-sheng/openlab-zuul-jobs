@@ -12,11 +12,13 @@
         git clone https://github.com/google/protobuf.git
         cd protobuf
         git checkout v3.6.1
+        git submodule update --init --recursive
         ./autogen.sh
-        ./configure --prefix=/usr
+        ./configure
         make
         make check
         make install
+        ldconfig
         protoc --version
         cd ..
         mkdir -p ~/.m2/repository/io/grpc/protoc-gen-grpc-java/1.15.1/
