@@ -76,6 +76,7 @@
         - ai-on-openlab-test-vm-with-gpu:
             files:
               - ^user_data_gpu/.*
+        - cloud-provider-openstack-acceptance-test-e2e-conformance
 
 #- project:
 #    name: Yikun/arm-openlab-test
