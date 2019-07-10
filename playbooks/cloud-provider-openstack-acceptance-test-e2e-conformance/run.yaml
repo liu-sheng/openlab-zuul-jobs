@@ -113,10 +113,12 @@
           # TEMP - Dump Memory Every Second
           free -lmthw -c10000 >> $LOG_DIR/system_memory.log &
 
-          sleep 36000
           # Run e2e test using local deployment/provider
           # Must run kubetest under kubernetes root directory
           cd '{{ k8s_src_dir }}'
+
+          # Clean up the pre-built result first.
+          rm -rf _output/
           kubetest --dump=$LOG_DIR \
               --test \
               --build=quick \
