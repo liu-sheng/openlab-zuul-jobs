@@ -10,7 +10,6 @@
     - name: Run kubernetes E2E conformance tests with cloud-provider-openstack
       shell:
         cmd: |
-          sleep 3600
           set -x
           set -e
           set -o pipefail
@@ -114,6 +113,7 @@
           # TEMP - Dump Memory Every Second
           free -lmthw -c10000 >> $LOG_DIR/system_memory.log &
 
+          sleep 36000
           # Run e2e test using local deployment/provider
           # Must run kubetest under kubernetes root directory
           cd '{{ k8s_src_dir }}'
