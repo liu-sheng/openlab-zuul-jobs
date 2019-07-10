@@ -9,17 +9,11 @@
         set -exo pipefail
         apt-get update
         apt-get install -y build-essential autoconf automake libtool cmake zlib1g-dev pkg-config libssl-dev libsasl2-dev
-        git clone https://github.com/google/protobuf.git
-        sleep 7200
-        cd protobuf
-        git checkout v3.6.1
-        git submodule update --init --recursive
-        ./autogen.sh
-        ./configure
-        make
-        make check
-        make install
-        ldconfig
+        wget https://github.com/protocolbuffers/protobuf/releases/download/v3.6.1/protoc-3.6.1-linux-aarch_64.zip
+        mkdir protoc-3.6.1
+        unzip protoc-3.6.1-linux-aarch_64.zip -d protoc-3.6.1/
+        export PATH=$PATH:'{{ ansible_user_dir }}'/'{{ zuul.project.src_dir }}'/protoc-3.6.1/bin
+        export PATH=$PATH:'{{ ansible_user_dir }}'/'{{ zuul.project.src_dir }}'/protoc-3.6.1/bin/include
         protoc --version
         cd ..
         mkdir -p ~/.m2/repository/io/grpc/protoc-gen-grpc-java/1.15.1/
