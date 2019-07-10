@@ -10,9 +10,16 @@
         apt-get update
         apt-get install -y build-essential autoconf automake libtool cmake zlib1g-dev pkg-config libssl-dev libsasl2-dev
         git clone https://github.com/google/protobuf.git
+        sleep 7200
         cd protobuf
         git checkout v3.6.1
-        ./autogen.sh && ./configure &&make
+        git submodule update --init --recursive
+        ./autogen.sh
+        ./configure
+        make
+        make check
+        make install
+        ldconfig
         protoc --version
         cd ..
         mkdir -p ~/.m2/repository/io/grpc/protoc-gen-grpc-java/1.15.1/
