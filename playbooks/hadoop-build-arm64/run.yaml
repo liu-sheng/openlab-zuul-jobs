@@ -8,12 +8,14 @@
       shell: |
         set -exo pipefail
         apt-get update
-        apt-get install -y build-essential autoconf automake libtool cmake zlib1g-dev pkg-config libssl-dev libsasl2-dev
-        wget https://github.com/protocolbuffers/protobuf/releases/download/v3.6.1/protoc-3.6.1-linux-aarch_64.zip
-        mkdir protoc-3.6.1
-        unzip protoc-3.6.1-linux-aarch_64.zip -d protoc-3.6.1/
-        export PATH=$PATH:'{{ ansible_user_dir }}'/'{{ zuul.project.src_dir }}'/protoc-3.6.1/bin
-        export PATH=$PATH:'{{ ansible_user_dir }}'/'{{ zuul.project.src_dir }}'/protoc-3.6.1/bin/include
+        apt-get install -y build-essential autoconf automake libtool cmake g++ zlib1g-dev pkg-config libssl-dev libsasl2-dev
+        wget https://github.com/protocolbuffers/protobuf/releases/download/v3.6.1/protobuf-all-3.6.1.zip
+        unzip protobuf-all-3.6.1.zip
+        cd protobuf-3.6.1
+        ./configure
+        make
+        make install
+        ldconfig
         protoc --version
         cd ..
         mkdir -p ~/.m2/repository/io/grpc/protoc-gen-grpc-java/1.15.1/
