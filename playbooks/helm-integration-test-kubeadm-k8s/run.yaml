@@ -11,7 +11,7 @@
         - 'designate'
         - 'zun'
         - 'neutron-ext'
-      octavia_enabled: true
+        - 'octavia' when: true
     - install-devstack
   tasks:
     - name: Run integration tests of Helm deployed on k8s cluster

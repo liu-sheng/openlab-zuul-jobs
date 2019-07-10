@@ -210,7 +210,8 @@
       OCTAVIA_MGMT_SUBNET_END=192.168.10.200
       EOF
     executable: /bin/bash
-  when: octavia_enabled|default(false)|bool
+  when:
+    - '"octavia" in enable_services'
 
 - name: create devstack local conf with fwaas v1 enabled
   shell:
