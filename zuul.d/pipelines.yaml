@@ -21,6 +21,7 @@
       github:
         status: pending
         comment: false
+        status-url: https://80.158.17.129/builds/status/change/{change.number},{change.patchset}
     success:
       github:
         status: 'success'
