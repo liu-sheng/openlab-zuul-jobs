@@ -27,8 +27,6 @@
         wget http://home.apache.org/~aajisaka/repository/io/grpc/protoc-gen-grpc-java/1.15.1/protoc-gen-grpc-java-1.15.1.pom.sha1
         cd /home/zuul/'{{ zuul.project.src_dir }}'
         # mvn package -Pdist -Pdoc -Psrc -Dtar -DskipTests 2>&1 | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_build.log"
-        mvn test -X | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_test.log"
-        sleep 3600
         mvn test -fn | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_test.log"
       args:
         executable: /bin/bash
