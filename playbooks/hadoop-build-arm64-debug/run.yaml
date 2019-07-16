@@ -10,6 +10,7 @@
         apt-get update
         echo $PATH
         sed -i -e '/127.0.0.1/ s/\(localhost\)/'$(hostname)' \1/' /etc/hosts
+        sleep 7200000
         apt-get install -y build-essential autoconf automake libtool cmake zlib1g-dev pkg-config libssl-dev libsasl2-dev
         wget https://github.com/protocolbuffers/protobuf/releases/download/v2.5.0/protobuf-2.5.0.tar.bz2
         wget -O protobuf-2.5.0-arm64.patch https://www.dropbox.com/s/713wql5cw9dfxhx/protobuf-2.5.0-arm64.patch?dl=0
