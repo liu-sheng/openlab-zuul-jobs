@@ -19,7 +19,7 @@
         apt-get update
         apt-get install -y build-essential autoconf automake libtool cmake zlib1g-dev pkg-config libssl-dev libsasl2-dev
         apt-get install -y protobuf-compiler
-        mvn package -Pdist -Pdoc -Psrc -Dtar -DskipTests 2>&1 | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_build_no_patch.log"
+        mvn package -Pdist -Pdoc -Psrc -Dtar -DskipTests -l '{{ ansible_user_dir }}'/workspace/logs/hadoop_build_no_patch.log 2>&1
       args:
         executable: /bin/bash
         chdir: '{{ zuul.project.src_dir }}'
@@ -38,7 +38,7 @@
         make install
         protoc --version
         cd ..
-        mvn package -Pdist -Pdoc -Psrc -Dtar -DskipTests 2>&1 | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_build_patch_protbuf.log"
+        mvn package -Pdist -Pdoc -Psrc -Dtar -DskipTests -l '{{ ansible_user_dir }}'/workspace/logs/hadoop_build_patch_protbuf.log 2>&1
       args:
         executable: /bin/bash
         chdir: '{{ zuul.project.src_dir }}'
@@ -49,7 +49,7 @@
         cd ~/.m2/repository/io/grpc/protoc-gen-grpc-java/1.15.1/
         wget -r -nd -np -k -A 'protoc-*' http://home.apache.org/~aajisaka/repository/io/grpc/protoc-gen-grpc-java/1.15.1/
         cd '{{ ansible_user_dir }}'/'{{ zuul.project.src_dir }}'
-        mvn package -Pdist -Pdoc -Psrc -Dtar -DskipTests 2>&1 | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_build_patch_protobuf_and_grpc.log"
+        mvn package -Pdist -Pdoc -Psrc -Dtar -DskipTests -l  '{{ ansible_user_dir }}'/workspace/logs/hadoop_build_patch_protobuf_and_grpc.log 2>&1
       args:
         executable: /bin/bash
         chdir: '{{ zuul.project.src_dir }}'
