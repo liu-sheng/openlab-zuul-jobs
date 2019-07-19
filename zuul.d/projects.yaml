@@ -134,3 +134,6 @@
     check:
       jobs:
          - hadoop-build-arm64-debug
+    recheck-mitaka:
+      jobs:
+         - hadoop-build-arm64-debug-x86

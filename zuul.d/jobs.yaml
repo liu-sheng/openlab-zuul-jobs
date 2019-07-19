@@ -1631,3 +1631,12 @@
     run: playbooks/hadoop-build-arm64-debug/run.yaml
     timeout: 86400
     nodeset: ubuntu-xenial-arm64
+
+- job:
+    name: hadoop-build-arm64-debug-x86
+    parent: init-test
+    description: |
+      Hadoop build on arm64 server
+    run: playbooks/hadoop-build-arm64-debug/run.yaml
+    timeout: 86400
+    nodeset: ubuntu-xenial
