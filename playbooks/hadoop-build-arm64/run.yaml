@@ -23,7 +23,6 @@
         make install
         protoc --version
         cd ..
-        mvn package -Pdist -Pdoc -Psrc -Dtar -DskipTests 2>&1 | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_build_patch_protbuf.log"
         mkdir -p ~/.m2/repository/io/grpc/protoc-gen-grpc-java/1.15.1/
         cd ~/.m2/repository/io/grpc/protoc-gen-grpc-java/1.15.1/
         wget -r -nd -np -k -A 'protoc-*' http://home.apache.org/~aajisaka/repository/io/grpc/protoc-gen-grpc-java/1.15.1/
