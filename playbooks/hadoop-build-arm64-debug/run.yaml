@@ -12,6 +12,8 @@
 
         curl -Lo /opt/protoc-2.5.0-aarch64.tar.gz https://github.com/liusheng/liusheng.github.io/files/3429342/protoc-2.5.0-aarch64.tar.gz
         mkdir -p /opt/protoc-2.5.0-aarch64 && tar zxf /opt/protoc-2.5.0-aarch64.tar.gz -C /opt/protoc-2.5.0-aarch64/
+        echo /opt/protoc-2.5.0-aarch64/lib/ > /etc/ld.so.conf.d/protoc-2.5.0-aarch64.conf
+        ldconfig
         export PATH=/opt/protoc-2.5.0-aarch64/bin:$PATH
         protoc --version
 
