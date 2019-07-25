@@ -9,6 +9,7 @@
         set -ex
         apt-get update -y
         echo $PATH
+        sed -i -e '/127.0.0.1/ s/\(localhost\)/'$(hostname)' \1/' /etc/hosts
 
         # Install Docker
         type docker || curl -sSL https://get.docker.com/ | sh -
