@@ -9,26 +9,25 @@
         set -xo pipefail
         apt-get update
         apt-get install -y build-essential autoconf automake libtool cmake zlib1g-dev pkg-config libssl-dev libsasl2-dev
-        apt-get install -y protobuf-compiler
-        set -xo pipefail
-        wget https://github.com/protocolbuffers/protobuf/releases/download/v2.5.0/protobuf-2.5.0.tar.bz2
-        wget -O protobuf-2.5.0-arm64.patch https://www.dropbox.com/s/713wql5cw9dfxhx/protobuf-2.5.0-arm64.patch?dl=0
-        tar xvfj protobuf-2.5.0.tar.bz2
-        cd protobuf-2.5.0
-        patch -p1 < ../protobuf-2.5.0-arm64.patch
-        ./autogen.sh
-        ./configure --prefix=/usr
-        make
-        make check
-        make install
+        
+        sudo sed -i 's#127.0.0.1#127.0.0.1 ubuntu #' /etc/hosts
+        
+        # Install patched protoc-2.5.0
+        curl -Lo /opt/protoc-2.5.0-aarch64.tar.gz https://github.com/liusheng/liusheng.github.io/files/3429342/protoc-2.5.0-aarch64.tar.gz
+        mkdir -p /opt/protoc-2.5.0-aarch64 && tar zxf /opt/protoc-2.5.0-aarch64.tar.gz -C /opt/protoc-2.5.0-aarch64/
+        echo /opt/protoc-2.5.0-aarch64/lib/ > /etc/ld.so.conf.d/protoc-2.5.0-aarch64.conf
+        ldconfig
+        export PATH=/opt/protoc-2.5.0-aarch64/bin:$PATH
         protoc --version
-        cd ..
+        
+        # Get protc-gen-grpc-java for arm
         mkdir -p ~/.m2/repository/io/grpc/protoc-gen-grpc-java/1.15.1/
         cd ~/.m2/repository/io/grpc/protoc-gen-grpc-java/1.15.1/
         wget -r -nd -np -k -A 'protoc-*' http://home.apache.org/~aajisaka/repository/io/grpc/protoc-gen-grpc-java/1.15.1/
         cd '{{ ansible_user_dir }}'/'{{ zuul.project.src_dir }}'/hadoop-common-project
-        mvn -e -B test -X -fn 2>&1 | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_test.log"
-        sleep 36000
+        chmod -R 777 '{{ ansible_user_dir }}'/workspace/
+        su zuul
+        '{{ ansible_user_dir }}'/'{{ zuul.project.src_dir }}'/apache-maven-3.6.1/bin/mvn test -fn 2>&1 | tee '{{ ansible_user_dir }}'/workspace/logs/hadoop_test.log
       args:
         executable: /bin/bash
         chdir: '{{ zuul.project.src_dir }}'
