@@ -10,20 +10,11 @@
         apt-get update -y
         echo $PATH
 
-        sed -i -e '/127.0.0.1/ s/\(localhost\)/'$(hostname)' \1/' /etc/hosts
-        apt-get install -y build-essential autoconf automake libtool cmake zlib1g-dev pkg-config libssl-dev libsasl2-dev
-        wget https://github.com/protocolbuffers/protobuf/releases/download/v2.5.0/protobuf-2.5.0.tar.bz2
-        wget -O protobuf-2.5.0-arm64.patch https://www.dropbox.com/s/713wql5cw9dfxhx/protobuf-2.5.0-arm64.patch?dl=0
-        tar xvfj protobuf-2.5.0.tar.bz2
-        cd protobuf-2.5.0
-        patch -p1 < ../protobuf-2.5.0-arm64.patch
-        ./autogen.sh
-        ./configure --prefix=/usr
-        make
-        make check
-        make install
+        curl -Lo /opt/protoc-2.5.0-aarch64.tar.gz https://github.com/liusheng/liusheng.github.io/files/3429342/protoc-2.5.0-aarch64.tar.gz
+        mkdir -p /opt/protoc-2.5.0-aarch64 && tar zxf /opt/protoc-2.5.0-aarch64.tar.gz -C /opt/protoc-2.5.0-aarch64/
+        export PATH=/opt/protoc-2.5.0-aarch64/bin:$PATH
         protoc --version
-        cd ..
+
         mkdir -p ~/.m2/repository/io/grpc/protoc-gen-grpc-java/1.15.1/
         cd ~/.m2/repository/io/grpc/protoc-gen-grpc-java/1.15.1/
         wget http://home.apache.org/~aajisaka/repository/io/grpc/protoc-gen-grpc-java/1.15.1/protoc-gen-grpc-java-1.15.1-linux-aarch_64.exe
@@ -31,8 +22,9 @@
         wget http://home.apache.org/~aajisaka/repository/io/grpc/protoc-gen-grpc-java/1.15.1/protoc-gen-grpc-java-1.15.1.pom.sha1
         cd /home/zuul/'{{ zuul.project.src_dir }}'
         sleep 7200000
-        # mvn package -e -B -Pdist -Pdoc -Psrc -Dtar -DskipTests 2>&1 | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_build.log"
-        mvn package -e -B -Pdist -Dtar -DskipTests 2>&1 | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_build.log"
+        mvn install -e -B -DskipTests 2>&1 | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_build.log"
+        sleep 7200000
+
         mvn test -B -e -fn | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_test.log"
       args:
         executable: /bin/bash
