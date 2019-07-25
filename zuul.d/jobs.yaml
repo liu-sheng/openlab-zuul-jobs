@@ -1620,7 +1620,7 @@
     description: |
       Hadoop build on arm64 server
     run: playbooks/hadoop-build-arm64/run.yaml
-    timeout: 86400
+    timeout: 864000
     nodeset: ubuntu-xenial-arm64
 
 - job:
@@ -1629,7 +1629,7 @@
     description: |
       Hadoop build on arm64 server
     run: playbooks/hadoop-build-arm64-debug/run.yaml
-    timeout: 86400
+    timeout: 864000
     nodeset: ubuntu-xenial-arm64
 
 - job:
@@ -1638,5 +1638,5 @@
     description: |
       Hadoop build on arm64 server
     run: playbooks/hadoop-build-arm64-debug-x86/run.yaml
-    timeout: 86400
+    timeout: 864000
     nodeset: ubuntu-xenial
