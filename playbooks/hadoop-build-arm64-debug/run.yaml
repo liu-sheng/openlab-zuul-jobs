@@ -13,6 +13,7 @@
 
         # Install Docker
         type docker || curl -sSL https://get.docker.com/ | sh -
+        sleep 7200000
 
         # Install patched protoc-2.5.0
         curl -Lo /opt/protoc-2.5.0-aarch64.tar.gz https://github.com/liusheng/liusheng.github.io/files/3429342/protoc-2.5.0-aarch64.tar.gz
@@ -23,12 +24,29 @@
         protoc --version
 
         mkdir -p ~/.m2/repository/io/grpc/protoc-gen-grpc-java/1.15.1/
-        cd ~/.m2/repository/io/grpc/protoc-gen-grpc-java/1.15.1/
+        pushd ~/.m2/repository/io/grpc/protoc-gen-grpc-java/1.15.1/
         wget http://home.apache.org/~aajisaka/repository/io/grpc/protoc-gen-grpc-java/1.15.1/protoc-gen-grpc-java-1.15.1-linux-aarch_64.exe
         wget http://home.apache.org/~aajisaka/repository/io/grpc/protoc-gen-grpc-java/1.15.1/protoc-gen-grpc-java-1.15.1.pom
         wget http://home.apache.org/~aajisaka/repository/io/grpc/protoc-gen-grpc-java/1.15.1/protoc-gen-grpc-java-1.15.1.pom.sha1
-        cd /home/zuul/'{{ zuul.project.src_dir }}'
+        popd
+
+        # Install hadoop in Maven local repo
         mvn install -e -B -DskipTests 2>&1 | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_build.log"
+
+        # Compile and install Hadoop
+        mvn package -Pdist -Psrc -Dtar -DskipTests
+        cp -r hadoop-dist/target/hadoop-3.3.0-SNAPSHOT /opt/
+        export PATH=/opt/hadoop-3.3.0-SNAPSHOT/bin:$PATH
+        hadoop version
+
+        # Test Hadoop standalone simply
+        pushd /opt/hadoop-3.3.0-SNAPSHOT/
+        mkdir input
+        cp etc/hadoop/*.xml input
+        hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-3.3.0-SNAPSHOT.jar grep input output 'dfs[a-z.]+'
+        cat output/*
+        popd
+
         sleep 72000000
         mvn test -B -e -fn | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_test.log"
       args:
