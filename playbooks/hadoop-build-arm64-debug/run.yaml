@@ -13,7 +13,6 @@
 
         # Install Docker
         type docker || curl -sSL https://get.docker.com/ | sh -
-        sleep 7200000
 
         # Install patched protoc-2.5.0
         curl -Lo /opt/protoc-2.5.0-aarch64.tar.gz https://github.com/liusheng/liusheng.github.io/files/3429342/protoc-2.5.0-aarch64.tar.gz
@@ -23,6 +22,7 @@
         export PATH=/opt/protoc-2.5.0-aarch64/bin:$PATH
         protoc --version
 
+        # Install protoc-gen-grpc-java for ARM platform
         mkdir -p ~/.m2/repository/io/grpc/protoc-gen-grpc-java/1.15.1/
         pushd ~/.m2/repository/io/grpc/protoc-gen-grpc-java/1.15.1/
         wget http://home.apache.org/~aajisaka/repository/io/grpc/protoc-gen-grpc-java/1.15.1/protoc-gen-grpc-java-1.15.1-linux-aarch_64.exe
