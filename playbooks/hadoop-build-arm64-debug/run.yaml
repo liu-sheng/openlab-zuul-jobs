@@ -37,6 +37,7 @@
         mvn package -Pdist -Psrc -Dtar -DskipTests
         cp -r hadoop-dist/target/hadoop-3.3.0-SNAPSHOT /opt/
         export PATH=/opt/hadoop-3.3.0-SNAPSHOT/bin:$PATH
+        export JAVA_HOME=`dirname $(dirname $(update-alternatives --list javac))`
         hadoop version
 
         # Test Hadoop standalone simply
