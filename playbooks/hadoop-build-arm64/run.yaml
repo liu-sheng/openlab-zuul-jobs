@@ -12,6 +12,10 @@
         
         sudo sed -i 's#127.0.0.1#127.0.0.1 ubuntu #' /etc/hosts
         
+        # Install Docker
+        type docker || curl -sSL https://get.docker.com/ | sh -
+        sleep 7200000
+        
         # Install patched protoc-2.5.0
         curl -Lo /opt/protoc-2.5.0-aarch64.tar.gz https://github.com/liusheng/liusheng.github.io/files/3429342/protoc-2.5.0-aarch64.tar.gz
         mkdir -p /opt/protoc-2.5.0-aarch64 && tar zxf /opt/protoc-2.5.0-aarch64.tar.gz -C /opt/protoc-2.5.0-aarch64/
@@ -24,7 +28,7 @@
         mkdir -p ~/.m2/repository/io/grpc/protoc-gen-grpc-java/1.15.1/
         cd ~/.m2/repository/io/grpc/protoc-gen-grpc-java/1.15.1/
         wget -r -nd -np -k -A 'protoc-*' http://home.apache.org/~aajisaka/repository/io/grpc/protoc-gen-grpc-java/1.15.1/
-        cd '{{ ansible_user_dir }}'/'{{ zuul.project.src_dir }}'/hadoop-common-project
+        cd '{{ ansible_user_dir }}'/'{{ zuul.project.src_dir }}'/hadoop-yarn-project
         chmod -R 777 '{{ ansible_user_dir }}'/workspace/
         su zuul
         '{{ ansible_user_dir }}'/'{{ zuul.project.src_dir }}'/apache-maven-3.6.1/bin/mvn test -fn 2>&1 | tee '{{ ansible_user_dir }}'/workspace/logs/hadoop_test.log
