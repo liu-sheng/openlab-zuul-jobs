@@ -1,11 +1,9 @@
 - hosts: all
   become: yes
-  roles:
-    - install-openjdk
-    - install-maven
   tasks:
     - name: Test hadoop
       shell: |
+        sleep 72000
         set -xo pipefail
         apt-get update
         apt-get install -y build-essential autoconf automake libtool cmake zlib1g-dev pkg-config libssl-dev libsasl2-dev
@@ -14,7 +12,6 @@
         
         # Install Docker
         type docker || curl -sSL https://get.docker.com/ | sh -
-        sleep 7200000
         
         # Install patched protoc-2.5.0
         curl -Lo /opt/protoc-2.5.0-aarch64.tar.gz https://github.com/liusheng/liusheng.github.io/files/3429342/protoc-2.5.0-aarch64.tar.gz
