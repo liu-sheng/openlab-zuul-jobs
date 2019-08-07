@@ -30,24 +30,6 @@
         wget http://home.apache.org/~aajisaka/repository/io/grpc/protoc-gen-grpc-java/1.15.1/protoc-gen-grpc-java-1.15.1.pom.sha1
         popd
 
-        # Install hadoop in Maven local repo
-        mvn install -e -B -DskipTests 2>&1 | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_build.log"
-
-        # Compile and install Hadoop
-        mvn package -Pdist -Psrc -Dtar -DskipTests 2>&1 | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_package.log"
-        cp -r hadoop-dist/target/hadoop-3.3.0-SNAPSHOT /opt/
-        export PATH=/opt/hadoop-3.3.0-SNAPSHOT/bin:$PATH
-        export JAVA_HOME=`dirname $(dirname $(update-alternatives --list javac))`
-        hadoop version
-
-        # Test Hadoop standalone simply
-        pushd /opt/hadoop-3.3.0-SNAPSHOT/
-        mkdir input
-        cp etc/hadoop/*.xml input
-        hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-3.3.0-SNAPSHOT.jar grep input output 'dfs[a-z.]+'
-        cat output/*
-        popd
-
         # Building leveldb
         wget http://repository.timesys.com/buildsources/s/snappy/snappy-1.0.5/snappy-1.0.5.tar.gz
         tar -xvf snappy-1.0.5.tar.gz -C /opt/
@@ -92,6 +74,23 @@
         mvn install -P download -P all
         sleep 72000
 
+        # Install hadoop in Maven local repo
+        mvn install -e -B -DskipTests 2>&1 | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_build.log"
+
+        # Compile and install Hadoop
+        mvn package -Pdist -Psrc -Dtar -DskipTests 2>&1 | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_package.log"
+        cp -r hadoop-dist/target/hadoop-3.3.0-SNAPSHOT /opt/
+        export PATH=/opt/hadoop-3.3.0-SNAPSHOT/bin:$PATH
+        export JAVA_HOME=`dirname $(dirname $(update-alternatives --list javac))`
+        hadoop version
+
+        # Test Hadoop standalone simply
+        pushd /opt/hadoop-3.3.0-SNAPSHOT/
+        mkdir input
+        cp etc/hadoop/*.xml input
+        hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-3.3.0-SNAPSHOT.jar grep input output 'dfs[a-z.]+'
+        cat output/*
+        popd
 
         # build and test spark
         cd ${SPARK_HOME}
