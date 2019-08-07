@@ -72,7 +72,8 @@
         mvn install -P download -P linux64-aarch64
         # build leveldbjni-all
         mvn install -P download -P all
-        sleep 72000
+        cd '{{ ansible_user_dir }}/{{ zuul.project.src_dir }}'
+        mvn install:install-file -DgroupId=org.fusesource.leveldbjni -DartifactId=leveldbjni-all -Dversion=1.8 -Dpackaging=jar -Dfile=/opt/leveldbjni/leveldbjni-all/target/leveldbjni-all-99-master-SNAPSHOT.jar
 
         # Install hadoop in Maven local repo
         mvn install -e -B -DskipTests 2>&1 | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_build.log"
@@ -91,10 +92,6 @@
         hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-3.3.0-SNAPSHOT.jar grep input output 'dfs[a-z.]+'
         cat output/*
         popd
-
-        # build and test spark
-        cd ${SPARK_HOME}
-        mvn install:install-file -DgroupId=org.fusesource.leveldbjni -DartifactId=leveldbjni-all -Dversion=1.8 -Dpackaging=jar -Dfile=leveldbjni-all-99-master-SNAPSHOT.jar
 
         nohup bin/mapred minicluster -rmport 9966 -jhsport 9977 -nodfs 2>&1 &
 
