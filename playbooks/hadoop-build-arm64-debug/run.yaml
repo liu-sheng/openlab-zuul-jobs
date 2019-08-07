@@ -34,7 +34,7 @@
         mvn install -e -B -DskipTests 2>&1 | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_build.log"
 
         # Compile and install Hadoop
-        mvn package -Pdist -Psrc -Dtar -DskipTests
+        mvn package -Pdist -Psrc -Dtar -DskipTests 2>&1 | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_package.log"
         cp -r hadoop-dist/target/hadoop-3.3.0-SNAPSHOT /opt/
         export PATH=/opt/hadoop-3.3.0-SNAPSHOT/bin:$PATH
         export JAVA_HOME=`dirname $(dirname $(update-alternatives --list javac))`
@@ -48,7 +48,57 @@
         cat output/*
         popd
 
-        sleep 72000000
+        # Building leveldb
+        wget http://repository.timesys.com/buildsources/s/snappy/snappy-1.0.5/snappy-1.0.5.tar.gz
+        tar -xvf snappy-1.0.5.tar.gz -C /opt/
+        git clone http://github.com/huangtianhua/leveldbjni /opt/leveldbjni
+        git clone http://github.com/huangtianhua/leveldb /opt/leveldb
+        export SNAPPY_HOME=/opt/snappy-1.0.5
+        export LEVELDBJNI_HOME=/opt/leveldbjni
+        export LEVELDB_HOME=/opt/leveldb
+
+        cd ${SNAPPY_HOME}
+        # get the latest config.guess and config.sub
+        wget -O config.guess "git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.guess;hb=HEAD"
+        wget -O config.sub "git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.sub;hb=HEAD"
+        ./configure --disable-shared --with-pic
+        make
+
+        cd ${LEVELDB_HOME}
+        export LIBRARY_PATH=${SNAPPY_HOME}
+        export C_INCLUDE_PATH=${LIBRARY_PATH}
+        export CPLUS_INCLUDE_PATH=${LIBRARY_PATH}
+        git apply ../leveldbjni/leveldb_aarch64.patch
+        make libleveldb.a
+
+        # fix the problem: 'aclocal-1.14' is missing on your system
+        cd ../
+        sudo apt-get install autoconf -y
+        wget http://ftp.gnu.org/gnu/automake/automake-1.14.tar.gz
+        tar -zxvf automake-1.14.tar.gz
+        cd automake-1.14
+        ./bootstrap.sh
+        ./configure
+        sudo make
+        sudo make install
+
+        cd ${LEVELDBJNI_HOME}
+        # fix error: configure.ac:36: error: required file 'autotools/compile' not found
+        mkdir -p ${LEVELDBJNI_HOME}/leveldbjni-linux64-aarch64/target/native-build/autotools/
+        cp /usr/local/share/automake-1.14/compile ${LEVELDBJNI_HOME}/leveldbjni-linux64-aarch64/target/native-build/autotools/
+        # build leveldbjni-linux64-aarch64
+        mvn install -P download -P linux64-aarch64
+        # build leveldbjni-all
+        mvn install -P download -P all
+        sleep 72000
+
+
+        # build and test spark
+        cd ${SPARK_HOME}
+        mvn install:install-file -DgroupId=org.fusesource.leveldbjni -DartifactId=leveldbjni-all -Dversion=1.8 -Dpackaging=jar -Dfile=leveldbjni-all-99-master-SNAPSHOT.jar
+
+        nohup bin/mapred minicluster -rmport 9966 -jhsport 9977 -nodfs 2>&1 &
+
         mvn test -B -e -fn | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_test.log"
       args:
         executable: /bin/bash
