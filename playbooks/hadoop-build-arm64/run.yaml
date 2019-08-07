@@ -1,11 +1,9 @@
 - hosts: all
   become: yes
-  roles:
-    - install-openjdk
-    - install-maven
   tasks:
     - name: Test hadoop
       shell: |
+        sleep 72000
         set -xo pipefail
         apt-get update
         apt-get install -y build-essential autoconf automake libtool cmake zlib1g-dev pkg-config libssl-dev libsasl2-dev
