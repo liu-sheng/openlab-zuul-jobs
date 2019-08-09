@@ -137,3 +137,9 @@
     recheck-mitaka:
       jobs:
          - hadoop-build-arm64-debug-x86
+
+- project:
+    name: bzhaoopenstack/ansible
+    check:
+      jobs:
+        - openstacksdk-ansible-v2.8.0-functional-devstack-mitaka-check
