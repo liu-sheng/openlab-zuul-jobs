@@ -94,6 +94,7 @@
         popd
 
         nohup bin/mapred minicluster -rmport 9966 -jhsport 9977 -nodfs 2>&1 &
+        sleep 720000000
 
         mvn test -B -e -fn | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_test.log"
       args:
