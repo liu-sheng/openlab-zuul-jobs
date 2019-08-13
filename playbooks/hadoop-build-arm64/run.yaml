@@ -1,5 +1,8 @@
 - hosts: all
   become: yes
+  roles:
+    - install-openjdk
+    - install-maven
   tasks:
     - name: Test hadoop
       shell: |
