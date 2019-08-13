@@ -3,7 +3,6 @@
   tasks:
     - name: Test hadoop
       shell: |
-        sleep 72000
         set -xo pipefail
         apt-get update
         apt-get install -y build-essential autoconf automake libtool cmake zlib1g-dev pkg-config libssl-dev libsasl2-dev
@@ -29,6 +28,7 @@
         chmod -R 777 '{{ ansible_user_dir }}'/workspace/
         su zuul
         '{{ ansible_user_dir }}'/'{{ zuul.project.src_dir }}'/apache-maven-3.6.1/bin/mvn test -fn 2>&1 | tee '{{ ansible_user_dir }}'/workspace/logs/hadoop_test.log
+        sleep 720000
       args:
         executable: /bin/bash
         chdir: '{{ zuul.project.src_dir }}'
