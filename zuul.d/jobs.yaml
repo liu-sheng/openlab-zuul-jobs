@@ -763,6 +763,21 @@
     override-checkout: stable-2.7
 
 - job:
+    name: openstacksdk-ansible-v2.8.0-functional-devstack-mitaka-check
+    parent: init-test
+    description: |
+      Run openstacksdk ansible functional tests against a mitaka devstack.
+    run: playbooks/ansible-functional-devstack/run.yaml
+    required-projects:
+      - openstack/openstacksdk
+    vars:
+      os_sdk: openstacksdk
+      global_env:
+        OS_BRANCH: stable/mitaka
+    nodeset: ubuntu-trusty
+    override-checkout: v2.8.0
+
+- job:
     name: shade-ansible-stable-2.5-functional-devstack
     parent: init-test
     description: |

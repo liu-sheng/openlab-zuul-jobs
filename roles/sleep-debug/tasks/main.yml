@@ -1,0 +1,9 @@
+- name: Sleep debugging
+  shell:
+    cmd: |
+      set -e
+      set -x
+      sleep 120
+    executable: /bin/bash
+    chdir: '{{ ansible_user_dir }}/workspace'
+  environment: '{{ zuul | zuul_legacy_vars }}'
