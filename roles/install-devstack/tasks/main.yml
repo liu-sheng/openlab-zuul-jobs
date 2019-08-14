@@ -29,7 +29,7 @@
       set -x
       # As openstack/requirements already upgrade requests to 2.22.0,
       # but didn't provider a 2.22.0 version for python34.
-      # Upgrade python3.4 to python3.7
+      # Install python3.7
       add-apt-repository ppa:deadsnakes/ppa -y
       apt-get update
       apt-get install python3.7 -y
