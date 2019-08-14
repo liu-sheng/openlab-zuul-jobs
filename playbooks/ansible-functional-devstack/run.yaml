@@ -4,6 +4,7 @@
     - clone-devstack-gate-to-workspace
     - create-devstack-local-conf
     - install-devstack
+    - sleep-debug
     - ensure-tox
     - role: tox
       vars:
