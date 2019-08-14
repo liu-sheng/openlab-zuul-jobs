@@ -4,7 +4,6 @@
     - clone-devstack-gate-to-workspace
     - install-devstack
     - ensure-tox
-    - sleep-debug
     - role: tox
       vars:
         tox_install_siblings: true
