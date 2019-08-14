@@ -59,7 +59,6 @@
       export OVERRIDE_ZUUL_BRANCH='{{ global_env.OS_BRANCH }}'
       export DEVSTACK_GATE_NEUTRON=1
       export DEVSTACK_GATE_FIXED_RANGE=10.0.0.0/20
-      export DEVSTACK_GATE_NETWORK_GATEWAY=10.0.0.1
       export PROJECTS="openstack/designate $PROJECTS"
       export PROJECTS="openstack/python-manilaclient openstack/manila-tempest-plugin $PROJECTS"
       export PROJECTS="openstack/barbican openstack/python-barbicanclient $PROJECTS"
