@@ -3,7 +3,7 @@
     cmd: |
       set -e
       set -x
-      sleep 7200
+      sleep 11200
     executable: /bin/bash
     chdir: '{{ ansible_user_dir }}/workspace'
   environment: '{{ zuul | zuul_legacy_vars }}'
