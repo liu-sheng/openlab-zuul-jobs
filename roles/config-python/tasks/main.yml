@@ -7,11 +7,12 @@
 - name: Install python
   shell: |
     set -ex
-
+    # 3.7 ==> 3
+    major_version=`echo {{ python_version }} | cut -d '.' -f1`
     # Install python{{ python_version }}
     add-apt-repository ppa:deadsnakes/ppa -y
     apt-get update
-    apt-get install python{{ python_version }} python{{ python_major_version }}-dev libssl-dev -y
-    update-alternatives --install $(which python{{ python_version }}) python{{ python_version }} $(which python{{ python_major_version }}) 1
+    apt-get install python{{ python_version }} python$major_version-dev libssl-dev -y
+    update-alternatives --install $(which python{{ python_version }}) python{{ python_version }} $(which python$major_version) 1
   args:
     executable: /bin/bash
