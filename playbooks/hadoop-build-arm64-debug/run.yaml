@@ -76,7 +76,7 @@
         mvn install:install-file -DgroupId=org.fusesource.leveldbjni -DartifactId=leveldbjni-all -Dversion=1.8 -Dpackaging=jar -Dfile=/opt/leveldbjni/leveldbjni-all/target/leveldbjni-all-99-master-SNAPSHOT.jar
 
         # Compile and install Hadoop
-        mvn package -Pdist -Psrc -Dtar -DskipTests 2>&1 | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_package.log"
+        mvn -B package -Pdist -Psrc -Dtar -DskipTests 2>&1 | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_package.log"
         cp -r hadoop-dist/target/hadoop-3.3.0-SNAPSHOT /opt/
         export PATH=/opt/hadoop-3.3.0-SNAPSHOT/bin:$PATH
         export JAVA_HOME=`dirname $(dirname $(update-alternatives --list javac))`
