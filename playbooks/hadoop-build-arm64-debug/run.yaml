@@ -10,6 +10,7 @@
         apt-get update -y
         echo $PATH
         sed -i -e '/127.0.0.1/ s/\(localhost\)/'$(hostname)' \1/' /etc/hosts
+        apt-get install -y build-essential autoconf automake libtool cmake zlib1g-dev pkg-config libssl-dev libsasl2-dev
 
         # Install Docker
         type docker || curl -sSL https://get.docker.com/ | sh -
@@ -72,18 +73,20 @@
         mvn -e -B install -P download -P linux64-aarch64 -DskipTests
         # build leveldbjni-all
         mvn -e -B install -P download -P all -DskipTests
+
         cd '{{ ansible_user_dir }}/{{ zuul.project.src_dir }}'
         mvn install:install-file -DgroupId=org.fusesource.leveldbjni -DartifactId=leveldbjni-all -Dversion=1.8 -Dpackaging=jar -Dfile=/opt/leveldbjni/leveldbjni-all/target/leveldbjni-all-99-master-SNAPSHOT.jar
 
+        # Install hadoop in Maven local repo
+        mvn clean install -e -B -DskipTests 2>&1 | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_build.log"
+
         # Compile and install Hadoop
-        mvn -B package -Pdist -Psrc -Dtar -DskipTests 2>&1 | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_package.log"
+        mvn -B package,native -Pdist -Psrc -Dtar -DskipTests 2>&1 | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_package.log"
         cp -r hadoop-dist/target/hadoop-3.3.0-SNAPSHOT /opt/
         export PATH=/opt/hadoop-3.3.0-SNAPSHOT/bin:$PATH
         export JAVA_HOME=`dirname $(dirname $(update-alternatives --list javac))`
         hadoop version
-
-        # Install hadoop in Maven local repo
-        mvn install -e -B -DskipTests 2>&1 | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_build.log"
+        hadoop checknative -a
 
         # Test Hadoop standalone simply
         pushd /opt/hadoop-3.3.0-SNAPSHOT/
@@ -93,7 +96,9 @@
         cat output/*
         popd
 
+        pushd /opt/hadoop-3.3.0-SNAPSHOT/
         nohup bin/mapred minicluster -rmport 9966 -jhsport 9977 -nodfs 2>&1 &
+        popd
         sleep 720000000
 
         mvn test -B -e -fn | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_test.log"
