@@ -16,11 +16,21 @@
         type docker || curl -sSL https://get.docker.com/ | sh -
 
         # Install patched protoc-2.5.0
-        curl -Lo /opt/protoc-2.5.0-aarch64.tar.gz https://github.com/liusheng/liusheng.github.io/files/3429342/protoc-2.5.0-aarch64.tar.gz
-        mkdir -p /opt/protoc-2.5.0-aarch64 && tar zxf /opt/protoc-2.5.0-aarch64.tar.gz -C /opt/protoc-2.5.0-aarch64/
-        echo /opt/protoc-2.5.0-aarch64/lib/ > /etc/ld.so.conf.d/protoc-2.5.0-aarch64.conf
+        # curl -Lo /opt/protoc-2.5.0-aarch64.tar.gz https://github.com/liusheng/liusheng.github.io/files/3429342/protoc-2.5.0-aarch64.tar.gz
+        # mkdir -p /opt/protoc-2.5.0-aarch64 && tar zxf /opt/protoc-2.5.0-aarch64.tar.gz -C /opt/protoc-2.5.0-aarch64/
+        # echo /opt/protoc-2.5.0-aarch64/lib/ > /etc/ld.so.conf.d/protoc-2.5.0-aarch64.conf
+        # ldconfig
+        # export PATH=/opt/protoc-2.5.0-aarch64/bin:$PATH
+        # protoc --version
+
+        curl -Lo /opt/protobuf-2.5.0.tar.gz https://github.com/google/protobuf/releases/download/v2.5.0/protobuf-2.5.0.tar.gz
+        tar zxf /opt/protobuf-2.5.0.tar.gz -C /opt/
+        wget -O /opt/protobuf-2.5.0/protobuf-2.5.0-arm64.patch https://www.dropbox.com/s/713wql5cw9dfxhx/protobuf-2.5.0-arm64.patch?dl=0
+        cd /opt/protobuf-2.5.0/ && patch -p1 < ./protobuf-2.5.0-arm64.patch
+        ./autogen.sh
+        ./configure
+        make install
         ldconfig
-        export PATH=/opt/protoc-2.5.0-aarch64/bin:$PATH
         protoc --version
 
         # Install protoc-gen-grpc-java for ARM platform
