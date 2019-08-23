@@ -91,7 +91,8 @@
         mvn clean install -e -B -DskipTests 2>&1 | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_build.log"
 
         # Compile and install Hadoop
-        mvn -B package -Pdist,native -Psrc -Dtar -DskipTests 2>&1 | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_package.log"
+        # mvn -B package -Pdist,native -Psrc -Dtar -DskipTests 2>&1 | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_package.log"
+        mvn -B package -Pdist -Psrc -Dtar -DskipTests 2>&1 | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_package.log"
         cp -r hadoop-dist/target/hadoop-3.3.0-SNAPSHOT /opt/
         export PATH=/opt/hadoop-3.3.0-SNAPSHOT/bin:$PATH
         export JAVA_HOME=`dirname $(dirname $(update-alternatives --list javac))`
