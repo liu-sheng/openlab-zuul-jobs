@@ -20,13 +20,12 @@
     - name: Run e2e tests
       shell:
         cmd: |
-          # Swith to bazel 0.23.2
-          cp /opt/bazel/bazel-0.23/output/bazel /usr/local/bin
           export LOG_DIR='{{ ansible_user_dir }}/workspace/logs/kubernetes'
           # Add a walk-around start time to the e2e.log file to make the
           # upload step running
           date +"%b %e %H:%M:%S.999: START " | tee $LOG_DIR/e2e.log
           go get k8s.io/kubernetes
+          go get k8s.io/kubeadm
           # Install Kind@Master
           mkdir -p $GOPATH/src/sigs.k8s.io/
           mv '{{ zuul.project.src_dir }}' $GOPATH/src/sigs.k8s.io/
