@@ -105,9 +105,9 @@
         popd
 
         cd '{{ ansible_user_dir }}/{{ zuul.project.src_dir }}'
-        wget -O /opt/leveldbjni-all-99-master-SNAPSHOT.jar.tar.gz https://github.com/liusheng/package/releases/download/leveldbjni-1.8-aarch64/leveldbjni-all-99-master-SNAPSHOT.jar.tar.gz
-        tar zxvf /opt/leveldbjni-all-99-master-SNAPSHOT.jar.tar.gz -C /opt/
-        mvn install:install-file -DgroupId=org.fusesource.leveldbjni -DartifactId=leveldbjni-all -Dversion=1.8 -Dpackaging=jar -Dfile=/opt/leveldbjni-all-99-master-SNAPSHOT.jar.tar.gz
+        wget -O leveldbjni-all-99-master-SNAPSHOT.jar.tar.gz https://github.com/liusheng/package/releases/download/leveldbjni-1.8-aarch64/leveldbjni-all-99-master-SNAPSHOT.jar.tar.gz
+        tar zxvf /opt/leveldbjni-all-99-master-SNAPSHOT.jar.tar.gz
+        mvn install:install-file -DgroupId=org.fusesource.leveldbjni -DartifactId=leveldbjni-all -Dversion=1.8 -Dpackaging=jar -Dfile=./leveldbjni-all-99-master-SNAPSHOT.jar.tar.gz
 
         # Install hadoop in Maven local repo
         mvn clean install -e -B -DskipTests 2>&1 | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_build.log"
