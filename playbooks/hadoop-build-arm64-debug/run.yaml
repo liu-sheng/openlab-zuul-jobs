@@ -96,6 +96,9 @@
       shell: |
         set -ex
 
+        export PATH=/opt/protoc-2.5.0-aarch64/bin:$PATH
+        protoc --version
+
         # Install protoc-gen-grpc-java for ARM platform
         mkdir -p ~/.m2/repository/io/grpc/protoc-gen-grpc-java/1.15.1/
         pushd ~/.m2/repository/io/grpc/protoc-gen-grpc-java/1.15.1/
