@@ -90,6 +90,7 @@
 
         # Install hadoop in Maven local repo
         mvn clean install -e -B -DskipTests 2>&1 | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_build.log"
+        sleep 72000000000
 
         # Compile hadoop
         # mvn -B package -Pdist,native -Psrc -Dtar -DskipTests -Dmaven.javadoc.skip 2>&1 | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_package.log"
