@@ -1,10 +1,10 @@
 - hosts: all
-  become: yes
   roles:
     - install-openjdk
     - install-maven
   tasks:
-    - name: install required packages and run tests
+    - name: workarounds and requirements
+      become: yes
       shell: |
         set -ex
         apt-get update -y
@@ -16,30 +16,17 @@
         type docker || curl -sSL https://get.docker.com/ | sh -
 
         # Install patched protoc-2.5.0
-        # curl -Lo /opt/protoc-2.5.0-aarch64.tar.gz https://github.com/liusheng/liusheng.github.io/files/3429342/protoc-2.5.0-aarch64.tar.gz
-        # mkdir -p /opt/protoc-2.5.0-aarch64 && tar zxf /opt/protoc-2.5.0-aarch64.tar.gz -C /opt/protoc-2.5.0-aarch64/
-        # echo /opt/protoc-2.5.0-aarch64/lib/ > /etc/ld.so.conf.d/protoc-2.5.0-aarch64.conf
-        # ldconfig
-        # export PATH=/opt/protoc-2.5.0-aarch64/bin:$PATH
-        # protoc --version
-
-        curl -Lo /opt/protobuf-2.5.0.tar.gz https://github.com/google/protobuf/releases/download/v2.5.0/protobuf-2.5.0.tar.gz
-        tar zxf /opt/protobuf-2.5.0.tar.gz -C /opt/
-        wget -O /opt/protobuf-2.5.0/protobuf-2.5.0-arm64.patch https://www.dropbox.com/s/713wql5cw9dfxhx/protobuf-2.5.0-arm64.patch?dl=0
-        cd /opt/protobuf-2.5.0/ && patch -p1 < ./protobuf-2.5.0-arm64.patch
-        ./autogen.sh
-        ./configure
-        make install
+        curl -Lo /opt/protoc-2.5.0-aarch64.tar.gz https://github.com/liusheng/liusheng.github.io/files/3429342/protoc-2.5.0-aarch64.tar.gz
+        mkdir -p /opt/protoc-2.5.0-aarch64 && tar zxf /opt/protoc-2.5.0-aarch64.tar.gz -C /opt/protoc-2.5.0-aarch64/
+        echo /opt/protoc-2.5.0-aarch64/lib/ > /etc/ld.so.conf.d/protoc-2.5.0-aarch64.conf
         ldconfig
+        export PATH=/opt/protoc-2.5.0-aarch64/bin:$PATH
         protoc --version
 
-        # Install protoc-gen-grpc-java for ARM platform
-        mkdir -p ~/.m2/repository/io/grpc/protoc-gen-grpc-java/1.15.1/
-        pushd ~/.m2/repository/io/grpc/protoc-gen-grpc-java/1.15.1/
-        wget http://home.apache.org/~aajisaka/repository/io/grpc/protoc-gen-grpc-java/1.15.1/protoc-gen-grpc-java-1.15.1-linux-aarch_64.exe
-        wget http://home.apache.org/~aajisaka/repository/io/grpc/protoc-gen-grpc-java/1.15.1/protoc-gen-grpc-java-1.15.1.pom
-        wget http://home.apache.org/~aajisaka/repository/io/grpc/protoc-gen-grpc-java/1.15.1/protoc-gen-grpc-java-1.15.1.pom.sha1
-        popd
+        # fix org.apache.hadoop.yarn.server.federation.policies.amrmproxy.TestLocalityMulticastAMRMProxyPolicy#testStressPolicy
+        wget -O /opt/phantomjs-2.1.1-linux-aarch64.tar.bz2 https://github.com/liusheng/phantomjs/releases/download/2.1.1/phantomjs-2.1.1-linux-aarch64.tar.bz2
+        tar jxvf /opt/phantomjs-2.1.1-linux-aarch64.tar.bz2 -C /opt/
+        cp /opt/phantomjs-2.1.1-linux-aarch64/bin/phantomjs /usr/bin/
 
         # Building leveldb
         wget http://repository.timesys.com/buildsources/s/snappy/snappy-1.0.5/snappy-1.0.5.tar.gz
@@ -75,22 +62,55 @@
         sudo make
         sudo make install
 
-        cd ${LEVELDBJNI_HOME}
+        # cd ${LEVELDBJNI_HOME}
         # fix error: configure.ac:36: error: required file 'autotools/compile' not found
-        mkdir -p ${LEVELDBJNI_HOME}/leveldbjni-linux64-aarch64/target/native-build/autotools/
-        cp /usr/local/share/automake-1.14/compile ${LEVELDBJNI_HOME}/leveldbjni-linux64-aarch64/target/native-build/autotools/
-        # build leveldbjni-linux64-aarch64
-        mvn -e -B install -P download -P linux64-aarch64 -DskipTests
-        # build leveldbjni-all
-        mvn -e -B install -P download -P all -DskipTests
+        # mkdir -p ${LEVELDBJNI_HOME}/leveldbjni-linux64-aarch64/target/native-build/autotools/
+        # cp /usr/local/share/automake-1.14/compile ${LEVELDBJNI_HOME}/leveldbjni-linux64-aarch64/target/native-build/autotools/
+        # # build leveldbjni-linux64-aarch64
+        # mvn -e -B install -P download -P linux64-aarch64 -DskipTests
+        # # build leveldbjni-all
+        # mvn -e -B install -P download -P all -DskipTests
+
+        # Test Hadoop standalone simply
+        # pushd /opt/hadoop-3.3.0-SNAPSHOT/
+        # mkdir input
+        # cp etc/hadoop/*.xml input
+        # hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-3.3.0-SNAPSHOT.jar grep input output 'dfs[a-z.]+'
+        # cat output/*
+        # popd
+
+        # pushd /opt/hadoop-3.3.0-SNAPSHOT/
+        # nohup bin/mapred minicluster -rmport 9966 -jhsport 9977 -nodfs 2>&1 &
+        # popd
+        # sleep 720000000
+
+        # mvn test -B -e -fn | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_test.log"
+
+      args:
+        executable: /bin/bash
+        chdir: '{{ zuul.project.src_dir }}'
+      environment: '{{ global_env }}'
+
+    - name: Install hadoop and run tests
+      shell: |
+        set -ex
+
+        # Install protoc-gen-grpc-java for ARM platform
+        mkdir -p ~/.m2/repository/io/grpc/protoc-gen-grpc-java/1.15.1/
+        pushd ~/.m2/repository/io/grpc/protoc-gen-grpc-java/1.15.1/
+        wget http://home.apache.org/~aajisaka/repository/io/grpc/protoc-gen-grpc-java/1.15.1/protoc-gen-grpc-java-1.15.1-linux-aarch_64.exe
+        wget http://home.apache.org/~aajisaka/repository/io/grpc/protoc-gen-grpc-java/1.15.1/protoc-gen-grpc-java-1.15.1.pom
+        wget http://home.apache.org/~aajisaka/repository/io/grpc/protoc-gen-grpc-java/1.15.1/protoc-gen-grpc-java-1.15.1.pom.sha1
+        popd
 
         cd '{{ ansible_user_dir }}/{{ zuul.project.src_dir }}'
+        wget -O leveldbjni-all-99-master-SNAPSHOT.jar.tar.gz https://github.com/liusheng/package/releases/download/leveldbjni-1.8-aarch64/leveldbjni-all-99-master-SNAPSHOT.jar.tar.gz
         mvn install:install-file -DgroupId=org.fusesource.leveldbjni -DartifactId=leveldbjni-all -Dversion=1.8 -Dpackaging=jar -Dfile=/opt/leveldbjni/leveldbjni-all/target/leveldbjni-all-99-master-SNAPSHOT.jar
 
         # Install hadoop in Maven local repo
         mvn clean install -e -B -DskipTests 2>&1 | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_build.log"
 
-        # Compile and install Hadoop
+        # Compile hadoop
         # mvn -B package -Pdist,native -Psrc -Dtar -DskipTests -Dmaven.javadoc.skip 2>&1 | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_package.log"
         mvn -B package -Pdist -Dtar -DskipTests -Dmaven.javadoc.skip 2>&1 | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_package.log"
         cp -r hadoop-dist/target/hadoop-3.3.0-SNAPSHOT /opt/
@@ -99,19 +119,7 @@
         hadoop version
         # hadoop checknative -a
 
-        # Test Hadoop standalone simply
-        pushd /opt/hadoop-3.3.0-SNAPSHOT/
-        mkdir input
-        cp etc/hadoop/*.xml input
-        hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-3.3.0-SNAPSHOT.jar grep input output 'dfs[a-z.]+'
-        cat output/*
-        popd
-
-        pushd /opt/hadoop-3.3.0-SNAPSHOT/
-        nohup bin/mapred minicluster -rmport 9966 -jhsport 9977 -nodfs 2>&1 &
-        popd
-        sleep 720000000
-
+        sleep 72000000000
         mvn test -B -e -fn | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_test.log"
       args:
         executable: /bin/bash
