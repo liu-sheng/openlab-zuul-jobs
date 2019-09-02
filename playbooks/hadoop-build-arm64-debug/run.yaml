@@ -96,9 +96,6 @@
       shell: |
         set -ex
 
-        echo "I am zuul user"
-        whoami
-
         # Install protoc-gen-grpc-java for ARM platform
         mkdir -p ~/.m2/repository/io/grpc/protoc-gen-grpc-java/1.15.1/
         pushd ~/.m2/repository/io/grpc/protoc-gen-grpc-java/1.15.1/
@@ -109,6 +106,7 @@
 
         cd '{{ ansible_user_dir }}/{{ zuul.project.src_dir }}'
         wget -O leveldbjni-all-99-master-SNAPSHOT.jar.tar.gz https://github.com/liusheng/package/releases/download/leveldbjni-1.8-aarch64/leveldbjni-all-99-master-SNAPSHOT.jar.tar.gz
+        tar zxvf leveldbjni-all-99-master-SNAPSHOT.jar.tar.gz
         mvn install:install-file -DgroupId=org.fusesource.leveldbjni -DartifactId=leveldbjni-all -Dversion=1.8 -Dpackaging=jar -Dfile=/opt/leveldbjni/leveldbjni-all/target/leveldbjni-all-99-master-SNAPSHOT.jar
 
         # Install hadoop in Maven local repo
