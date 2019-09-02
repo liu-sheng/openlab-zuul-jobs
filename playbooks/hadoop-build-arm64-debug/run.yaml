@@ -62,30 +62,6 @@
         sudo make
         sudo make install
 
-        # cd ${LEVELDBJNI_HOME}
-        # fix error: configure.ac:36: error: required file 'autotools/compile' not found
-        # mkdir -p ${LEVELDBJNI_HOME}/leveldbjni-linux64-aarch64/target/native-build/autotools/
-        # cp /usr/local/share/automake-1.14/compile ${LEVELDBJNI_HOME}/leveldbjni-linux64-aarch64/target/native-build/autotools/
-        # # build leveldbjni-linux64-aarch64
-        # mvn -e -B install -P download -P linux64-aarch64 -DskipTests
-        # # build leveldbjni-all
-        # mvn -e -B install -P download -P all -DskipTests
-
-        # Test Hadoop standalone simply
-        # pushd /opt/hadoop-3.3.0-SNAPSHOT/
-        # mkdir input
-        # cp etc/hadoop/*.xml input
-        # hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-3.3.0-SNAPSHOT.jar grep input output 'dfs[a-z.]+'
-        # cat output/*
-        # popd
-
-        # pushd /opt/hadoop-3.3.0-SNAPSHOT/
-        # nohup bin/mapred minicluster -rmport 9966 -jhsport 9977 -nodfs 2>&1 &
-        # popd
-        # sleep 720000000
-
-        # mvn test -B -e -fn | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_test.log"
-
       args:
         executable: /bin/bash
         chdir: '{{ zuul.project.src_dir }}'
