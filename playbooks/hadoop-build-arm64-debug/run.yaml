@@ -1,10 +1,10 @@
 - hosts: all
+  become: yes
   roles:
     - install-openjdk
     - install-maven
   tasks:
     - name: workarounds and requirements
-      become: yes
       shell: |
         set -ex
         apt-get update -y
@@ -92,8 +92,12 @@
       environment: '{{ global_env }}'
 
     - name: Install hadoop and run tests
+      become: no
       shell: |
         set -ex
+
+        echo "I am zuul user"
+        whoami
 
         # Install protoc-gen-grpc-java for ARM platform
         mkdir -p ~/.m2/repository/io/grpc/protoc-gen-grpc-java/1.15.1/
