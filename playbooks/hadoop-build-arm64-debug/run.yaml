@@ -102,6 +102,9 @@
         # hadoop checknative -a
 
         sleep 72000000000
+        pushd hadoop-yarn-project/
+        mvn test -B -e -fn | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_yarn_test.log"
+        popd
         mvn test -B -e -fn | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_test.log"
       args:
         executable: /bin/bash
