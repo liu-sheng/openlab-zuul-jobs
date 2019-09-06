@@ -1655,3 +1655,13 @@
     run: playbooks/hadoop-build-arm64-debug-x86/run.yaml
     timeout: 864000
     nodeset: ubuntu-xenial
+    
+# Spark arm64 build and run unit tests periodic job
+- job:
+    name: spark-unit-test-arm64
+    parent: init-test
+    description: |
+      Apache Spark build and run unit tests on arm64 server
+    run: playbooks/spark-unit-test-arm64/run.yaml
+    nodeset: ubuntu-xenial-arm64
+    timeout: 54000

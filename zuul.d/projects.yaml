@@ -143,3 +143,9 @@
     check:
       jobs:
         - openstacksdk-ansible-v2.8.0-functional-devstack-mitaka-check
+        
+- project:
+    name: theopenlab/spark
+    check:
+      jobs:
+        - spark-unit-test-arm64
