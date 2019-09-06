@@ -9,7 +9,11 @@
         set -ex
         apt-get update -y
         echo $PATH
-        sed -i -e '/127.0.0.1/ s/\(localhost\)/'$(hostname)' \1/' /etc/hosts
+        sed  -i '1i\127.0.0.1 '$(hostname)'' /etc/hosts
+
+        # fix tests in org.apache.hadoop.yarn.server.resourcemanager.recovery.TestFSRMStateStore
+        sed  -i '1i\127.0.0.1 '$(hostname).'' /etc/hosts
+
         apt-get install -y build-essential autoconf automake libtool cmake zlib1g-dev pkg-config libssl-dev libsasl2-dev
 
         # Install Docker
