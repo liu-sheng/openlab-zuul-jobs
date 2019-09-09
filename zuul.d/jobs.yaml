@@ -1674,5 +1674,7 @@
     description: |
       Apache Spark build and run unit tests on arm64 server
     run: playbooks/spark-unit-test-with-hadoop-2.7-arm64-stable-branch/run.yaml
+    vars:
+      hadoop_version: 2.7
     nodeset: ubuntu-xenial-arm64
     timeout: 54000
