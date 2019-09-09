@@ -31,41 +31,6 @@
         wget -O /opt/phantomjs-2.1.1-linux-aarch64.tar.bz2 https://github.com/liusheng/phantomjs/releases/download/2.1.1/phantomjs-2.1.1-linux-aarch64.tar.bz2
         tar jxvf /opt/phantomjs-2.1.1-linux-aarch64.tar.bz2 -C /opt/
         cp /opt/phantomjs-2.1.1-linux-aarch64/bin/phantomjs /usr/bin/
-
-        # Building leveldb
-        wget http://repository.timesys.com/buildsources/s/snappy/snappy-1.0.5/snappy-1.0.5.tar.gz
-        tar -xvf snappy-1.0.5.tar.gz -C /opt/
-        git clone http://github.com/huangtianhua/leveldbjni /opt/leveldbjni
-        git clone http://github.com/huangtianhua/leveldb /opt/leveldb
-        export SNAPPY_HOME=/opt/snappy-1.0.5
-        export LEVELDBJNI_HOME=/opt/leveldbjni
-        export LEVELDB_HOME=/opt/leveldb
-
-        cd ${SNAPPY_HOME}
-        # get the latest config.guess and config.sub
-        wget -O config.guess "git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.guess;hb=HEAD"
-        wget -O config.sub "git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.sub;hb=HEAD"
-        ./configure --disable-shared --with-pic
-        make
-
-        cd ${LEVELDB_HOME}
-        export LIBRARY_PATH=${SNAPPY_HOME}
-        export C_INCLUDE_PATH=${LIBRARY_PATH}
-        export CPLUS_INCLUDE_PATH=${LIBRARY_PATH}
-        git apply ../leveldbjni/leveldb_aarch64.patch
-        make libleveldb.a
-
-        # fix the problem: 'aclocal-1.14' is missing on your system
-        cd ../
-        sudo apt-get install autoconf -y
-        wget http://ftp.gnu.org/gnu/automake/automake-1.14.tar.gz
-        tar -zxvf automake-1.14.tar.gz
-        cd automake-1.14
-        ./bootstrap.sh
-        ./configure
-        sudo make
-        sudo make install
-
       args:
         executable: /bin/bash
         chdir: '{{ zuul.project.src_dir }}'
@@ -74,7 +39,7 @@
     - name: Install hadoop and run tests
       become: no
       shell: |
-        set -ex
+        set -x
 
         export PATH=/opt/protoc-2.5.0-aarch64/bin:$PATH
         protoc --version
@@ -87,14 +52,13 @@
         wget http://home.apache.org/~aajisaka/repository/io/grpc/protoc-gen-grpc-java/1.15.1/protoc-gen-grpc-java-1.15.1.pom.sha1
         popd
 
+        # install org.openlabtesting.leveldbjni which supports aarch64
         cd '{{ ansible_user_dir }}/{{ zuul.project.src_dir }}'
-        wget -O leveldbjni-all-99-master-SNAPSHOT.jar.tar.gz https://github.com/liusheng/package/releases/download/leveldbjni-1.8-aarch64/leveldbjni-all-99-master-SNAPSHOT.jar.tar.gz
-        tar zxvf ./leveldbjni-all-99-master-SNAPSHOT.jar.tar.gz
-        mvn install:install-file -DgroupId=org.fusesource.leveldbjni -DartifactId=leveldbjni-all -Dversion=1.8 -Dpackaging=jar -Dfile=./leveldbjni-all-99-master-SNAPSHOT.jar
+        wget -O leveldbjni-all-1.8.jar https://repo1.maven.org/maven2/org/openlabtesting/leveldbjni/leveldbjni-all/1.8/leveldbjni-all-1.8.jar
+        mvn install:install-file -DgroupId=org.fusesource.leveldbjni -DartifactId=leveldbjni-all -Dversion=1.8 -Dpackaging=jar -Dfile=leveldbjni-all-1.8.jar
 
         # Install hadoop in Maven local repo
         mvn clean install -e -B -DskipTests 2>&1 | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_build.log"
-        sleep 72000000000
 
         # Compile hadoop
         # mvn -B package -Pdist,native -Psrc -Dtar -DskipTests -Dmaven.javadoc.skip 2>&1 | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_package.log"
@@ -105,11 +69,10 @@
         hadoop version
         # hadoop checknative -a
 
-        sleep 72000000000
         pushd hadoop-yarn-project/
         mvn test -B -e -fn | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_yarn_test.log"
         popd
-        mvn test -B -e -fn | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_test.log"
+        sleep 7200000000000
       args:
         executable: /bin/bash
         chdir: '{{ zuul.project.src_dir }}'
