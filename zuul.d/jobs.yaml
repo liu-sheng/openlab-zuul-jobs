@@ -1665,3 +1665,16 @@
     run: playbooks/spark-unit-test-arm64/run.yaml
     nodeset: ubuntu-xenial-arm64
     timeout: 54000
+
+# Spark arm64 build and run unit tests periodic job with specific branch of
+# the forked openlab/spark repo
+- job:
+    name: spark-unit-test-with-hadoop-2.7-arm64-stable-branch
+    parent: init-test
+    description: |
+      Apache Spark build and run unit tests on arm64 server
+    run: playbooks/spark-unit-test-with-hadoop-2.7-arm64-stable-branch/run.yaml
+    vars:
+      hadoop_version: 2.7
+    nodeset: ubuntu-xenial-arm64
+    timeout: 54000

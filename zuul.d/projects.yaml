@@ -149,3 +149,10 @@
     check:
       jobs:
         - spark-unit-test-arm64
+
+- project:
+    name: theopenlab/spark
+    periodic:
+      jobs:
+        - spark-unit-test-with-hadoop-2.7-arm64-stable-branch:
+            branches: test-branch-2019-09-09
