@@ -57,12 +57,10 @@
         wget -O leveldbjni-all-1.8.jar https://repo1.maven.org/maven2/org/openlabtesting/leveldbjni/leveldbjni-all/1.8/leveldbjni-all-1.8.jar
         mvn install:install-file -DgroupId=org.fusesource.leveldbjni -DartifactId=leveldbjni-all -Dversion=1.8 -Dpackaging=jar -Dfile=leveldbjni-all-1.8.jar
 
-        # Install hadoop in Maven local repo
-        mvn clean install -e -B -DskipTests 2>&1 | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_build.log"
+        # Install hadoop in Maven local repo -Pdist,native
+        mvn clean install -e -B -Pdist -Psrc -Dtar -DskipTests -Dmaven.javadoc.skip 2>&1 | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_build.log"
 
         # Compile hadoop
-        # mvn -B package -Pdist,native -Psrc -Dtar -DskipTests -Dmaven.javadoc.skip 2>&1 | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_package.log"
-        mvn -B package -Pdist -Dtar -DskipTests -Dmaven.javadoc.skip 2>&1 | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_package.log"
         sudo cp -r hadoop-dist/target/hadoop-3.3.0-SNAPSHOT /opt/
         export PATH=/opt/hadoop-3.3.0-SNAPSHOT/bin:$PATH
         export JAVA_HOME=`dirname $(dirname $(update-alternatives --list javac))`
