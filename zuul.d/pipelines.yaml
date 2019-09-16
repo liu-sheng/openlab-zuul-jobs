@@ -191,7 +191,8 @@
     trigger:
       timer:
         # format: minute hour day_of_month month day_of_week
-        - time: '15 8 * * *'
+        # original value '15 8 * * *'
+        - time: '15 7 * * *'
     success:
       mysql:
     failure:
