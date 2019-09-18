@@ -9,6 +9,8 @@
         set -ex
         apt-get update -y
         echo $PATH
+
+        # Need to keep the localhost in the 1st line
         sed  -i '2i\127.0.0.1 '$(hostname)'' /etc/hosts
         # fix tests in org.apache.hadoop.yarn.server.resourcemanager.recovery.TestFSRMStateStore
         sed  -i '3i\127.0.0.1 '$(hostname).'' /etc/hosts
@@ -19,7 +21,7 @@
         type docker || curl -sSL https://get.docker.com/ | sh -
 
         # Install patched protoc-2.5.0
-        curl -Lo /opt/protoc-2.5.0-aarch64.tar.gz https://github.com/liusheng/liusheng.github.io/files/3429342/protoc-2.5.0-aarch64.tar.gz
+        curl -Lo /opt/protoc-2.5.0-aarch64.tar.gz https://git.io/JeOAf
         mkdir -p /opt/protoc-2.5.0-aarch64 && tar zxf /opt/protoc-2.5.0-aarch64.tar.gz -C /opt/protoc-2.5.0-aarch64/
         echo /opt/protoc-2.5.0-aarch64/lib/ > /etc/ld.so.conf.d/protoc-2.5.0-aarch64.conf
         ldconfig
@@ -69,6 +71,17 @@
         pushd hadoop-yarn-project/
         mvn test -B -e -fn | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_yarn_test.log"
         popd
+
+        # Issue 1: fix TestRMApplicationHistoryWriter.testRMWritingMassiveHistoryForCapacitySche
+        # org/apache/hadoop/yarn/server/resourcemanager/ahs/TestRMApplicationHistoryWriter.java:464 change
+        # limit of waitCount to lager
+
+        # Issue 2: fail sometimes
+        # org.apache.hadoop.yarn.client.api.impl.TestAMRMClient
+
+        # Issue3: org.apache.hadoop.yarn.csi.client.TestCsiClient
+        # need hadoop native libary
+
         sleep 7200000000000
       args:
         executable: /bin/bash
