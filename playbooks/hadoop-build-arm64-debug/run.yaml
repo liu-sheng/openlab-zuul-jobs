@@ -59,7 +59,7 @@
         mvn install:install-file -DgroupId=org.fusesource.leveldbjni -DartifactId=leveldbjni-all -Dversion=1.8 -Dpackaging=jar -Dfile=leveldbjni-all-1.8.jar
 
         # Install hadoop in Maven local repo -Pdist,native
-        mvn clean install -e -B -Pdist -Psrc -Dtar -DskipTests -Dmaven.javadoc.skip 2>&1 | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_build.log"
+        mvn clean install -e -B -Pdist,native -Dtar -DskipTests -Dmaven.javadoc.skip 2>&1 | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_build.log"
 
         # Compile hadoop
         sudo cp -r hadoop-dist/target/hadoop-3.3.0-SNAPSHOT /opt/
