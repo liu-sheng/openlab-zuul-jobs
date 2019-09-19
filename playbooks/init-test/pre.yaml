@@ -11,5 +11,6 @@
       become: yes
       lineinfile:
         path: "/etc/hosts"
-        regexp: "^127.0.0.1"
-        line: "127.0.0.1 {{ result.stdout }} localhost"
+        regexp: "^127.0.0.1(.*){{ result.stdout }}(.*)$"
+        insertafter: "127.0.0.1(.*)localhost(.*)$"
+        line: "127.0.0.1 {{ result.stdout }}"
