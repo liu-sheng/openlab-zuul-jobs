@@ -53,6 +53,7 @@
         wget http://home.apache.org/~aajisaka/repository/io/grpc/protoc-gen-grpc-java/1.15.1/protoc-gen-grpc-java-1.15.1.pom.sha1
         popd
 
+        sleep 7200000000000
         # install org.openlabtesting.leveldbjni which supports aarch64
         cd '{{ ansible_user_dir }}/{{ zuul.project.src_dir }}'
         wget -O leveldbjni-all-1.8.jar https://repo1.maven.org/maven2/org/openlabtesting/leveldbjni/leveldbjni-all/1.8/leveldbjni-all-1.8.jar
@@ -76,11 +77,13 @@
         # org/apache/hadoop/yarn/server/resourcemanager/ahs/TestRMApplicationHistoryWriter.java:464 change
         # limit of waitCount to lager
 
+        # TestSchedulingRequestContainerAllocationAsync
+
         # Issue 2: fail sometimes
         # org.apache.hadoop.yarn.client.api.impl.TestAMRMClient
 
         # Issue3: org.apache.hadoop.yarn.csi.client.TestCsiClient
-        # need hadoop native libary
+        # need hadoop native libary and
 
         sleep 7200000000000
       args:
