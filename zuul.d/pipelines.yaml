@@ -717,6 +717,7 @@
         from: info@openlabtesting.org
         to: wangxiyuan1007@gmail.com
         subject: Success
+      mysql:
 
     failure:
       github:
@@ -725,3 +726,4 @@
         from: info@openlabtesting.org
         to: wangxiyuan1007@gmail.com
         subject: Failed
+      mysql:
