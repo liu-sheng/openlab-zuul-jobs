@@ -717,10 +717,13 @@
         from: info@openlabtesting.org
         to: wangxiyuan1007@gmail.com
         subject: Success
+      mysql:
 
     failure:
       github:
         status: 'failure'
+      smtp:
         from: info@openlabtesting.org
         to: wangxiyuan1007@gmail.com
         subject: Failed
+      mysql:
