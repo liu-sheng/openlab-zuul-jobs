@@ -53,13 +53,17 @@
         wget http://home.apache.org/~aajisaka/repository/io/grpc/protoc-gen-grpc-java/1.15.1/protoc-gen-grpc-java-1.15.1.pom.sha1
         popd
 
-        sleep 7200000000000
-        # install org.openlabtesting.leveldbjni which supports aarch64
-        cd '{{ ansible_user_dir }}/{{ zuul.project.src_dir }}'
-        wget -O leveldbjni-all-1.8.jar https://repo1.maven.org/maven2/org/openlabtesting/leveldbjni/leveldbjni-all/1.8/leveldbjni-all-1.8.jar
-        mvn install:install-file -DgroupId=org.fusesource.leveldbjni -DartifactId=leveldbjni-all -Dversion=1.8 -Dpackaging=jar -Dfile=leveldbjni-all-1.8.jar
 
-        # Install hadoop in Maven local repo -Pdist,native
+        # install org.openlabtesting.leveldbjni which supports aarch64
+        wget -O Add-aarch64-support-for-leveldbjni-all-usage.patch https://git.io/JeZdU
+        git apply Add-aarch64-support-for-leveldbjni-all-usage.patch
+
+        # TestNMLeveldbStateStoreService
+
+        # wget -O leveldbjni-all-1.8.jar https://repo1.maven.org/maven2/org/openlabtesting/leveldbjni/leveldbjni-all/1.8/leveldbjni-all-1.8.jar
+        # mvn install:install-file -DgroupId=org.fusesource.leveldbjni -DartifactId=leveldbjni-all -Dversion=1.8 -Dpackaging=jar -Dfile=leveldbjni-all-1.8.jar
+
+        # Install hadoop in Maven local repo -Pdist,native,aarch64
         mvn clean install -e -B -Pdist,native -Dtar -DskipTests -Dmaven.javadoc.skip 2>&1 | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_build.log"
 
         # Compile hadoop
