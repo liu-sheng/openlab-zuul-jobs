@@ -29,6 +29,7 @@
         protoc --version
 
         # fix org.apache.hadoop.yarn.server.federation.policies.amrmproxy.TestLocalityMulticastAMRMProxyPolicy#testStressPolicy
+        # maybe also need enlarge the timetout 5000
         wget -O /opt/phantomjs-2.1.1-linux-aarch64.tar.bz2 https://github.com/liusheng/phantomjs/releases/download/2.1.1/phantomjs-2.1.1-linux-aarch64.tar.bz2
         tar jxvf /opt/phantomjs-2.1.1-linux-aarch64.tar.bz2 -C /opt/
         cp /opt/phantomjs-2.1.1-linux-aarch64/bin/phantomjs /usr/bin/
@@ -55,7 +56,7 @@
 
 
         # install org.openlabtesting.leveldbjni which supports aarch64
-        wget -O Add-aarch64-support-for-leveldbjni-all-usage.patch https://git.io/JeZdU
+        wget -O Add-aarch64-support-for-leveldbjni-all-usage.patch https://git.io/JeWXV
         git apply Add-aarch64-support-for-leveldbjni-all-usage.patch
 
         # TestNMLeveldbStateStoreService
@@ -77,7 +78,12 @@
         mvn test -B -e -fn | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_yarn_test.log"
         popd
 
-        # Issue 1: fix TestRMApplicationHistoryWriter.testRMWritingMassiveHistoryForCapacitySche
+        # existing issue:
+        # https://issues.apache.org/jira/browse/YARN-9511
+        # TestAuxServices
+
+
+        # Issue 1: fix TestRMApplicationHistmvn test -e -Dtest=org.apache.hadoop.yarn.server.federation.store.exception.FederationStateStoreException.testRegisterSubClusteroryWriter.testRMWritingMassiveHistoryForCapacitySche
         # org/apache/hadoop/yarn/server/resourcemanager/ahs/TestRMApplicationHistoryWriter.java:464 change
         # limit of waitCount to lager
 
@@ -88,6 +94,10 @@
 
         # Issue3: org.apache.hadoop.yarn.csi.client.TestCsiClient
         # need hadoop native libary and
+
+        # Issue4: possible timeout related tests:
+        # TestLocalityMulticastAMRMProxyPolicy
+        # TestNodeManagerResync
 
         sleep 7200000000000
       args:
