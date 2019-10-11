@@ -43,6 +43,8 @@
       shell: |
         set -x
 
+        export JAVA_HOME=`dirname $(dirname $(update-alternatives --list javac))`
+        export PATH=$JAVA_HOME/bin:/opt/apache-maven-3.6.2/bin:/opt/hadoop-3.3.0-SNAPSHOT/bin:$PATH
         export PATH=/opt/protobuf-2.5.0-aarch64/bin:$PATH
         protoc --version
 
@@ -69,8 +71,6 @@
 
         # Compile hadoop
         sudo cp -r hadoop-dist/target/hadoop-3.3.0-SNAPSHOT /opt/
-        export PATH=/opt/hadoop-3.3.0-SNAPSHOT/bin:$PATH
-        export JAVA_HOME=`dirname $(dirname $(update-alternatives --list javac))`
         hadoop version
         # hadoop checknative -a
 
