@@ -43,6 +43,14 @@
       shell: |
         set -x
 
+        # NOTE: the tests of TestAuxServices need to create some file and directories which must not have group
+        # and other permissions, and the files' parents direcotries(must not writable by group or other).
+        # so we need change all the permissions of directories and the "umask" the umask will effect the new
+        # created files and directories' permissions e.g. the 077 means the new created permissions: 777 - 077 = 700 (files: 666 - 077 = 600)
+        chmod go-w "{{ ansible_user_dir }}/src" -R
+        umask 022
+        umask
+
         export JAVA_HOME=`dirname $(dirname $(update-alternatives --list javac))`
         export PATH=$JAVA_HOME/bin:/opt/apache-maven-3.6.2/bin:/opt/hadoop-3.3.0-SNAPSHOT/bin:$PATH
         export PATH=/opt/protobuf-2.5.0-aarch64/bin:$PATH
@@ -61,10 +69,17 @@
         wget -O Add-aarch64-support-for-leveldbjni-all-usage.patch https://git.io/JeWXV
         git apply Add-aarch64-support-for-leveldbjni-all-usage.patch
 
+        wget -O Fix_TestAuxServices_tests.patch https://git.io/Jelij
+        git apply Fix_TestAuxServices_tests.patch
+
         # TestNMLeveldbStateStoreService
 
         # wget -O leveldbjni-all-1.8.jar https://repo1.maven.org/maven2/org/openlabtesting/leveldbjni/leveldbjni-all/1.8/leveldbjni-all-1.8.jar
         # mvn install:install-file -DgroupId=org.fusesource.leveldbjni -DartifactId=leveldbjni-all -Dversion=1.8 -Dpackaging=jar -Dfile=leveldbjni-all-1.8.jar
+
+        # Install manually compiled netty-all package
+        wget -O netty-all-4.1.27-linux-aarch64.jar "https://pkg.githubusercontent.com/214993059/ecb6e580-eea3-11e9-9d92-b5932b9bc844?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIWNJYAX4CSVEH53A%2F20191014%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20191014T113003Z&X-Amz-Expires=300&X-Amz-Signature=a738f6cb5fad1087517458c0c0b8ab238a97b80ae14e67a3f810a52d95f37994&X-Amz-SignedHeaders=host&actor_id=5335434&response-content-disposition=filename%3Dnetty-all-4.1.27-linux-aarch64.jar&response-content-type=application%2Foctet-stream"
+        mvn install:install-file -DgroupId=io.netty -Dfile=netty-all-4.1.27-linux-aarch64.jar -DartifactId=netty-all -Dversion=4.1.27 -Dpackaging=jar
 
         # Install hadoop in Maven local repo -Pdist,native,aarch64
         mvn clean install -e -B -Pdist,native -Dtar -DskipTests -Dmaven.javadoc.skip 2>&1 | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_build.log"
@@ -75,30 +90,40 @@
         # hadoop checknative -a
 
         pushd hadoop-yarn-project/
-        mvn test -B -e -fn | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_yarn_test.log"
+        mvn test -B -e -fae -Pparallel-tests | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_yarn_test.log"
         popd
 
-        # existing issue:
-        # https://issues.apache.org/jira/browse/YARN-9511
-        # TestAuxServices
-
-
-        # Issue 1: fix TestRMApplicationHistmvn test -e -Dtest=org.apache.hadoop.yarn.server.federation.store.exception.FederationStateStoreException.testRegisterSubClusteroryWriter.testRMWritingMassiveHistoryForCapacitySche
-        # org/apache/hadoop/yarn/server/resourcemanager/ahs/TestRMApplicationHistoryWriter.java:464 change
-        # limit of waitCount to lager
-
-        # TestSchedulingRequestContainerAllocationAsync
-
-        # Issue 2: fail sometimes
+        # Fail sometimes
         # org.apache.hadoop.yarn.client.api.impl.TestAMRMClient
 
-        # Issue3: org.apache.hadoop.yarn.csi.client.TestCsiClient
-        # need hadoop native libary and
+        # ARM server performance related issues:
+        # 1. TestLocalityMulticastAMRMProxyPolicy (timeout sometime)
+        # 2. TestNodeManagerResync (timeout sometime)
+        # 3. TestRMApplicationHistoryWriter.testRMWritingMassiveHistoryForCapacitySche (limit of waitCount to lager)
 
-        # Issue4: possible timeout related tests:
-        # TestLocalityMulticastAMRMProxyPolicy
-        # TestNodeManagerResync
+        # Unknown reason issues (pass sometimes):
+        # 1. TestSchedulingRequestContainerAllocationAsync.testFourThreadsAsyncContainerAllocation (Errors: 3)
+        #    TestSchedulingRequestContainerAllocationAsync.testSingleThreadAsyncContainerAllocation
+        #    TestSchedulingRequestContainerAllocationAsync.testTwoThreadsAsyncContainerAllocation
 
+        # no netty_transport_native_epoll_aarch_64 in java.library.path
+        # 1. TestCsiClient.testIdentityService
+
+        # existing issue has workaround:
+        # https://issues.apache.org/jira/browse/YARN-9511
+        #Failures:
+        #  TestAuxServices.testAuxServiceRecoverySetup:717 expected:<2> but was:<0>
+        #  TestAuxServices.testAuxServicesManifestPermissions:874 expected:<2> but was:<0>
+        #  TestAuxServices.testAuxServicesMeta:638 Invalid mix of services expected:<6> but was:<1>
+        #  TestAuxServices.testAuxServices:610 Invalid mix of services expected:<6> but was:<1>
+        #  TestAuxServices.testCustomizedAuxServiceClassPath:416
+        #  TestAuxServices.testManualReload:919 expected:<2> but was:<0>
+        #  TestAuxServices.testRemoteAuxServiceClassPath:313 The permission of the jar is wrong.Should throw out exception.
+        #  TestAuxServices.testRemoveManifest:897 expected:<2> but was:<0>
+        #  TestAuxServices.testValidAuxServiceName:698 Should receive the exception.
+        #Errors:
+        #  TestAuxServices.testAuxUnexpectedStop:664 » NoSuchElement
+        #  TestAuxServices.testRemoteAuxServiceClassPath:334 » YarnRuntime The remote jar...
         sleep 7200000000000
       args:
         executable: /bin/bash
