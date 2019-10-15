@@ -78,8 +78,8 @@
         # mvn install:install-file -DgroupId=org.fusesource.leveldbjni -DartifactId=leveldbjni-all -Dversion=1.8 -Dpackaging=jar -Dfile=leveldbjni-all-1.8.jar
 
         # Install manually compiled netty-all package
-        wget -O netty-all-4.1.27-linux-aarch64.jar "https://pkg.githubusercontent.com/214993059/ecb6e580-eea3-11e9-9d92-b5932b9bc844?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIWNJYAX4CSVEH53A%2F20191014%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20191014T113003Z&X-Amz-Expires=300&X-Amz-Signature=a738f6cb5fad1087517458c0c0b8ab238a97b80ae14e67a3f810a52d95f37994&X-Amz-SignedHeaders=host&actor_id=5335434&response-content-disposition=filename%3Dnetty-all-4.1.27-linux-aarch64.jar&response-content-type=application%2Foctet-stream"
-        mvn install:install-file -DgroupId=io.netty -Dfile=netty-all-4.1.27-linux-aarch64.jar -DartifactId=netty-all -Dversion=4.1.27 -Dpackaging=jar
+        wget -O netty-all-4.1.27-linux-aarch64.jar https://git.io/Je8K3
+        mvn install:install-file -DgroupId=io.netty -Dfile=netty-all-4.1.27-linux-aarch64.jar -DartifactId=netty-all -Dversion=4.1.27.Final -Dpackaging=jar
 
         # Install hadoop in Maven local repo -Pdist,native,aarch64
         mvn clean install -e -B -Pdist,native -Dtar -DskipTests -Dmaven.javadoc.skip 2>&1 | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_build.log"
@@ -94,7 +94,7 @@
         popd
 
         # Fail sometimes
-        # org.apache.hadoop.yarn.client.api.impl.TestAMRMClient
+        # org.apache.hadoop.yarn.client.api.impl.TestAtAMRMProxyPolicyMRMClient
 
         # ARM server performance related issues:
         # 1. TestLocalityMulticastAMRMProxyPolicy (timeout sometime)
