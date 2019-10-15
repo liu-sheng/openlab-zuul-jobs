@@ -28,8 +28,6 @@
         export PATH=/opt/protobuf-2.5.0-aarch64/bin:$PATH
         protoc --version
 
-        # fix org.apache.hadoop.yarn.server.federation.policies.amrmproxy.TestLocalityMulticastAMRMProxyPolicy#testStressPolicy
-        # maybe also need enlarge the timetout 5000
         wget -O /opt/phantomjs-2.1.1-linux-aarch64.tar.bz2 https://github.com/liusheng/phantomjs/releases/download/2.1.1/phantomjs-2.1.1-linux-aarch64.tar.bz2
         tar jxvf /opt/phantomjs-2.1.1-linux-aarch64.tar.bz2 -C /opt/
         cp /opt/phantomjs-2.1.1-linux-aarch64/bin/phantomjs /usr/bin/
@@ -99,7 +97,7 @@
 
         # ARM server performance related issues:
         # 1. TestLocalityMulticastAMRMProxyPolicy (timeout sometime)
-        # 2. TestNodeManagerResync (timeout sometime)
+        # 2. TestNodeManagerResync (timeout sometime, enlarge timeout)
         # 3. TestRMApplicationHistoryWriter.testRMWritingMassiveHistoryForCapacitySche (limit of waitCount to lager)
 
         # Unknown reason issues (pass sometimes):
