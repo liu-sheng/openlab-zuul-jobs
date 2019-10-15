@@ -69,8 +69,8 @@
         wget -O Add-aarch64-support-for-leveldbjni-all-usage.patch https://git.io/JeWXV
         git apply Add-aarch64-support-for-leveldbjni-all-usage.patch
 
-        wget -O Fix_TestAuxServices_tests.patch https://git.io/Jelij
-        git apply Fix_TestAuxServices_tests.patch
+        # wget -O Fix_TestAuxServices_tests.patch https://git.io/Jelij
+        # git apply Fix_TestAuxServices_tests.patch
 
         # TestNMLeveldbStateStoreService
 
