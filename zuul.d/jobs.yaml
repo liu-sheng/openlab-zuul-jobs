@@ -1433,8 +1433,8 @@
     override-checkout: v2.4.4
     vars:
       k8s_log_dir: '{{ ansible_user_dir }}/workspace/logs/kubernetes'
-      minikube_version: "v0.30.0"
-      kubernetes_version: "v1.10.0"
+      minikube_version: v0.34.1
+      kubernetes_version: v1.13.3
     tags:
       - Category:BigData
       - Project:apache/spark
