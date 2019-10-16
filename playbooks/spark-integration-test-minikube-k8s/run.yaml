@@ -10,6 +10,7 @@
       shell: |
         set -ex
         sed -i -e '/127.0.0.1/ s/\(localhost\)/'$(hostname)' \1/' /etc/hosts
+        sleep 600
         # Create required account in k8s
         kubectl create serviceaccount spark
         kubectl create clusterrolebinding spark-role --clusterrole=edit --serviceaccount=default:spark --namespace=default
