@@ -1430,11 +1430,11 @@
       Run integration tests of spark of v2.4.0 with k8s cluster deployed by minikube
     run: playbooks/spark-integration-test-minikube-k8s/run.yaml
     post-run: playbooks/spark-integration-test-minikube-k8s/post.yaml
-    override-checkout: branch-2.4
+    override-checkout: v2.4.4
     vars:
       k8s_log_dir: '{{ ansible_user_dir }}/workspace/logs/kubernetes'
-      minikube_version: "v0.30.0"
-      kubernetes_version: "v1.10.0"
+      minikube_version: v0.34.1
+      kubernetes_version: v1.13.3
     tags:
       - Category:BigData
       - Project:apache/spark
