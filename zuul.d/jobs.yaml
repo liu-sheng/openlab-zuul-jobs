@@ -1644,6 +1644,13 @@
     description: |
       Hadoop build on arm64 server
     run: playbooks/hadoop-build-arm64-debug/run.yaml
+    tags:
+      - Category:BigData
+      - Project:apache/hadoop
+      - Application:Hadoop@trunk
+      - OS:ubuntu-xenial
+      - Arch:arm64
+      - BuildType:Unit test
     timeout: 864000
     nodeset: ubuntu-xenial-arm64
 
