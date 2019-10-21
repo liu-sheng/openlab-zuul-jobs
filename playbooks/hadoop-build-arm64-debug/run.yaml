@@ -39,7 +39,7 @@
     - name: Install hadoop and run tests
       become: no
       shell: |
-        set -x
+        set -ex
 
         # NOTE: the tests of TestAuxServices need to create some file and directories which must not have group
         # and other permissions, and the files' parents direcotries(must not writable by group or other).
@@ -92,6 +92,7 @@
         mvn test -B -e -fae -Pparallel-tests | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_yarn_test.log"
         popd
 
+        # ----------------------------------- current issues -----------------------------------------
         # Fail sometimes
         # org.apache.hadoop.yarn.client.api.impl.TestAtAMRMProxyPolicyMRMClient
 
@@ -101,12 +102,12 @@
         # 3. TestRMApplicationHistoryWriter.testRMWritingMassiveHistoryForCapacitySche (limit of waitCount to lager)
 
         # Unknown reason issues (pass sometimes):
-        # 1. TestSchedulingRequestContainerAllocationAsync.testFourThreadsAsyncContainerAllocation (Errors: 3)
-        #    TestSchedulingRequestContainerAllocationAsync.testSingleThreadAsyncContainerAllocation
-        #    TestSchedulingRequestContainerAllocationAsync.testTwoThreadsAsyncContainerAllocation
+        # TestSchedulingRequestContainerAllocationAsync.testFourThreadsAsyncContainerAllocation (Errors: 3)
+        # TestSchedulingRequestContainerAllocationAsync.testSingleThreadAsyncContainerAllocation
+        # TestSchedulingRequestContainerAllocationAsync.testTwoThreadsAsyncContainerAllocation
 
         # no netty_transport_native_epoll_aarch_64 in java.library.path(fixed)
-        # 1. TestCsiClient.testIdentityService
+        # TestCsiClient.testIdentityService
 
         # https://issues.apache.org/jira/browse/YARN-9511(fixed)
         #Failures:
@@ -122,7 +123,7 @@
         #Errors:
         #  TestAuxServices.testAuxUnexpectedStop:664 » NoSuchElement
         #  TestAuxServices.testRemoteAuxServiceClassPath:334 » YarnRuntime The remote jar...
-        sleep 7200000000000
+        sleep 720000000
       args:
         executable: /bin/bash
         chdir: '{{ zuul.project.src_dir }}'
