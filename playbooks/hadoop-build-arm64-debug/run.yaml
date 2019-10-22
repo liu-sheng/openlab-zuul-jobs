@@ -82,6 +82,7 @@
 
         # Install hadoop in Maven local repo -Pdist,native,aarch64
         mvn clean install -e -B -Pdist,native -Dtar -DskipTests -Dmaven.javadoc.skip 2>&1 | tee "{{ ansible_user_dir }}/workspace/logs/hadoop_build.log"
+        sleep 7200000000
 
         # Compile hadoop
         sudo cp -r hadoop-dist/target/hadoop-3.3.0-SNAPSHOT /opt/
