@@ -63,11 +63,6 @@
         wget http://home.apache.org/~aajisaka/repository/io/grpc/protoc-gen-grpc-java/1.15.1/protoc-gen-grpc-java-1.15.1.pom.sha1
         popd
 
-
-        # install org.openlabtesting.leveldbjni which supports aarch64
-        wget -O Add-aarch64-support-for-leveldbjni-all-usage.patch https://git.io/JeWXV
-        git apply Add-aarch64-support-for-leveldbjni-all-usage.patch
-
         # wget -O Fix_TestAuxServices_tests.patch https://git.io/Jelij
         # git apply Fix_TestAuxServices_tests.patch
 
