@@ -156,3 +156,9 @@
       jobs:
         - spark-unit-test-with-hadoop-2.7-arm64-stable-branch:
             branches: test-branch-2019-09-09
+
+- project:
+    name: wangxiyuan/flink
+    check:
+      jobs:
+        - flink-e2e-test

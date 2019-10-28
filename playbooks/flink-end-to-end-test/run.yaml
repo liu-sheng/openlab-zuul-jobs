@@ -25,13 +25,6 @@
         chdir: '/opt'
       environment: '{{ global_env }}'
 
-    - name: Download flink
-      shell:
-        cmd: |
-          git clone https://github.com/apache/flink /home/zuul/
-      args:
-        executable: /bin/bash
-
     - name: Comment out docker installation
       lineinfile:
         path: "/home/zuul/flink/tools/travis/nightly.sh"
@@ -51,6 +44,8 @@
           wget https://downloads.lightbend.com/scala/2.11.0/scala-2.11.0.tgz
           tar -zxvf scala-2.11.0.tgz -C /usr/local
           export PATH=/usr/local/scala-2.11.0/bin:$PATH
+
+          sleep 864000
 
           cd /home/zuul/flink
           ./tools/travis/nightly.sh split_checkpoints.sh
