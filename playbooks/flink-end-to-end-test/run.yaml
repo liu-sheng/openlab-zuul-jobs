@@ -14,6 +14,7 @@
           git checkout origin/FRocksDB-5.17.2
           apt update
           apt install -y gcc g++ make
+          sleep 864000
           export DEBUG_LEVEL=0
           make -j8 rocksdbjava
 
@@ -44,8 +45,6 @@
           wget https://downloads.lightbend.com/scala/2.11.0/scala-2.11.0.tgz
           tar -zxvf scala-2.11.0.tgz -C /usr/local
           export PATH=/usr/local/scala-2.11.0/bin:$PATH
-
-          sleep 864000
 
           cd /home/zuul/flink
           ./tools/travis/nightly.sh split_checkpoints.sh
