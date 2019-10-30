@@ -1685,3 +1685,12 @@
       hadoop_version: 2.7
     nodeset: ubuntu-xenial-arm64
     timeout: 54000
+
+- job:
+    name: flink-e2e-test
+    parent: init-test
+    description: |
+      Flink e2e test
+    run: playbooks/flink-end-to-end-test/run.yaml
+    nodeset: ubuntu-xenial-arm64
+    timeout: 864000
