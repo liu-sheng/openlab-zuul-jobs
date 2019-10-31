@@ -7,7 +7,7 @@
       shell:
         cmd: |
           set -ex
-
+          sleep 18000
           # we use chart-testing docker image latest (now is v2.2.0) to run tests
           docker run --rm --interactive --detach --network host --name ctd \
                   --volume "$(pwd)/test/ct.yaml:/etc/ct/ct.yaml" \
