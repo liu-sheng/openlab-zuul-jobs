@@ -54,11 +54,14 @@
           # lint will fail
           docker exec --interactive ctd "$@" git remote add k8s https://github.com/helm/charts
           docker exec --interactive ctd "$@" git fetch k8s
-          sleep 36000
+
           # run cmd "ct lint-and-install" to test several charts
-          docker exec --interactive ctd "$@" ct lint-and-install --charts stable/mysql,stable/postgresql,stable/etcd-operator,stable/coredns --namespace kube-system
-          # some charts won't delete the pvc, delete them manually to make sure pv is available
+          docker exec --interactive ctd "$@" ct lint-and-install --charts stable/postgresql --namespace kube-system
+          # postgresql won't delete the pvc, delete it manually to make sure pv is available for other charts testing
           kubectl delete pvc --all --namespace kube-system
+          docker exec --interactive ctd "$@" ct lint-and-install --charts stable/mysql,stable/etcd-operator,stable/coredns --namespace kube-system
+          
+          
         executable: /bin/bash
         chdir: '{{ zuul.project.src_dir }}'
       environment: '{{ global_env }}'
