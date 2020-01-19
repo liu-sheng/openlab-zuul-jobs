@@ -84,3 +84,9 @@
     nodes:
       - name: centos-arm64
         label: centos-arm64
+
+- nodeset:
+    name: ubuntu-huawei-arm
+    nodes:
+      - name: ubuntu-huawei-arm
+        label: ubuntu-huawei-arm

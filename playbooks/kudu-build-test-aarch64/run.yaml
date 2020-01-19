@@ -7,6 +7,8 @@
         mkdir -p "{{ ansible_user_dir }}/workspace/test_results/"
         result_dir="{{ ansible_user_dir }}/workspace/test_results/"
         type docker || curl -sSL https://get.docker.com/ | sh -
+
+        # dockerfile: https://github.com/liusheng/my-dockerfile/tree/master/kudu-aarch64
         docker run -v "$result_dir": /opt/results/ --name kudu-lint liusheng2048/kudu-aarch64 lint
         docker run -v "$result_dir": /opt/results/ --name kudu-iwyu liusheng2048/kudu-aarch64 iwyu
         docker run -v "$result_dir": /opt/results/ --name kudu-debug liusheng2048/kudu-aarch64 debug
