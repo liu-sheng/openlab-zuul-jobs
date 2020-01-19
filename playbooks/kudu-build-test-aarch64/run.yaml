@@ -1,0 +1,23 @@
+- hosts: all
+  become: yes
+  tasks:
+    - name:
+      shell: |
+        set -ex
+        mkdir -p "{{ ansible_user_dir }}/workspace/test_results/"
+        result_dir="{{ ansible_user_dir }}/workspace/test_results/"
+        type docker || curl -sSL https://get.docker.com/ | sh -
+        docker run -v "$result_dir": /opt/results/ --name kudu-lint liusheng2048/kudu-aarch64 lint
+        docker run -v "$result_dir": /opt/results/ --name kudu-iwyu liusheng2048/kudu-aarch64 iwyu
+        docker run -v "$result_dir": /opt/results/ --name kudu-debug liusheng2048/kudu-aarch64 debug
+        docker run -v "$result_dir": /opt/results/ --name kudu-release liusheng2048/kudu-aarch64 release
+        docker run -v "$result_dir": /opt/results/ --name kudu-asan liusheng2048/kudu-aarch64 asan
+        docker run -v "$result_dir": /opt/results/ --name kudu-tsan liusheng2048/kudu-aarch64 tsan
+        while :
+        do
+            [[ -z "$(docker ps -f name=kudu -q)" ]] && break
+            echo "Waiting for Kudu testing complate..."
+            sleep 5
+        done
+      args:
+        executable: /bin/bash

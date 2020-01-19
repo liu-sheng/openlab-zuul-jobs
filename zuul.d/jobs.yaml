@@ -1685,3 +1685,12 @@
       hadoop_version: 2.7
     nodeset: ubuntu-xenial-arm64
     timeout: 54000
+
+- job:
+    name: kudu-build-test-aarch64
+    parent: init-test
+    description: |
+      Kudu build and test on arm64 server
+    run: playbooks/kudu-build-test-aarch64/run.yaml
+    timeout: 864000
+    nodeset: ubuntu-xenial-arm64
