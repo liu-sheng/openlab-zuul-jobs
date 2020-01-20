@@ -19,58 +19,8 @@
     name: liusheng/machine
     check:
       jobs:
-        # - docker-machine-functional-devstack-mitaka
-        #- docker-machine-functional-devstack-newton
-        #- docker-machine-functional-devstack-pike
-        #- docker-machine-functional-devstack-ocata
-        #- docker-machine-functional-devstack-queens
         - docker-machine-functional-devstack-rocky
-        #- docker-machine-functional-huaweicloud
-        #- docker-machine-functional-opentelekomcloud
-        #- docker-machine-functional-orange
-        #- docker-machine-functional-telefonica
-#        - tensorflow-benchmarks-kubeflow-k8s-v1.14.0
-         #- cluster-api-provider-openstack-image-build
 
-#- project:
-#    name: liusheng/huaweicloud-service-broker
-#    check:
-#      jobs:
-#        - osb-checker-test-huaweicloud
-
-#- project:
-#    name: liusheng/manageiq-providers-openstack
-#    check:
-#      jobs:
-#        - manageiq-providers-openstack-test-devstack
-
-- project:
-    name: huangtianhua/manageiq-providers-openstack
-    check:
-      jobs:
-        - manageiq-providers-openstack-test-devstack
-
-- project:
-    name: huangtianhua/terraform-provider-openstack
-    check:
-      jobs:
-        - terraform-provider-openstack-acceptance-test
-
-#- project:
-#    name: liusheng/terraform-provider-huaweicloud
-#    check:
-#      jobs:
-#        - terraform-provider-huaweicloud-v1.2.0-acceptance-test-fusioncloud
-
-#- project:
-#    name: liusheng/origin
-#    check:
-#      jobs:
-#        - openshift-origin-v3.9.0-functional-test-fusioncloud
-#        - openshift-origin-v3.9.0-functional-test-huaweicloud
-#        - openshift-origin-v3.9.0-functional-test-opentelekomcloud
-#        - openshift-origin-v3.9.0-functional-test-telefonica
-#        - openshift-origin-v3.9.0-functional-test-orange
 
 - project:
     name: moo-ai/moo-ai.github.io
@@ -84,32 +34,12 @@
               - ^user_data_gpu/.*
         - cloud-provider-openstack-acceptance-test-e2e-conformance
 
-#- project:
-#    name: Yikun/arm-openlab-test
-#    check:
-#      jobs:
-#        - arm-on-openlab-test
-
-#- project:
-#    name: Yikun/containerd
-#    check:
-#      jobs:
-#        - containerd-build-arm
-
 - project:
     name: liusheng/spark
     check:
       jobs:
-        # - kind-integration-test-arm64
-        # - spark-integration-test-kubeadm-k8s-v1.14.0
         - spark-integration-test-minikube-k8s-v1.10.0
 
-- project:
-    name: huangtianhua/charts
-    check:
-      jobs:
-        - helm-integration-test-kubeadm-k8s-v1.14.0
-        - helm-integration-test-kubeadm-k8s-v1.12.7
         
 - project:
     name: bzhaoopenstack/hbase
