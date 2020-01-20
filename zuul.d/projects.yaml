@@ -21,19 +21,6 @@
       jobs:
         - docker-machine-functional-devstack-rocky
 
-
-- project:
-    name: moo-ai/moo-ai.github.io
-    check:
-      jobs:
-        - ai-on-openlab-test-vm:
-            files:
-              - ^user_data/.*
-        - ai-on-openlab-test-vm-with-gpu:
-            files:
-              - ^user_data_gpu/.*
-        - cloud-provider-openstack-acceptance-test-e2e-conformance
-
 - project:
     name: liusheng/spark
     check:
