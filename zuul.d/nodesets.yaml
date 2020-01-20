@@ -68,25 +68,7 @@
         label: ubuntu-xenial-gpu-P100-hwcloud
 
 - nodeset:
-    name: wxy-admin-cirros
+    name: ubuntu-xenial-arm64-8U16G
     nodes:
-      - name: wxy-admin-cirros
-        label: wxy-admin-cirros
-
-- nodeset:
-    name: wxy-admin-ubuntu-16-04
-    nodes:
-      - name: wxy-admin-ubuntu-16-04
-        label: wxy-admin-ubuntu-16-04
-
-- nodeset:
-    name: centos-arm64
-    nodes:
-      - name: centos-arm64
-        label: centos-arm64
-
-- nodeset:
-    name: ubuntu-huawei-arm
-    nodes:
-      - name: ubuntu-huawei-arm
-        label: ubuntu-huawei-arm
+      - name: ubuntu-xenial-arm64-8U16G
+        label: ubuntu-xenial-arm64-8U16G
