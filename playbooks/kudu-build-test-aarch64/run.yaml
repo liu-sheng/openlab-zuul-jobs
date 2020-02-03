@@ -14,7 +14,7 @@
         docker run -v "$result_dir":/opt/results/ -d --name kudu-debug liusheng2048/kudu-aarch64 debug
         docker run -v "$result_dir":/opt/results/ -d --name kudu-release liusheng2048/kudu-aarch64 release
         docker run -v "$result_dir":/opt/results/ -d --name kudu-asan liusheng2048/kudu-aarch64 asan
-        docker run -v "$result_dir":/opt/results/ -d --name kudu-tsan liusheng2048/kudu-aarch64 tsan
+        docker run -v "$result_dir":/opt/results/ -d --security-opt seccomp:unconfined --name kudu-tsan liusheng2048/kudu-aarch64 tsan
         while :
         do
             [[ -z "$(docker ps -f name=kudu -q)" ]] && break
