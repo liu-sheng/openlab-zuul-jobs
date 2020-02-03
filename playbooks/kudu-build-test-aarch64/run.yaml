@@ -4,8 +4,8 @@
     - name:
       shell: |
         set -ex
-        mkdir -p "{{ ansible_user_dir }}/workspace/kudu-logs/"
-        result_dir="{{ ansible_user_dir }}/workspace/kudu-logs/"
+        result_dir="{{ ansible_user_dir }}/workspace/test_results/"
+        mkdir -p "$result_dir"
         type docker || curl -sSL https://get.docker.com/ | sh -
 
         # dockerfile: https://github.com/liusheng/my-dockerfile/tree/master/kudu-aarch64
