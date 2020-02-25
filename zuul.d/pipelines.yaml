@@ -727,3 +727,29 @@
         to: wangxiyuan1007@gmail.com
         subject: Failed
       mysql:
+
+- pipeline:
+    name: checkapi
+    description: |
+      Newly uploaded patchsets enter this pipeline to receive an
+      initial +/-1 Verified vote.
+    manager: independent
+    trigger:
+      github:
+        - event: check_run
+          action:
+            - requested
+            - completed
+    start:
+      github:
+        status: pending
+        comment: false
+        status-url: http://80.158.17.129/status/change/{change.number},{change.patchset}
+    success:
+      github:
+        status: 'success'
+      mysql:
+    failure:
+      github:
+        status: 'failure'
+      mysql:

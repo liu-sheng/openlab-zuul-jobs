@@ -1703,3 +1703,12 @@
     run: playbooks/kudu-build-test-aarch64/run.yaml
     timeout: 864000
     nodeset: ubuntu-xenial-arm64-8U16G
+
+- job:
+    name: test-check-api
+    parent: init-test
+    description: |
+      test github check api
+    run: playbooks/spark-unit-test-arm64/run.yaml
+    nodeset: ubuntu-xenial-arm64
+    timeout: 54000
