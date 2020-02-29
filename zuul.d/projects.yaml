@@ -27,13 +27,6 @@
       jobs:
         - spark-integration-test-minikube-k8s-v1.10.0
 
-        
-- project:
-    name: bzhaoopenstack/hbase
-    check:
-      jobs:
-        - hbase-master-build-arm
-
 - project:
     name: liusheng/hive
     check:
@@ -45,12 +38,6 @@
     check:
       jobs:
          - kind-integration-test-arm64
-
-- project:
-    name: ZhengZhenyu/hadoop
-    check:
-      jobs:
-         - hadoop-build-arm64
 
 - project:
     name: liusheng/hadoop
@@ -68,19 +55,6 @@
         - openstacksdk-ansible-v2.8.0-functional-devstack-mitaka-check
         
 - project:
-    name: theopenlab/spark
-    check:
-      jobs:
-        - spark-unit-test-arm64
-
-- project:
-    name: theopenlab/spark
-    periodic:
-      jobs:
-        - spark-unit-test-with-hadoop-2.7-arm64-stable-branch:
-            branches: test-branch-2019-09-09
-
-- project:
     name: wangxiyuan/flink
     check:
       jobs:
@@ -91,6 +65,12 @@
     check:
       jobs:
          - kudu-build-test-aarch64
+
+- project:
+    name: bzhaoopenstack/gpdb
+    check:
+      jobs:
+        - test-check-api
 
 - project:
     name: liusheng/my-dockerfile

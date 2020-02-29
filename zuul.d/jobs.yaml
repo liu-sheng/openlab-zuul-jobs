@@ -1705,6 +1705,15 @@
     nodeset: ubuntu-xenial-arm64-8U16G
 
 - job:
+    name: test-check-api
+    parent: init-test
+    description: |
+      test github check api
+    run: playbooks/spark-unit-test-arm64/run.yaml
+    nodeset: ubuntu-xenial-arm64
+    timeout: 54000
+
+- job:
     name: hadoop-benchmark-arm-x86
     parent: init-test
     description: |
