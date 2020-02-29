@@ -72,11 +72,3 @@
     nodes:
       - name: ubuntu-xenial-arm64-8u16g
         label: ubuntu-xenial-arm64-8u16g
-
-- nodeset:
-    name: arm-x86-server
-    nodes:
-      - name: x86-server
-        label: ubuntu-xenial-arm64-8u16g
-      - name: arm-server
-        label: ubuntu-xenial

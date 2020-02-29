@@ -1714,9 +1714,17 @@
     timeout: 54000
 
 - job:
-    name: hadoop-benchmark-arm-x86
+    name: hadoop-benchmark-x86
     parent: init-test
     description: |
-      Run hadoop benchmarks on ARM and x86 server
-    run: playbooks/hadoop-benchmark-arm-x86/run.yaml
-    nodeset: arm-x86-server
+      Run hadoop benchmarks on x86 server
+    run: playbooks/hadoop-benchmark-arm-x86/x86.yaml
+    nodeset: ubuntu-xenial
+
+- job:
+    name: hadoop-benchmark-arm
+    parent: init-test
+    description: |
+      Run hadoop benchmarks on ARM server
+    run: playbooks/hadoop-benchmark-arm-x86/arm.yaml
+    nodeset: ubuntu-xenial-arm64-8u16g

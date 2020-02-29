@@ -76,4 +76,5 @@
     name: liusheng/my-dockerfile
     check:
       jobs:
-         - hadoop-benchmark-arm-x86
+         - hadoop-benchmark-x86
+         - hadoop-benchmark-arm
