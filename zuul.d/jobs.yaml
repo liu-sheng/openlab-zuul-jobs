@@ -1723,6 +1723,6 @@
       name: arm-x86-benchmarks
       nodes:
       - name: x86-server
-        label: ubuntu-xenial
+        label: ubuntu-xenial #8U16G from OTC
       - name: arm-server
-        label: ubuntu-xenial-arm # kc1.xlarge.2
+        label: ubuntu-xenial-arm64-8U16G # 8U16G from hw
