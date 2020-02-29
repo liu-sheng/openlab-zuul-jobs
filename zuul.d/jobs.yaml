@@ -1723,5 +1723,5 @@
       nodes:
       - name: x86-server
         label: ubuntu-xenial #8U16G from OTC
-      - name: arm-server
-        label: ubuntu-xenial-arm64-8U16G # 8U16G from hw
+#      - name: arm-server
+#        label: ubuntu-xenial-arm64-8U16G # 8U16G from hw
