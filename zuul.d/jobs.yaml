@@ -1702,7 +1702,7 @@
       Kudu build and test on arm64 server
     run: playbooks/kudu-build-test-aarch64/run.yaml
     timeout: 864000
-    nodeset: ubuntu-xenial-arm64-8U16G
+    nodeset: ubuntu-xenial-arm64-8u16g
 
 - job:
     name: test-check-api
