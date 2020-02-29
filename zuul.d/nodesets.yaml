@@ -72,3 +72,11 @@
     nodes:
       - name: ubuntu-xenial-arm64-8U16G
         label: ubuntu-xenial-arm64-8U16G
+
+- nodeset:
+    name: arm-x86-server
+    nodes:
+      - name: x86-server
+        label: ubuntu-xenial #8U16G from OTC
+      - name: arm-server
+        label: ubuntu-xenial-arm64-8u16g # 8U16G from hw
