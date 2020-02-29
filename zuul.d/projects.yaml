@@ -91,3 +91,9 @@
     check:
       jobs:
          - kudu-build-test-aarch64
+
+- project:
+    name: liusheng/my-dockerfile
+    check:
+      jobs:
+         - hadoop-benchmark-arm-x86

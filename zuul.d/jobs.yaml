@@ -1703,3 +1703,17 @@
     run: playbooks/kudu-build-test-aarch64/run.yaml
     timeout: 864000
     nodeset: ubuntu-xenial-arm64-8U16G
+
+- job:
+    name: hadoop-benchmark-arm-x86
+    parent: init-test
+    description: |
+      Run hadoop benchmarks on ARM and x86 server
+    run: playbooks/hadoop-benchmark-arm-x86/run.yaml
+    nodeset:
+      name: arm-x86-benchmarks
+      nodes:
+      - name: x86-server
+        label: ubuntu-xenial
+      - name: arm-server
+        label: ubuntu-xenial-arm # kc1.xlarge.2

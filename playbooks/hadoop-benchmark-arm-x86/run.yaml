@@ -1,0 +1,29 @@
+- hosts: all
+  tasks:
+    - name: install docker
+      become: true
+      shell: |
+        type docker || curl -sSL https://get.docker.com/ | sh -
+        mkdir -p '{{ ansible_user_dir }}/workspace/test_results'
+      args:
+        executable: /bin/bash
+
+- hosts: x86-server
+  tasks:
+    - name: Run Terasort benchmarks for Hadoop on x86 server
+      become: true
+      shell: |
+        docker run -p 8088:8088 --name hadoop-terasort-1 liusheng2048/hadoop-terasort-x86 50
+        docker logs hadoop-terasort-1 > '{{ ansible_user_dir }}/workspace/test_results/terasort-x86-50GB.log'
+      args:
+        executable: /bin/bash
+
+- hosts: arm-server
+  tasks:
+    - name: Run Terasort benchmarks for Hadoop on ARM server
+      become: true
+      shell: |
+        docker run -p 8088:8088 --name hadoop-terasort-1 liusheng2048/hadoop-terasort-aarch64 50
+        docker logs hadoop-terasort-1 > '{{ ansible_user_dir }}/workspace/test_results/terasort-arm-50GB.log'
+      args:
+        executable: /bin/bash
