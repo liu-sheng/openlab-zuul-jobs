@@ -3,6 +3,7 @@
     - name: install docker
       become: true
       shell: |
+        set -ex
         type docker || curl -sSL https://get.docker.com/ | sh -
         mkdir -p '{{ ansible_user_dir }}/workspace/test_results'
       args:
@@ -11,6 +12,7 @@
     - name: Run Terasort benchmarks for Hadoop on ARM server
       become: true
       shell: |
+        set -ex
         docker run -p 8088:8088 --name hadoop-terasort-1 liusheng2048/hadoop-terasort-aarch64 "{{ data_size }}"
         docker logs hadoop-terasort-1 > '{{ ansible_user_dir }}/workspace/test_results/terasort-arm-{{ data_size }}GB.log'
       args:
