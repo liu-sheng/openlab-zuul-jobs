@@ -1720,6 +1720,8 @@
       Run hadoop benchmarks on x86 server
     run: playbooks/hadoop-benchmark-arm-x86/x86.yaml
     nodeset: ubuntu-xenial
+    vars:
+      data_size: 20
 
 - job:
     name: hadoop-benchmark-arm
@@ -1728,3 +1730,5 @@
       Run hadoop benchmarks on ARM server
     run: playbooks/hadoop-benchmark-arm-x86/arm.yaml
     nodeset: ubuntu-xenial-arm64-8u16g
+    vars:
+      data_size: 20
