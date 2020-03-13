@@ -1,0 +1,11 @@
+- hosts: all
+  become: yes
+  tasks:
+    - name: Install hadoop dependencies
+      shell: |
+        set -xe
+        # apt-get -q update
+        apt-get -q install -y --no-install-recommends openjdk-8-jdk
+        export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-arm64
+        sleep 7200
+      executable: /bin/bash
