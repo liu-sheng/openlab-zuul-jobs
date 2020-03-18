@@ -74,7 +74,7 @@
         label: ubuntu-xenial-arm64-8u16g
 
 - nodeset:
-    name: ubuntu-xenial-arm64-16u32g
+    name: ubuntu-bionic-arm64-16u32g
     nodes:
-      - name: ubuntu-xenial-arm64-16u32g
-        label: ubuntu-xenial-arm64-16u32g
+      - name: ubuntu-bionic-arm64-16u32g
+        label: ubuntu-bionic-arm64-16u32g
