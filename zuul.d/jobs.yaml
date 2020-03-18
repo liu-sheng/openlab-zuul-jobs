@@ -1733,18 +1733,18 @@
     vars:
       data_size: 20
 
-- job:
-    name: hadoop-cluster-terasort
-    parent: init-test
-    description: |
-      Run hadoop benchmarks on 3-nodes cluster based on ARM
-    run: playbooks/hadoop-cluster-terasort/arm.yaml
-    vars:
-      data_size: 20
-    nodeset:
-    nodes:
-      - name: arm-master
-        label: ubuntu-xenial-arm64-16u32g
+#- job:
+#    name: hadoop-cluster-terasort
+#    parent: init-test
+#    description: |
+#      Run hadoop benchmarks on 3-nodes cluster based on ARM
+#    run: playbooks/hadoop-cluster-terasort/arm.yaml
+#    vars:
+#      data_size: 20
+#    nodeset:
+#    nodes:
+#      - name: arm-master
+#        label: ubuntu-xenial-arm64-16u32g
 #      - name: arm-slave1
 #        label: ubuntu-xenial-arm64-16u32g
 #      - name: arm-slave2
