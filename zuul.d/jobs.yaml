@@ -1702,7 +1702,7 @@
       Kudu build and test on arm64 server
     run: playbooks/kudu-build-test-aarch64/run.yaml
     timeout: 864000
-    nodeset: ubuntu-bionic-arm64-16u32g
+    nodeset: ubuntu-bionic-arm64-8u16g
     vars:
       build_type: DEBUG
 
