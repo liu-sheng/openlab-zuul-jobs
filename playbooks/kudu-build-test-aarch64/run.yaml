@@ -1,7 +1,7 @@
 - hosts: all
   become: yes
   tasks:
-    - name:
+    - name: Run building and testing for Kudu
       shell: |
         set -ex
         sleep 7200
