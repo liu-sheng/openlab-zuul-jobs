@@ -4,7 +4,6 @@
     - name: Run building and testing for Kudu
       shell: |
         set -ex
-        sleep 7200
         DEBIAN_FRONTEND=noninteractive apt-get -q install -y --no-install-recommends \
             libsasl2-dev libsasl2-modules libsasl2-modules-gssapi-mit libssl-dev libtool \
             lsb-release ntp openssl krb5-admin-server krb5-kdc krb5-user libkrb5-dev doxygen \
@@ -13,7 +12,6 @@
             make cmake g++ autoconf automake curl flex gdb git lsof
         export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-arm64
         export JAVA8_HOME=/usr/lib/jvm/java-8-openjdk-arm64
-        # work around for numpy installation in Python testing
         ln -s /usr/include/locale.h /usr/include/xlocale.h
 
         BUILD_TYPE="{{ build_type }}" KUDU_ALLOW_SLOW_TESTS=0 bash -x build-support/jenkins/build-and-test.sh
