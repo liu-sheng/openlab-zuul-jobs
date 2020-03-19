@@ -15,8 +15,6 @@
         ln -s /usr/include/locale.h /usr/include/xlocale.h
 
         BUILD_TYPE="{{ build_type }}" KUDU_ALLOW_SLOW_TESTS=0 bash -x build-support/jenkins/build-and-test.sh
-        mkdir -p '{{ ansible_user_dir }}/workspace/test_results'
-        cp -r build/$(echo "{{ build_type }}" | tr 'A-Z' 'a-z)/test-logs '{{ ansible_user_dir }}/workspace/test_results/'
       args:
         executable: /bin/bash
         chdir: '{{ zuul.project.src_dir }}'
