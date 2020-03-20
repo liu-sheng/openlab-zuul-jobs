@@ -111,7 +111,7 @@
 
     - name: Compile and install gpdb
       shell: |
-        ./configure --with-openssl --with-ldap --with-libcurl --prefix='{{ zuul.project.src_dir }}'/gpsql --disable-orca --disable-gpcloud --disable-pxf --without-readline --with-python --with-gssapi
+        ./configure --with-openssl --with-ldap --with-libcurl --prefix="{{ ansible_user_dir }}/{{ zuul.project.src_dir }}/gpsql" --disable-orca --disable-gpcloud --disable-pxf --without-readline --with-python --with-gssapi
         make
         make install
       args:
