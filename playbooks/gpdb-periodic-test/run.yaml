@@ -165,6 +165,13 @@
         executable: /bin/bash
         chdir: '{{ zuul.project.src_dir }}'
 
+    - name: debug
+      shell: |
+        sleep 1800
+      args:
+        executable: /bin/bash
+        chdir: '{{ zuul.project.src_dir }}'
+
     - name: Setup demo cluster and run installcheck-world tests
       shell: |
         source gpsql/greenplum_path.sh
