@@ -148,22 +148,10 @@
 
     - name: Try the best to run the unittest-check with fix
       shell: |
-        # This step will fail, and willing to genarate the following error file
         source gpsql/greenplum_path.sh
         make -s unittest-check || true
-        
-        ######
-        # Fix the issue before unittest-check
-        # issue: https://github.com/google/cmockery/issues/67
-        ######
-        ## remove mock error statement
         cat src/test/unit/mock/backend/libpq/pqexpbuffer_mock.c | grep -v 'check_expected(args);' > src/test/unit/mock/backend/libpq/pqexpbuffer_mock.c_new
         mv src/test/unit/mock/backend/libpq/pqexpbuffer_mock.c_new src/test/unit/mock/backend/libpq/pqexpbuffer_mock.c
-        
-        ######
-        # Skip dtm_recovery_on_standby test for now
-        # As this test will still hang, can not locate what's going on.
-        #####
         cat src/test/isolation2/isolation2_schedule | grep -v dtm_recovery_on_standby > src/test/isolation2/isolation2_schedule
       args:
         executable: /bin/bash
