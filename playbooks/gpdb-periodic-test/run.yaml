@@ -124,7 +124,7 @@
         source gpsql/greenplum_path.sh
         cd gpcontrib/orafce
         make install USE_PGXS=1
-        
+        cd ../..
         cd gpcontrib/gpmapreduce
         # specify -lyaml via changing the Makefine
         sed -i 's/$(CC) $(CFLAGS) $(MAPREDOBJS) $(libpq_pgport) $(LDFLAGS) $(LIBS) -o $@$(X)/$(CC) $(CFLAGS) $(MAPREDOBJS) $(libpq_pgport) $(LDFLAGS) $(LIBS) -lyaml -o $@$(X)/g' ./Makefile
