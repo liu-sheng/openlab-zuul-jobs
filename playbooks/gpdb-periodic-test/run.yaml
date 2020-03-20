@@ -147,13 +147,20 @@
         executable: /bin/bash
         chdir: '{{ zuul.project.src_dir }}'
 
-    - name: Try the best to run the unittest-check with fix
+    - name: First run the unittest-check will fail
       shell: |
         source gpsql/greenplum_path.sh
-        make -s unittest-check || true
+        make -s unittest-check || exit 0
+      args:
+        executable: /bin/bash
+        chdir: '{{ zuul.project.src_dir }}'
+
+    - name: Try the best to run the unittest-check with fix
+      shell: |
         cat src/test/unit/mock/backend/libpq/pqexpbuffer_mock.c | grep -v 'check_expected(args);' > src/test/unit/mock/backend/libpq/pqexpbuffer_mock.c_new
         mv src/test/unit/mock/backend/libpq/pqexpbuffer_mock.c_new src/test/unit/mock/backend/libpq/pqexpbuffer_mock.c
         cat src/test/isolation2/isolation2_schedule | grep -v dtm_recovery_on_standby > src/test/isolation2/isolation2_schedule
+        make -s unittest-check
       args:
         executable: /bin/bash
         chdir: '{{ zuul.project.src_dir }}'
