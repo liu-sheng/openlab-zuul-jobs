@@ -92,6 +92,7 @@
 
     - name: Fix in PRs(will remove this step after fix in upstream)
       shell: |
+        git remote add origin https://github.com/bzhaoopenstack/gpdb
         git config --global user.email "you@example.com"
         git config --global user.name "Your Name"
         git fetch origin pull/4/head:test-branch
