@@ -68,12 +68,6 @@
         iptables -F -t nat
       args:
         executable: /bin/bash
-
-    - name: Correct the file limit
-      shell: |
-        ulimit -n 65535
-      args:
-        executable: /bin/bash
     
     - name: Install pip deps
       shell: |
@@ -176,6 +170,7 @@
         export USER='zuul'
         export PGUSER=zuul
         sudo service ssh start
+        ulimit -n 65535
         make -C gpAux/gpdemo cluster | tee ~/cluster-launch.log
         
         source gpAux/gpdemo/gpdemo-env.sh
