@@ -60,11 +60,9 @@
         ## Fix resolv.conf via /etc/hosts
         # add 'local_ip ubuntu' to /etc/hosts in a new line
         local_ip=`ifconfig -a|grep inet|grep -v 127.0.0.1|grep -v inet6|awk '{print $2}'|tr -d "addr:"`
+        cat /etc/hosts | grep -v ubuntu > /etc/hosts
         echo "${local_ip} ubuntu" >> /etc/hosts
-        cat /etc/hosts
-        cat /etc/hosts | grep -Ev "^127.*ubuntu" > /etc/hosts
-        cat /etc/hosts
-        
+        cat /etc/hosts        
         ## Flush any iptables as much as possible
         iptables -F
         iptables -F -t nat
