@@ -1773,3 +1773,11 @@
 #        label: ubuntu-xenial-arm64-16u32g
 #      - name: arm-slave2
 #        label: ubuntu-xenial-arm64-16u32g
+
+- job:
+    name: gpdb-periodic-test
+    parent: init-test
+    description: |
+      Greenplum periodic test
+    run: playbooks/gpdb-periodic-test/run.yaml
+    nodeset: ubuntu-bionic-arm64-8u16g

@@ -78,3 +78,9 @@
       jobs:
          - hadoop-benchmark-x86
          - hadoop-benchmark-arm
+
+- project:
+    name: bzhaoopenstack/gpdb
+    check:
+      jobs:
+         - gpdb-periodic-test
