@@ -1701,6 +1701,7 @@
     description: |
       Kudu build and test on arm64 server
     run: playbooks/kudu-build-test-aarch64/run.yaml
+    post-run: playbooks/kudu-build-test-aarch64/run.yaml
     timeout: 864000
     nodeset: ubuntu-bionic-arm64-8u16g
     vars:
@@ -1734,6 +1735,27 @@
     nodeset: ubuntu-xenial-arm64-8u16g
     vars:
       data_size: 20
+
+- job:
+    name: hadoop-benchmark-x86
+    parent: init-test
+    description: |
+      Run hadoop benchmarks on x86 server
+    run: playbooks/hadoop-benchmark-arm-x86/x86.yaml
+    nodeset: ubuntu-xenial
+    vars:
+      data_size: 50
+
+- job:
+    name: hadoop-benchmark-arm
+    parent: init-test
+    description: |
+      Run hadoop benchmarks on ARM server
+    run: playbooks/hadoop-benchmark-arm-x86/arm.yaml
+    nodeset: ubuntu-xenial-arm64-8u16g
+    vars:
+      data_size: 50
+
 
 #- job:
 #    name: hadoop-cluster-terasort
