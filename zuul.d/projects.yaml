@@ -70,7 +70,7 @@
     name: bzhaoopenstack/gpdb
     check:
       jobs:
-        - test-check-api
+        - gpdb-periodic-test
 
 - project:
     name: liusheng/my-dockerfile
@@ -79,8 +79,3 @@
          - hadoop-benchmark-x86
          - hadoop-benchmark-arm
 
-- project:
-    name: bzhaoopenstack/gpdb
-    check:
-      jobs:
-         - gpdb-periodic-test
