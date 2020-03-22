@@ -179,3 +179,11 @@
         executable: /bin/bash
         chdir: /home/zuul/gpdb
 
+    - name: Copy result into result dir
+      shell: |
+        mkdir -p "{{ ansible_user_dir }}/workspace/test_results"
+        cp ~/cluster-launch.log "{{ ansible_user_dir }}/workspace/test_results/"
+        cp ~/installcheck-world.log "{{ ansible_user_dir }}/workspace/test_results/"
+        cp -rf ~/gpAdminLogs "{{ ansible_user_dir }}/workspace/test_results/"
+      args:
+        executable: /bin/bash
