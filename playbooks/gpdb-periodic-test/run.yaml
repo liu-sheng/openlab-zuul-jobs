@@ -103,14 +103,20 @@
       args:
         executable: /bin/bash
 
+    - name: Copy code to other place for issue tablespace location is too long for TAR
+      shell: |
+        cp -rf "{{ ansible_user_dir }}/{{ zuul.project.src_dir }}" /home/zuul/gpdb
+      args:
+        executable: /bin/bash
+
     - name: Compile and install gpdb
       shell: |
-        ./configure --with-openssl --with-ldap --with-libcurl --prefix="{{ ansible_user_dir }}/{{ zuul.project.src_dir }}/gpsql" --disable-orca --disable-gpcloud --disable-pxf --without-readline --with-python --with-gssapi
+        ./configure --with-openssl --with-ldap --with-libcurl --prefix="/home/zuul/gpdb/gpsql" --disable-orca --disable-gpcloud --disable-pxf --without-readline --with-python --with-gssapi
         make
         make install
       args:
         executable: /bin/bash
-        chdir: '{{ zuul.project.src_dir }}'
+        chdir: /home/zuul/gpdb
 
     - name: Compile and install the external functions of gpdb
       shell: |
@@ -124,7 +130,7 @@
         make install
       args:
         executable: /bin/bash
-        chdir: '{{ zuul.project.src_dir }}'
+        chdir: /home/zuul/gpdb
 
     - name: Check the installed apps
       shell: |
@@ -138,7 +144,7 @@
         gpfdist --version
       args:
         executable: /bin/bash
-        chdir: '{{ zuul.project.src_dir }}'
+        chdir: /home/zuul/gpdb
 
     - name: First run the unittest-check will fail
       shell: |
@@ -146,7 +152,7 @@
         make -s unittest-check || exit 0
       args:
         executable: /bin/bash
-        chdir: '{{ zuul.project.src_dir }}'
+        chdir: /home/zuul/gpdb
 
     - name: Try the best to run the unittest-check with fix
       shell: |
@@ -156,14 +162,7 @@
         make -s unittest-check
       args:
         executable: /bin/bash
-        chdir: '{{ zuul.project.src_dir }}'
- 
-    - name: debug
-      shell: |
-        sleep 1800
-      args:
-        executable: /bin/bash
-        chdir: '{{ zuul.project.src_dir }}'
+        chdir: /home/zuul/gpdb
 
     - name: Setup demo cluster and run installcheck-world tests
       shell: |
@@ -178,5 +177,5 @@
         make installcheck-world | tee ~/installcheck-world.log || true
       args:
         executable: /bin/bash
-        chdir: '{{ zuul.project.src_dir }}'
+        chdir: /home/zuul/gpdb
 
