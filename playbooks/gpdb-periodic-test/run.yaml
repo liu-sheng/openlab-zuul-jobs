@@ -85,27 +85,23 @@
 
     - name: Fix in PRs(will remove this step after fix in upstream)
       shell: |
-        git remote add origin https://github.com/bzhaoopenstack/gpdb
+        cd /home/zuul/
+        git clone https://github.com/greenplum-db/gpdb.git
+        git remote add fix https://github.com/bzhaoopenstack/gpdb
         git config --global user.email "you@example.com"
         git config --global user.name "Your Name"
-        git fetch origin pull/4/head:test-branch
+        git fetch fix pull/4/head:test-branch
         git checkout test-branch 
         git rebase master
+        git log -3
       args:
         executable: /bin/bash
-        chdir: '{{ zuul.project.src_dir }}'
  
     - name: Install GSSAPI deps
       shell: |
         export DEBIAN_FRONTEND noninteractive
         sudo DEBIAN_FRONTEND=noninteractive apt update 
         sudo DEBIAN_FRONTEND=noninteractive apt install krb5-kdc krb5-admin-server libkrb5-dev -y
-      args:
-        executable: /bin/bash
-
-    - name: Copy code to other place for issue tablespace location is too long for TAR
-      shell: |
-        cp -rf "{{ ansible_user_dir }}/{{ zuul.project.src_dir }}" /home/zuul/gpdb
       args:
         executable: /bin/bash
 
