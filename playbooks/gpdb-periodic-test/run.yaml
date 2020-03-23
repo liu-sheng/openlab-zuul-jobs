@@ -144,18 +144,13 @@
         executable: /bin/bash
         chdir: '{{ zuul.project.src_dir }}'
 
-    - name: debug
-      shell: |
-        sleep 1800
-      args:
-        executable: /bin/bash
-
     - name: Try the best to run the unittest-check with fixes
       shell: |
         set -xeo pipefail
         cat src/test/unit/mock/backend/libpq/pqexpbuffer_mock.c | grep -v 'check_expected(args);' > src/test/unit/mock/backend/libpq/pqexpbuffer_mock.c_new
         mv src/test/unit/mock/backend/libpq/pqexpbuffer_mock.c_new src/test/unit/mock/backend/libpq/pqexpbuffer_mock.c
-        cat src/test/isolation2/isolation2_schedule | grep -v dtm_recovery_on_standby > src/test/isolation2/isolation2_schedule
+        cat src/test/isolation2/isolation2_schedule | grep -v dtm_recovery_on_standby > src/test/isolation2/isolation2_schedule_new
+        mv src/test/isolation2/isolation2_schedule_new src/test/isolation2/isolation2_schedule
         make -s unittest-check
       args:
         executable: /bin/bash
