@@ -41,35 +41,33 @@
       args:
         executable: /bin/bash
 
-        
-    - name: Install the necessary libraries via apt
+    - name: Localdef change
       become: true
       shell: |
         localedef -i en_US -f UTF-8 en_US.UTF-8
       args:
         executable: /bin/bash
- 
+
     - name: Fix local env to make sure the demo cluster can setup
       become: true
       shell: |
+        set -xeo pipefail
         ## Fix the issue during startup the demo cluster like
         # psql: FATAL:  semctl(17530881, 14, SETVAL, 0) failed: Invalid argument (pg_sema.c:151)
         echo "RemoveIPC=no" >> /etc/systemd/logind.conf
         service systemd-logind restart
-        
         ## Fix resolv.conf via /etc/hosts
         # add 'local_ip ubuntu' to /etc/hosts in a new line
         local_ip=`ifconfig -a|grep inet|grep -v 127.0.0.1|grep -v inet6|awk '{print $2}'|tr -d "addr:"`
-        cat /etc/hosts | grep -v ubuntu > /etc/hosts
-        echo "${local_ip} ubuntu" >> /etc/hosts
+        echo "${local_ip} ubuntu" > /etc/hosts
         echo "127.0.0.1 localhost" >> /etc/hosts
-        cat /etc/hosts        
+        cat /etc/hosts
         ## Flush any iptables as much as possible
         iptables -F
         iptables -F -t nat
       args:
         executable: /bin/bash
-    
+
     - name: Install pip deps
       shell: |
         export SODIUM_INSTALL=system
@@ -85,35 +83,28 @@
 
     - name: Fix in PRs(will remove this step after fix in upstream)
       shell: |
-        cd /home/zuul/
-        git clone https://github.com/greenplum-db/gpdb.git
-        cd /home/zuul/gpdb
-        git remote add fix https://github.com/bzhaoopenstack/gpdb
-        git config --global user.email "you@example.com"
-        git config --global user.name "Your Name"
-        git fetch fix pull/4/head:test-branch
-        git checkout test-branch 
-        git rebase master
-        git log -3
+        wget https://patch-diff.githubusercontent.com/raw/bzhaoopenstack/gpdb/pull/4.patch
+        git am ./4.patch
       args:
         executable: /bin/bash
- 
+        chdir: '{{ zuul.project.src_dir }}'
+
     - name: Install GSSAPI deps
       shell: |
         export DEBIAN_FRONTEND noninteractive
-        sudo DEBIAN_FRONTEND=noninteractive apt update 
+        sudo DEBIAN_FRONTEND=noninteractive apt update
         sudo DEBIAN_FRONTEND=noninteractive apt install krb5-kdc krb5-admin-server libkrb5-dev -y
       args:
         executable: /bin/bash
 
     - name: Compile and install gpdb
       shell: |
-        ./configure --with-openssl --with-ldap --with-libcurl --prefix="/home/zuul/gpdb/gpsql" --disable-orca --disable-gpcloud --disable-pxf --without-readline --with-python --with-gssapi
+        ./configure --with-openssl --with-ldap --with-libcurl --prefix="{{ ansible_user_dir }}/{{ zuul.project.src_dir }}/gpsql" --disable-orca --disable-gpcloud --disable-pxf --without-readline --with-python --with-gssapi
         make
         make install
       args:
         executable: /bin/bash
-        chdir: /home/zuul/gpdb
+        chdir: '{{ zuul.project.src_dir }}'
 
     - name: Compile and install the external functions of gpdb
       shell: |
@@ -127,7 +118,7 @@
         make install
       args:
         executable: /bin/bash
-        chdir: /home/zuul/gpdb
+        chdir: '{{ zuul.project.src_dir }}'
 
     - name: Check the installed apps
       shell: |
@@ -141,7 +132,7 @@
         gpfdist --version
       args:
         executable: /bin/bash
-        chdir: /home/zuul/gpdb
+        chdir: '{{ zuul.project.src_dir }}'
 
     - name: First run the unittest-check will fail
       shell: |
@@ -149,36 +140,41 @@
         make -s unittest-check || exit 0
       args:
         executable: /bin/bash
-        chdir: /home/zuul/gpdb
+        chdir: '{{ zuul.project.src_dir }}'
 
-    - name: Try the best to run the unittest-check with fix
+    - name: Try the best to run the unittest-check with fixes
       shell: |
+        set -xeo pipefail
         cat src/test/unit/mock/backend/libpq/pqexpbuffer_mock.c | grep -v 'check_expected(args);' > src/test/unit/mock/backend/libpq/pqexpbuffer_mock.c_new
         mv src/test/unit/mock/backend/libpq/pqexpbuffer_mock.c_new src/test/unit/mock/backend/libpq/pqexpbuffer_mock.c
         cat src/test/isolation2/isolation2_schedule | grep -v dtm_recovery_on_standby > src/test/isolation2/isolation2_schedule
         make -s unittest-check
       args:
         executable: /bin/bash
-        chdir: /home/zuul/gpdb
+        chdir: '{{ zuul.project.src_dir }}'
 
     - name: Setup demo cluster and run installcheck-world tests
       shell: |
+        set -xeo pipefail
         source gpsql/greenplum_path.sh
         export USER='zuul'
         export PGUSER=zuul
         sudo service ssh start
         ulimit -n 65535
         make -C gpAux/gpdemo cluster | tee ~/cluster-launch.log
-        
         source gpAux/gpdemo/gpdemo-env.sh
-        make installcheck-world | tee ~/installcheck-world.log || true
+        make installcheck-world | tee ~/installcheck-world.log
       args:
         executable: /bin/bash
-        chdir: /home/zuul/gpdb
+        chdir: '{{ zuul.project.src_dir }}'
+
+    - name: Create results directory
+      file:
+        path: "{{ ansible_user_dir }}/workspace/test_results"
+        state: directory
 
     - name: Copy result into result dir
       shell: |
-        mkdir -p "{{ ansible_user_dir }}/workspace/test_results"
         cp ~/cluster-launch.log "{{ ansible_user_dir }}/workspace/test_results/"
         cp ~/installcheck-world.log "{{ ansible_user_dir }}/workspace/test_results/"
         cp -rf ~/gpAdminLogs "{{ ansible_user_dir }}/workspace/test_results/"
