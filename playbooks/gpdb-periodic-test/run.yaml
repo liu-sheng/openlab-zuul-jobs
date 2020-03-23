@@ -84,6 +84,8 @@
     - name: Fix in PRs(will remove this step after fix in upstream)
       shell: |
         wget https://patch-diff.githubusercontent.com/raw/bzhaoopenstack/gpdb/pull/4.patch
+        git config --global user.email "you@example.com"
+        git config --global user.name "Your Name"
         git am ./4.patch
       args:
         executable: /bin/bash
