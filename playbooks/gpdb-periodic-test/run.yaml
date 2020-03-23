@@ -144,6 +144,12 @@
         executable: /bin/bash
         chdir: '{{ zuul.project.src_dir }}'
 
+    - name: debug
+      shell: |
+        sleep 1800
+      args:
+        executable: /bin/bash
+
     - name: Try the best to run the unittest-check with fixes
       shell: |
         set -xeo pipefail
