@@ -1764,3 +1764,12 @@
     nodeset: ubuntu-xenial-arm64-8u16g
     vars:
       data_size: 50
+
+- job:
+    name: gpdb-periodic-test
+    parent: init-test
+    description: |
+      Greenplum periodic test
+    run: playbooks/gpdb-periodic-test/run.yaml
+    nodeset: ubuntu-bionic-arm64-8u16g
+
