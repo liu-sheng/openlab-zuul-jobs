@@ -64,7 +64,8 @@
     name: liusheng/kudu
     check:
       jobs:
-         - kudu-build-test-aarch64
+         - kudu-build-test-aarch64-debug
+         - kudu-build-test-aarch64-release
 
 - project:
     name: liusheng/kudu
