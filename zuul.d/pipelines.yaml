@@ -753,3 +753,27 @@
       github:
         status: 'failure'
       mysql:
+
+- pipeline:
+    name: recheck-kudu-docker
+    description: |
+      Commenting "recheck docker" enter this pipeline to run building and testing of Kudu in
+      docker.
+    manager: independent
+    trigger:
+      github:
+        - event: pull_request
+          action: comment
+          comment: (?i)^\s*recheck\s+docker\s*$
+    start:
+      github:
+        status: pending
+        comment: false
+    success:
+      github:
+        status: 'success'
+      mysql:
+    failure:
+      github:
+        status: 'failure'
+      mysql:

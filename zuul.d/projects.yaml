@@ -67,6 +67,12 @@
          - kudu-build-test-aarch64
 
 - project:
+    name: liusheng/kudu
+    recheck-kudu-docker:
+      jobs:
+         - kudu-build-test-aarch64-in-docker
+
+- project:
     name: bzhaoopenstack/gpdb
     check:
       jobs:

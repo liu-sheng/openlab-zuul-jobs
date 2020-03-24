@@ -1708,6 +1708,15 @@
       build_type: DEBUG
 
 - job:
+    name: kudu-build-test-aarch64-in-docker
+    parent: init-test
+    description: |
+      Kudu build and test on arm64 server
+    run: playbooks/kudu-build-test-aarch64/run-in-docker.yaml
+    timeout: 864000
+    nodeset: ubuntu-bionic-arm64-8u16g
+
+- job:
     name: test-check-api
     parent: init-test
     description: |
@@ -1755,21 +1764,3 @@
     nodeset: ubuntu-xenial-arm64-8u16g
     vars:
       data_size: 50
-
-
-#- job:
-#    name: hadoop-cluster-terasort
-#    parent: init-test
-#    description: |
-#      Run hadoop benchmarks on 3-nodes cluster based on ARM
-#    run: playbooks/hadoop-cluster-terasort/arm.yaml
-#    vars:
-#      data_size: 20
-#    nodeset:
-#    nodes:
-#      - name: arm-master
-#        label: ubuntu-xenial-arm64-16u32g
-#      - name: arm-slave1
-#        label: ubuntu-xenial-arm64-16u32g
-#      - name: arm-slave2
-#        label: ubuntu-xenial-arm64-16u32g
