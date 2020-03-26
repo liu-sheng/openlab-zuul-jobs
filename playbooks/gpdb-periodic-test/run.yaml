@@ -37,7 +37,8 @@
         ssh \
         locales \
         locales-all \
-        wget
+        wget \
+        rsync
       args:
         executable: /bin/bash
 
@@ -156,12 +157,16 @@
         set -xeo pipefail
         cat src/test/unit/mock/backend/libpq/pqexpbuffer_mock.c | grep -v 'check_expected(args);' > src/test/unit/mock/backend/libpq/pqexpbuffer_mock.c_new
         mv src/test/unit/mock/backend/libpq/pqexpbuffer_mock.c_new src/test/unit/mock/backend/libpq/pqexpbuffer_mock.c
-        cat src/test/isolation2/isolation2_schedule | grep -v dtm_recovery_on_standby > src/test/isolation2/isolation2_schedule_new
-        mv src/test/isolation2/isolation2_schedule_new src/test/isolation2/isolation2_schedule
         make -s unittest-check
       args:
         executable: /bin/bash
         chdir: /home/zuul/gpdb
+
+    - name: debug
+      shell: |
+        sleep 36000
+      args:
+        executable: /bin/bash
 
     - name: Setup demo cluster and run installcheck-world tests
       shell: |
