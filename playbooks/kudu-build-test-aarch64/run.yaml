@@ -4,6 +4,7 @@
     - name: Run building and testing for Kudu
       shell: |
         set -ex
+        apt-get update
         DEBIAN_FRONTEND=noninteractive apt-get -q install -y --no-install-recommends \
             libsasl2-dev libsasl2-modules libsasl2-modules-gssapi-mit libssl-dev libtool \
             lsb-release ntp openssl krb5-admin-server krb5-kdc krb5-user libkrb5-dev doxygen \
