@@ -84,3 +84,9 @@
     nodes:
       - name: ubuntu-bionic-arm64-8u16g
         label: ubuntu-bionic-arm64-8u16g
+
+- nodeset:
+    name: ubuntu-bionic-arm64-8u16g-test
+    nodes:
+      - name: ubuntu-bionic-arm64-8u16g-test
+        label: ubuntu-bionic-arm64-8u16g-test
