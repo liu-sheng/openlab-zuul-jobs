@@ -8,13 +8,14 @@
         mkdir -p "$result_dir"
         type docker || curl -sSL https://get.docker.com/ | sh -
 
+        docker_cmd='docker run -v "$result_dir":/opt/results/ -v "{{ zuul.project.src_dir }}":/opt/kudu -d '
         # dockerfile: https://github.com/liusheng/my-dockerfile/tree/master/kudu-aarch64
-        docker run -v "$result_dir":/opt/results/ -v '{{ zuul.project.src_dir }}':/opt/kudu -d --name kudu-lint liusheng2048/kudu-aarch64:nobuild lint
-        docker run -v "$result_dir":/opt/results/ -v '{{ zuul.project.src_dir }}':/opt/kudu -d --name kudu-iwyu liusheng2048/kudu-aarch64:nobuild iwyu
-        docker run -v "$result_dir":/opt/results/ -v '{{ zuul.project.src_dir }}':/opt/kudu -d --name kudu-debug liusheng2048/kudu-aarch64:nobuild debug
-        docker run -v "$result_dir":/opt/results/ -v '{{ zuul.project.src_dir }}':/opt/kudu -d --name kudu-release liusheng2048/kudu-aarch64:nobuild release
-        docker run -v "$result_dir":/opt/results/ -v '{{ zuul.project.src_dir }}':/opt/kudu -d --cap-add=SYS_PTRACE --security-opt seccomp=unconfined --name kudu-asan liusheng2048/kudu-aarch64:nobuild asan
-        docker run -v "$result_dir":/opt/results/ -v '{{ zuul.project.src_dir }}':/opt/kudu -d --cap-add=SYS_PTRACE --security-opt seccomp=unconfined --name kudu-tsan liusheng2048/kudu-aarch64:nobuild tsan
+        $docker_cmd --name kudu-lint liusheng2048/kudu-aarch64:nobuild lint
+        $docker_cmd --name kudu-iwyu liusheng2048/kudu-aarch64:nobuild iwyu
+        $docker_cmd --name kudu-debug liusheng2048/kudu-aarch64:nobuild debug
+        $docker_cmd --name kudu-release liusheng2048/kudu-aarch64:nobuild release
+        $docker_cmd--cap-add=SYS_PTRACE --security-opt seccomp=unconfined --name kudu-asan liusheng2048/kudu-aarch64:nobuild asan
+        $docker_cmd --cap-add=SYS_PTRACE --security-opt seccomp=unconfined --name kudu-tsan liusheng2048/kudu-aarch64:nobuild tsan
         while :
         do
             [[ -z "$(docker ps -f name=kudu -q)" ]] && break
