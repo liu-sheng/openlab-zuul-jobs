@@ -8,8 +8,8 @@
         mkdir -p "$result_dir"
         type docker || curl -sSL https://get.docker.com/ | sh -
 
-        docker_cmd='docker run -v $result_dir:/opt/results/ -v {{ zuul.project.src_dir }}:/opt/kudu -d '
         # dockerfile: https://github.com/liusheng/my-dockerfile/tree/master/kudu-aarch64
+        docker_cmd="docker run -v $result_dir:/opt/results/ -v {{ zuul.project.src_dir }}:/opt/kudu -d "
         $docker_cmd --name kudu-lint liusheng2048/kudu-aarch64:nobuild lint
         $docker_cmd --name kudu-iwyu liusheng2048/kudu-aarch64:nobuild iwyu
         $docker_cmd --name kudu-debug liusheng2048/kudu-aarch64:nobuild debug
