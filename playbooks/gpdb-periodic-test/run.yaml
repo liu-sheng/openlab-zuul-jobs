@@ -71,6 +71,11 @@
       args:
         executable: /bin/bash
 
+    - name: Create results directory
+      file:
+        path: "{{ ansible_user_dir }}/workspace/test_results"
+        state: directory
+
     - name: Install pip deps
       shell: |
         export SODIUM_INSTALL=system
@@ -160,22 +165,16 @@
         export PGUSER=zuul
         sudo service ssh start
         ulimit -n 65535
-        make -C gpAux/gpdemo cluster | tee ~/cluster-launch.log
+        make -C gpAux/gpdemo cluster | tee "{{ ansible_user_dir }}/workspace/test_results/cluster-launch.log"
         source gpAux/gpdemo/gpdemo-env.sh
-        make installcheck-world | tee ~/installcheck-world.log
+        make installcheck-world | tee "{{ ansible_user_dir }}/workspace/test_results/installcheck-world.log"
       args:
         executable: /bin/bash
         chdir: /home/zuul/gpdb
 
-    - name: Create results directory
-      file:
-        path: "{{ ansible_user_dir }}/workspace/test_results"
-        state: directory
-
     - name: Copy result into result dir
       shell: |
-        cp ~/cluster-launch.log "{{ ansible_user_dir }}/workspace/test_results/"
-        cp ~/installcheck-world.log "{{ ansible_user_dir }}/workspace/test_results/"
         cp -rf ~/gpAdminLogs "{{ ansible_user_dir }}/workspace/test_results/"
+        cp -rf /home/zuul/gpdb/gpAux/gpdemo/datadirs "{{ ansible_user_dir }}/workspace/test_results/"
       args:
         executable: /bin/bash
