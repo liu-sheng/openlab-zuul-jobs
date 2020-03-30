@@ -1717,6 +1717,50 @@
     nodeset: ubuntu-bionic-arm64-8u16g
     vars:
       build_type: RELEASE
+- job:
+    name: kudu-build-test-aarch64-lint
+    parent: init-test
+    description: |
+      Kudu build and test on arm64 server
+    run: playbooks/kudu-build-test-aarch64/run.yaml
+    post-run: playbooks/kudu-build-test-aarch64/post.yaml
+    timeout: 864000
+    nodeset: ubuntu-bionic-arm64-8u16g
+    vars:
+      build_type: LINT
+- job:
+    name: kudu-build-test-aarch64-iwyu
+    parent: init-test
+    description: |
+      Kudu build and test on arm64 server
+    run: playbooks/kudu-build-test-aarch64/run.yaml
+    post-run: playbooks/kudu-build-test-aarch64/post.yaml
+    timeout: 864000
+    nodeset: ubuntu-bionic-arm64-8u16g
+    vars:
+      build_type: IWYU
+- job:
+    name: kudu-build-test-aarch64-asan
+    parent: init-test
+    description: |
+      Kudu build and test on arm64 server
+    run: playbooks/kudu-build-test-aarch64/run.yaml
+    post-run: playbooks/kudu-build-test-aarch64/post.yaml
+    timeout: 864000
+    nodeset: ubuntu-bionic-arm64-8u16g
+    vars:
+      build_type: ASAN
+- job:
+    name: kudu-build-test-aarch64-tsan
+    parent: init-test
+    description: |
+      Kudu build and test on arm64 server
+    run: playbooks/kudu-build-test-aarch64/run.yaml
+    post-run: playbooks/kudu-build-test-aarch64/post.yaml
+    timeout: 864000
+    nodeset: ubuntu-bionic-arm64-8u16g
+    vars:
+      build_type: TSAN
 
 - job:
     name: kudu-build-test-aarch64-in-docker
