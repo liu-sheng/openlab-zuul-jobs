@@ -80,10 +80,10 @@
         label: ubuntu-bionic-arm64-16u32g
 
 - nodeset:
-    name: ubuntu-bionic-arm64-16u64g
+    name: ubuntu-bionic-arm64-32u64g
     nodes:
-      - name: ubuntu-bionic-arm64-16u64g
-        label: ubuntu-bionic-arm64-16u64g
+      - name: ubuntu-bionic-arm64-32u64g
+        label: ubuntu-bionic-arm64-32u64g
 
 - nodeset:
     name: ubuntu-bionic-arm64-8u16g

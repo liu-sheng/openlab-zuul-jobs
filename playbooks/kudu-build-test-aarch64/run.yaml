@@ -18,6 +18,7 @@
     - name: Run building and testing
       shell: |
         set -ex
+        sleep 7200000
         export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-arm64
         export JAVA8_HOME=/usr/lib/jvm/java-8-openjdk-arm64
         BUILD_TYPE="{{ build_type }}" KUDU_ALLOW_SLOW_TESTS=0 bash -x build-support/jenkins/build-and-test.sh
