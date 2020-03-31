@@ -5,7 +5,7 @@
       shell: |
         set -ex
         apt-get update
-        who
+        whoami
 #        DEBIAN_FRONTEND=noninteractive apt-get -q install -y --no-install-recommends \
 #            libsasl2-dev libsasl2-modules libsasl2-modules-gssapi-mit libssl-dev libtool \
 #            lsb-release ntp openssl krb5-admin-server krb5-kdc krb5-user libkrb5-dev doxygen \
@@ -19,7 +19,7 @@
     - name: Run building and testing
       shell: |
         set -ex
-        who
+        whoami
         sleep 7200000
         export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-arm64
         export JAVA8_HOME=/usr/lib/jvm/java-8-openjdk-arm64
