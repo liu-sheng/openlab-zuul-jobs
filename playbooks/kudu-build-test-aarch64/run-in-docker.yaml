@@ -10,19 +10,20 @@
 
         # dockerfile: https://github.com/liusheng/my-dockerfile/tree/master/kudu-aarch64
         # create containers fistly
-        docker create -v $result_dir:/opt/results/ --name kudu-lint liusheng2048/kudu-aarch64:nobuild lint
-        docker create -v $result_dir:/opt/results/ --name kudu-iwyu liusheng2048/kudu-aarch64:nobuild iwyu
-        docker create -v $result_dir:/opt/results/ --name kudu-debug liusheng2048/kudu-aarch64:nobuild debug
-        docker create -v $result_dir:/opt/results/ --name kudu-release liusheng2048/kudu-aarch64:nobuild release
-        docker create -v $result_dir:/opt/results/ --cap-add=SYS_PTRACE --security-opt seccomp=unconfined --name kudu-asan liusheng2048/kudu-aarch64:nobuild asan
-        docker create -v $result_dir:/opt/results/ --cap-add=SYS_PTRACE --security-opt seccomp=unconfined --name kudu-tsan liusheng2048/kudu-aarch64:nobuild tsan
 
-        docker cp "{{ ansible_user_dir }}/{{ zuul.project.src_dir }}" kudu-lint:/opt/
-        docker cp "{{ ansible_user_dir }}/{{ zuul.project.src_dir }}" kudu-iwyu:/opt/
-        docker cp "{{ ansible_user_dir }}/{{ zuul.project.src_dir }}" kudu-debug:/opt/
-        docker cp "{{ ansible_user_dir }}/{{ zuul.project.src_dir }}" kudu-release:/opt/
-        docker cp "{{ ansible_user_dir }}/{{ zuul.project.src_dir }}" kudu-asan:/opt/
-        docker cp "{{ ansible_user_dir }}/{{ zuul.project.src_dir }}" kudu-tsan:/opt/
+        docker create --name kudu-lint liusheng2048/kudu-aarch64:nobuild lint
+        docker create --name kudu-iwyu liusheng2048/kudu-aarch64:nobuild iwyu
+        docker create --name kudu-debug liusheng2048/kudu-aarch64:nobuild debug
+        docker create --name kudu-release liusheng2048/kudu-aarch64:nobuild release
+        docker create --cap-add=SYS_PTRACE --security-opt seccomp=unconfined --name kudu-asan liusheng2048/kudu-aarch64:nobuild asan
+        docker create --cap-add=SYS_PTRACE --security-opt seccomp=unconfined --name kudu-tsan liusheng2048/kudu-aarch64:nobuild tsan
+
+        docker cp "{{ ansible_user_dir }}/{{ zuul.project.src_dir }}" kudu-lint:/home/kudu/
+        docker cp "{{ ansible_user_dir }}/{{ zuul.project.src_dir }}" kudu-iwyu:/home/kudu/
+        docker cp "{{ ansible_user_dir }}/{{ zuul.project.src_dir }}" kudu-debug:/home/kudu/
+        docker cp "{{ ansible_user_dir }}/{{ zuul.project.src_dir }}" kudu-release:/home/kudu/
+        docker cp "{{ ansible_user_dir }}/{{ zuul.project.src_dir }}" kudu-asan:/home/kudu/
+        docker cp "{{ ansible_user_dir }}/{{ zuul.project.src_dir }}" kudu-tsan:/home/kudu/
 
         docker start kudu-lint
         docker start kudu-iwyu
@@ -36,5 +37,11 @@
             echo "Waiting for Kudu testing complate..."
             sleep 5
         done
+        docker cp kudu-lint:/home/kudu/results/lint/ $result_dir
+        docker cp kudu-iwyu:/home/kudu/results/iwyu/ $result_dir
+        docker cp kudu-debug:/home/kudu/results/debug/ $result_dir
+        docker cp kudu-release:/home/kudu/results/release/ $result_dir
+        docker cp kudu-asan:/home/kudu/results/asan/ $result_dir
+        docker cp kudu-tsan:/home/kudu/results/tsan/ $result_dir
       args:
         executable: /bin/bash
