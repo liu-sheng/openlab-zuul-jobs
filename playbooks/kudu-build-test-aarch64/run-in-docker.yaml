@@ -11,15 +11,14 @@
         # build docker image to save running time
         git clone https://github.com/liusheng/my-dockerfile
         cd my-dockerfile/kudu-aarch64
-        docker build . -f BUILD3RD.Dockerfile -t liusheng2048/kudu-aarch64:debug3rd
-        docker build . -f BUILD3RD.Dockerfile --build-arg build_type=tsan -t liusheng2048/kudu-aarch64:tsan3rd
+        docker build . -f BUILD3RD.Dockerfile -t liusheng2048/kudu-aarch64:build3rd
 
-        docker run -d --name kudu-lint liusheng2048/kudu-aarch64:debug3rd lint
-        docker run -d --name kudu-iwyu liusheng2048/kudu-aarch64:debug3rd iwyu
-        docker run -d --name kudu-debug liusheng2048/kudu-aarch64:debug3rd debug
-        docker run -d --name kudu-release liusheng2048/kudu-aarch64:debug3rd release
-        docker run -d --cap-add=SYS_PTRACE --security-opt seccomp=unconfined --name kudu-asan liusheng2048/kudu-aarch64:debug3rd:nobuild asan
-        docker run -d --cap-add=SYS_PTRACE --security-opt seccomp=unconfined --name kudu-tsan liusheng2048/kudu-aarch64:tsan3rd tsan
+        docker run -d --name kudu-lint liusheng2048/kudu-aarch64:build3rd lint
+        docker run -d --name kudu-iwyu liusheng2048/kudu-aarch64:build3rd iwyu
+        docker run -d --name kudu-debug liusheng2048/kudu-aarch64:build3rd debug
+        docker run -d --name kudu-release liusheng2048/kudu-aarch64:build3rd release
+        docker run -d --cap-add=SYS_PTRACE --security-opt seccomp=unconfined --name kudu-asan liusheng2048/kudu-aarch64:build3rd:nobuild asan
+        docker run -d --cap-add=SYS_PTRACE --security-opt seccomp=unconfined --name kudu-tsan liusheng2048/kudu-aarch64:build3rd tsan
 
         while :
         do
