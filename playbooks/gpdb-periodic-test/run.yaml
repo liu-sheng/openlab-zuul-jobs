@@ -159,12 +159,6 @@
         executable: /bin/bash
         chdir: /home/zuul/gpdb
 
-    - name: sleep
-      shell: |
-        sleep 36000
-      args:
-        executable: /bin/bash
-
     - name: Setup demo cluster and run installcheck-world tests
       shell: |
         set -xeo pipefail
@@ -174,6 +168,7 @@
         sudo service ssh start
         ulimit -n 65535
         make -C gpAux/gpdemo cluster | tee "{{ ansible_user_dir }}/workspace/test_results/cluster-launch.log"
+        sleep 15
         source gpAux/gpdemo/gpdemo-env.sh
         make installcheck-world | tee "{{ ansible_user_dir }}/workspace/test_results/installcheck-world.log"
       args:
