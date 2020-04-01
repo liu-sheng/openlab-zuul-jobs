@@ -116,7 +116,7 @@
     - name: Compile and install the external functions of gpdb
       shell: |
         cd contrib/btree_gin
-        gcc -Wmissing-prototypes -Wpointer-arith -Wendif-labels -Wmissing-format-attribute -Wformat-security -fno-strict-aliasing -fwrapv -fexcess-precision=standard -Wno-unused-but-set-variable -Werror=implicit-fallthrough=3 -Wno-format-truncation -O3 -std=gnu99 -Werror=implicit-function-declaration -fPIC -I. -I. -I../../src/include -D_GNU_SOURCE -c -o btree_gin.o btree_gin.c
+        gcc -Wmissing-prototypes -Wpointer-arith -Wendif-labels -Wmissing-format-attribute -Wformat-security -fno-strict-aliasing -fwrapv -fexcess-precision=standard -Wno-unused-but-set-variable -Wno-format-truncation -O3 -std=gnu99 -Werror=implicit-function-declaration -fPIC -I. -I. -I../../src/include -D_GNU_SOURCE -c -o btree_gin.o btree_gin.c
         cd ../..
         cd contrib/pgrowlocks
         gcc -Wmissing-prototypes -Wpointer-arith -Wendif-labels -Wmissing-format-attribute -Wformat-security -fno-strict-aliasing -fwrapv -fexcess-precision=standard -Wno-unused-but-set-variable -Werror=implicit-fallthrough=3 -Wno-format-truncation -O3 -std=gnu99 -Werror=implicit-function-declaration -fPIC -I. -I. -I../../src/include -D_GNU_SOURCE -c -o pgrowlocks.o pgrowlocks.c
