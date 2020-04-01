@@ -107,7 +107,7 @@
     - name: Compile and install gpdb
       shell: |
         ./configure --with-openssl --with-ldap --with-libcurl --prefix="/home/zuul/gpdb/gpsql" --disable-orca --disable-gpcloud --disable-pxf --without-readline --with-python --with-gssapi  --enable-orafce --enable-mapreduce --with-perl
-        make
+        make -j8
         make install
       args:
         executable: /bin/bash
@@ -115,6 +115,9 @@
 
     - name: Compile and install the external functions of gpdb
       shell: |
+        cd contrib/btree_gin
+        gcc -Wmissing-prototypes -Wpointer-arith -Wendif-labels -Wmissing-format-attribute -Wformat-security -fno-strict-aliasing -fwrapv -fexcess-precision=standard -Wno-unused-but-set-variable -Werror=implicit-fallthrough=3 -Wno-format-truncation -O3 -std=gnu99 -Werror=implicit-function-declaration -fPIC -I. -I. -I../../src/include -D_GNU_SOURCE -c -o btree_gin.o btree_gin.c
+        cd ../..
         cd contrib/pgrowlocks
         gcc -Wmissing-prototypes -Wpointer-arith -Wendif-labels -Wmissing-format-attribute -Wformat-security -fno-strict-aliasing -fwrapv -fexcess-precision=standard -Wno-unused-but-set-variable -Werror=implicit-fallthrough=3 -Wno-format-truncation -O3 -std=gnu99 -Werror=implicit-function-declaration -fPIC -I. -I. -I../../src/include -D_GNU_SOURCE -c -o pgrowlocks.o pgrowlocks.c
         cd ../..
