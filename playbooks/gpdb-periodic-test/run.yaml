@@ -175,9 +175,3 @@
       args:
         executable: /bin/bash
         chdir: /home/zuul/gpdb
-
-    - name: Copy result into result dir
-      shell: |
-        cp -rf ~/gpAdminLogs "{{ ansible_user_dir }}/workspace/test_results/"
-      args:
-        executable: /bin/bash
