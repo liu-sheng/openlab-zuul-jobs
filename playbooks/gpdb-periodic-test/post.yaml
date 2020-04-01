@@ -2,6 +2,7 @@
   tasks:
     - name: Copy result into result dir
       shell: |
+        set -ex
         cp -rf ~/gpAdminLogs "{{ ansible_user_dir }}/workspace/test_results/"
         diff_file="/home/zuul/gpdb/src/test/regress/regression.diffs"
         test_summary="/home/zuul/gpdb/src/test/regress/regression.out"
