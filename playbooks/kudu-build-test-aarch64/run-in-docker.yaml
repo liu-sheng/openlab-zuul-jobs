@@ -8,29 +8,19 @@
         mkdir -p "$result_dir"
         type docker || curl -sSL https://get.docker.com/ | sh -
 
-        # dockerfile: https://github.com/liusheng/my-dockerfile/tree/master/kudu-aarch64
-        # create containers fistly
+        # build docker image to save running time
+        git clone https://github.com/liusheng/my-dockerfile
+        cd my-dockerfile/kudu-aarch64
+        docker build . -f BUILD3RD.Dockerfile -t liusheng2048/kudu-aarch64:debug3rd
+        docker build . -f BUILD3RD.Dockerfile -t liusheng2048/kudu-aarch64:tsan3rd
 
-        docker create --name kudu-lint liusheng2048/kudu-aarch64:nobuild lint
-        docker create --name kudu-iwyu liusheng2048/kudu-aarch64:nobuild iwyu
-        docker create --name kudu-debug liusheng2048/kudu-aarch64:nobuild debug
-        docker create --name kudu-release liusheng2048/kudu-aarch64:nobuild release
-        docker create --cap-add=SYS_PTRACE --security-opt seccomp=unconfined --name kudu-asan liusheng2048/kudu-aarch64:nobuild asan
-        docker create --cap-add=SYS_PTRACE --security-opt seccomp=unconfined --name kudu-tsan liusheng2048/kudu-aarch64:nobuild tsan
+        docker run -d --name kudu-lint liusheng2048/kudu-aarch64:debug3rd lint
+        docker run -d --name kudu-iwyu liusheng2048/kudu-aarch64:debug3rd iwyu
+        docker run -d --name kudu-debug liusheng2048/kudu-aarch64:debug3rd debug
+        docker run -d --name kudu-release liusheng2048/kudu-aarch64:debug3rd release
+        docker run -d --cap-add=SYS_PTRACE --security-opt seccomp=unconfined --name kudu-asan liusheng2048/kudu-aarch64:debug3rd:nobuild asan
+        docker run -d --cap-add=SYS_PTRACE --security-opt seccomp=unconfined --name kudu-tsan liusheng2048/kudu-aarch64:tsan3rd tsan
 
-        docker cp "{{ ansible_user_dir }}/{{ zuul.project.src_dir }}" kudu-lint:/home/kudu/
-        docker cp "{{ ansible_user_dir }}/{{ zuul.project.src_dir }}" kudu-iwyu:/home/kudu/
-        docker cp "{{ ansible_user_dir }}/{{ zuul.project.src_dir }}" kudu-debug:/home/kudu/
-        docker cp "{{ ansible_user_dir }}/{{ zuul.project.src_dir }}" kudu-release:/home/kudu/
-        docker cp "{{ ansible_user_dir }}/{{ zuul.project.src_dir }}" kudu-asan:/home/kudu/
-        docker cp "{{ ansible_user_dir }}/{{ zuul.project.src_dir }}" kudu-tsan:/home/kudu/
-
-        docker start kudu-lint
-        docker start kudu-iwyu
-        docker start kudu-debug
-        docker start kudu-release
-        docker start kudu-asan
-        docker start kudu-tsan
         while :
         do
             [[ -z "$(docker ps -f name=kudu -q)" ]] && break
