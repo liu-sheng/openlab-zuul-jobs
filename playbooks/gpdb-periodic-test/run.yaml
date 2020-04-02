@@ -163,14 +163,12 @@
     - name: Setup demo cluster and run installcheck-world tests
       shell: |
         set -xeo pipefail
-        sleep 60
         source gpsql/greenplum_path.sh
         export USER='zuul'
         export PGUSER=zuul
         sudo service ssh start
         ulimit -n 65535
         make -C gpAux/gpdemo cluster | tee "{{ ansible_user_dir }}/workspace/test_results/cluster-launch.log"
-        sleep 60
         source gpAux/gpdemo/gpdemo-env.sh
         make installcheck-world | tee "{{ ansible_user_dir }}/workspace/test_results/installcheck-world.log"
       args:
