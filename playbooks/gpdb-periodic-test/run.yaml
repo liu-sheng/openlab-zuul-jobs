@@ -62,7 +62,8 @@
         ## Fix resolv.conf via /etc/hosts
         # add 'local_ip ubuntu' to /etc/hosts in a new line
         local_ip=`ifconfig -a|grep inet|grep -v 127.0.0.1|grep -v inet6|awk '{print $2}'|tr -d "addr:"`
-        echo "${local_ip} ubuntu" > /etc/hosts
+        name=`hostname`
+        echo "${local_ip} ${name}" > /etc/hosts
         echo "127.0.0.1 localhost" >> /etc/hosts
         cat /etc/hosts
         ## Flush any iptables as much as possible
@@ -81,11 +82,11 @@
         export SODIUM_INSTALL=system
         pip install setuptools
         pip install wheel
-        pip install --user "pyopenssl>=19.0.0"
-        pip install --user --pre psutil
-        pip install --user lockfile
-        pip install --no-binary :all: pynacl
-        pip install --user paramiko || true
+        pip install --no-use-pep517 --user "pyopenssl>=19.0.0"
+        pip install --no-use-pep517 --user --pre psutil
+        pip install --no-use-pep517 --user lockfile
+        pip install --no-use-pep517 --no-binary :all: pynacl
+        pip install --no-use-pep517 --user paramiko || true
       args:
         executable: /bin/bash
 
