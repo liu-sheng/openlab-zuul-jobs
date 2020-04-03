@@ -60,16 +60,22 @@
       jobs:
         - flink-e2e-test
 
+#- project:
+#    name: liusheng/kudu
+#    check:
+#      jobs:
+#         - kudu-build-test-aarch64-debug
+#         - kudu-build-test-aarch64-release
+#         - kudu-build-test-aarch64-lint
+#         - kudu-build-test-aarch64-iwyu
+#         - kudu-build-test-aarch64-asan
+#         - kudu-build-test-aarch64-tsan
+
 - project:
     name: liusheng/kudu
     check:
       jobs:
-         - kudu-build-test-aarch64-debug
-         - kudu-build-test-aarch64-release
-         - kudu-build-test-aarch64-lint
-         - kudu-build-test-aarch64-iwyu
-         - kudu-build-test-aarch64-asan
-         - kudu-build-test-aarch64-tsan
+         - kudu-build-test-aarch64-in-docker
 
 - project:
     name: liusheng/kudu
