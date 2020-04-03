@@ -41,7 +41,7 @@
         set -e
         echo "============== Kudu bulding and testing summary ==============="
         for test_type in lint iwyu debug release tsan asan; do
-            ret=`[ $(docker inspect $test_type-test --format='{{ '{{' }}.State.ExitCode {{ '}}' }}') == 0 ] && echo SUCCESS || echo FAILED`
+            ret=`[ $(docker inspect kudu-$test_type --format='{{ '{{' }}.State.ExitCode {{ '}}' }}') == 0 ] && echo SUCCESS || echo FAILED`
             echo "$(echo $test_type | tr 'a-z' 'A-Z') testing: $ret"
         done
         echo "================================================================"
