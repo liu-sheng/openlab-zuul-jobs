@@ -14,25 +14,21 @@
         docker build . -f BUILD3RD.Dockerfile -t liusheng2048/kudu-aarch64:build3rd
 
         docker_cmd="docker run -d --cap-add=SYS_PTRACE --security-opt seccomp=unconfined "
-        $docker_cmd --name kudu-lint liusheng2048/kudu-aarch64:build3rd lint
-        $docker_cmd --name kudu-iwyu liusheng2048/kudu-aarch64:build3rd iwyu
-        $docker_cmd --name kudu-debug liusheng2048/kudu-aarch64:build3rd debug
-        $docker_cmd --name kudu-release liusheng2048/kudu-aarch64:build3rd release
-        $docker_cmd --name kudu-asan liusheng2048/kudu-aarch64:build3rd asan
-        $docker_cmd --name kudu-tsan liusheng2048/kudu-aarch64:build3rd tsan
+
+        for build_type in {{ build_types  | join(' ') }}; do
+            $docker_cmd --name $build_type liusheng2048/kudu-aarch64:build3rd $build_type
+        done
 
         while :
         do
-            [[ -z "$(docker ps -f name=kudu -q)" ]] && break
+            docker ps --filter status=running 2>&1 > /dev/null || break
             echo "Waiting for Kudu testing complate..."
-            sleep 5
+            sleep 20
         done
-        docker cp kudu-lint:/home/kudu/results/lint/ $result_dir
-        docker cp kudu-iwyu:/home/kudu/results/iwyu/ $result_dir
-        docker cp kudu-debug:/home/kudu/results/debug/ $result_dir
-        docker cp kudu-release:/home/kudu/results/release/ $result_dir
-        docker cp kudu-asan:/home/kudu/results/asan/ $result_dir
-        docker cp kudu-tsan:/home/kudu/results/tsan/ $result_dir
+
+        for build_type in {{ build_types  | join(' ') }}; do
+            docker cp $build_type:/home/kudu/results/$build_type/ $result_dir
+        done
       args:
         executable: /bin/bash
 
@@ -40,9 +36,9 @@
       shell: |
         set -e
         echo "============== Kudu bulding and testing summary ==============="
-        for test_type in lint iwyu debug release tsan asan; do
-            ret=`[ $(docker inspect kudu-$test_type --format='{{ '{{' }}.State.ExitCode {{ '}}' }}') == 0 ] && echo SUCCESS || echo FAILED`
-            echo "$(echo $test_type | tr 'a-z' 'A-Z') testing: $ret"
+        for build_type in {{ build_types  | join(' ') }}; do
+            ret=`[ $(docker inspect build_type --format='{{ '{{' }}.State.ExitCode {{ '}}' }}') == 0 ] && echo SUCCESS || echo FAILED`
+            echo "$(echo build_type | tr 'a-z' 'A-Z') testing: $ret"
         done
         echo "================================================================"
       args:
