@@ -19,12 +19,15 @@
             $docker_cmd --name $build_type liusheng2048/kudu-aarch64:build3rd $build_type
         done
 
+        set +x
         while :
         do
-            docker ps --filter status=running 2>&1 > /dev/null || break
-            echo "Waiting for Kudu testing complate..."
+            running=`docker ps --format "{{.Names}}"`
+            [[ -z "$running" ]] && break
+            echo "Waiting for Kudu testing of: $running complate..."
             sleep 20
         done
+        set -x
 
         for build_type in {{ build_types  | join(' ') }}; do
             docker cp $build_type:/home/kudu/results/$build_type/ $result_dir
