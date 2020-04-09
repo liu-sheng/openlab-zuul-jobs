@@ -22,7 +22,7 @@
         set +x
         while :
         do
-            running=`docker ps --format "{{.Names}}"`
+            running=`docker ps --format '{{ '{{' }}.Names{{ '}}' }}'`
             [[ -z "$running" ]] && break
             echo "Waiting for Kudu testing of: $running complate..."
             sleep 20
