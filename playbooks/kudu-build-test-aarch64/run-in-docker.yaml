@@ -38,11 +38,14 @@
     - name: Building and testing result summary
       shell: |
         set -e
+        job_ret=0
         echo "============== Kudu bulding and testing summary ==============="
         for build_type in {{ build_types  | join(' ') }}; do
             ret=`[ $(docker inspect build_type --format='{{ '{{' }}.State.ExitCode {{ '}}' }}') == 0 ] && echo SUCCESS || echo FAILED`
             echo "$(echo build_type | tr 'a-z' 'A-Z') testing: $ret"
+            [[ "$ret" == FAILED ]] && job_ret=1
         done
         echo "================================================================"
+        exit $job_ret
       args:
         executable: /bin/bash
