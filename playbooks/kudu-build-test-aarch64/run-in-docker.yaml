@@ -9,9 +9,9 @@
         type docker || curl -sSL https://get.docker.com/ | sh -
 
         # build docker image to save running time
-        git clone https://github.com/liusheng/my-dockerfile
-        cd my-dockerfile/kudu-aarch64
-        docker build . -f BUILD3RD.Dockerfile -t liusheng2048/kudu-aarch64:build3rd
+        #git clone https://github.com/liusheng/my-dockerfile
+        #cd my-dockerfile/kudu-aarch64
+        #docker build . -f BUILD3RD.Dockerfile -t liusheng2048/kudu-aarch64:build3rd
 
         docker_cmd="docker run -d --cap-add=SYS_PTRACE --security-opt seccomp=unconfined "
 
