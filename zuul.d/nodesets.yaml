@@ -98,7 +98,7 @@
         label: ubuntu-bionic-arm64-8u16g-test
 
 - nodeset:
-    name: ubuntu-bionic-arm64-8u16g-hk
+    name: ubuntu-bionic-arm64-16u32g-hk
     nodes:
-      - name: ubuntu-bionic-arm64-8u16g-hk
-        label: ubuntu-bionic-arm64-8u16g-hk
+      - name: ubuntu-bionic-arm64-16u32g-hk
+        label: ubuntu-bionic-arm64-16u32g-hk
