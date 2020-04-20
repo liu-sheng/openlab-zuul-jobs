@@ -102,3 +102,9 @@
     nodes:
       - name: ubuntu-bionic-arm64-16u32g-hk
         label: ubuntu-bionic-arm64-16u32g-hk
+
+- nodeset:
+    name: ubuntu-bionic-arm64-24u48g-hk
+    nodes:
+      - name: ubuntu-bionic-arm64-24u48g-hk
+        label: ubuntu-bionic-arm64-24u48g-hk
