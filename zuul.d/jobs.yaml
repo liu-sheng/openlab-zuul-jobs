@@ -1838,3 +1838,11 @@
     post-run: playbooks/gpdb-periodic-test/post.yaml
     nodeset: ubuntu-bionic-arm64-8u16g-test
 
+- job:
+    name: storm-building-and-test-aarch64
+    parent: init-test
+    description: |
+      Storm build and test on arm64 server
+    run: playbooks/storm-building-and-test-aarch64/run.yaml
+    timeout: 864000
+    nodeset: ubuntu-bionic-arm64-16u32g-hk
