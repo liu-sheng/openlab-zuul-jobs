@@ -8,7 +8,7 @@
         mkdir -p "$result_dir"
         type docker || curl -sSL https://get.docker.com/ | sh -
 
-        docker run --name storm-aarch64 -it liusheng2048/storm-aarch64
+        docker run --name storm-aarch64 -i liusheng2048/storm-aarch64
         docker cp storm-aarch64:/home/storm/storm-results/storm_build_test.log "$result_dir"
       args:
         executable: /bin/bash
