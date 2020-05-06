@@ -34,6 +34,7 @@
     - name: Build and install frocksdb
       shell:
         cmd: |
+          env
           git clone https://github.com/dataArtisans/frocksdb.git
           cd frocksdb
           git checkout origin/FRocksDB-5.17.2
