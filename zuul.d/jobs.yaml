@@ -1692,7 +1692,7 @@
     description: |
       Flink e2e test
     run: playbooks/flink-end-to-end-test/run.yaml
-    nodeset: ubuntu-xenial-arm64
+    nodeset: ubuntu-xenial-arm64-8u16g
     timeout: 864000
 
 - job:
