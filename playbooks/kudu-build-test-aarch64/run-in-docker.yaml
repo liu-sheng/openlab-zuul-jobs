@@ -28,9 +28,9 @@
             sleep 20
         done
         set -x
-
+        docker_base_dir=/opt
         for build_type in {{ build_types  | join(' ') }}; do
-            docker cp $build_type:/home/kudu/results/$build_type/ $result_dir
+            docker cp $build_type:$docker_base_dir/results/$build_type/ $result_dir
         done
       args:
         executable: /bin/bash
