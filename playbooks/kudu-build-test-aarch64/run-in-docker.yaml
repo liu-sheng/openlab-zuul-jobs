@@ -12,8 +12,9 @@
         # git clone https://github.com/liusheng/my-dockerfile
         # cd my-dockerfile/kudu-aarch64
         # docker build . -f BUILD3RD.Dockerfile -t liusheng2048/kudu-aarch64:build3rd
+        patch="https://patch-diff.githubusercontent.com/raw/liusheng/kudu/pull/17.patch"
 
-        docker_cmd="docker run -d --cap-add=SYS_PTRACE -e PULL_CODE=true --security-opt seccomp=unconfined "
+        docker_cmd="docker run -d --cap-add=SYS_PTRACE -e PATCH=$patch --security-opt seccomp=unconfined "
 
         for build_type in {{ build_types  | join(' ') }}; do
             $docker_cmd --name $build_type liusheng2048/kudu-aarch64:build3rd $build_type
