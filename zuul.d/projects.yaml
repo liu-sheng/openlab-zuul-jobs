@@ -22,13 +22,6 @@
       jobs:
          - kudu-build-test-aarch64-in-docker
 
-
-- project:
-    name: liusheng/storm
-    check-simple:
-      jobs:
-         - storm-building-and-test-aarch64
-
 - project:
     name: bzhaoopenstack/gpdb
     check:
