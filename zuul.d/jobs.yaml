@@ -1769,7 +1769,7 @@
       Kudu build and test on arm64 server
     run: playbooks/kudu-build-test-aarch64/run-in-docker.yaml
     timeout: 864000
-    nodeset: ubuntu-bionic-arm64-12u24g-hk #ubuntu-bionic-arm64-32u64g
+    nodeset: ubuntu-bionic-arm64-12u24g #ubuntu-bionic-arm64-32u64g
     vars:
       build_types:
         - lint
@@ -1836,7 +1836,7 @@
       Greenplum periodic test
     run: playbooks/gpdb-periodic-test/run.yaml
     post-run: playbooks/gpdb-periodic-test/post.yaml
-    nodeset: ubuntu-bionic-arm64-8u16g-test
+    nodeset: ubuntu-bionic-arm64-8u16g
 
 - job:
     name: storm-building-and-test-aarch64
@@ -1845,4 +1845,4 @@
       Storm build and test on arm64 server
     run: playbooks/storm-building-and-test-aarch64/run.yaml
     timeout: 864000
-    nodeset: ubuntu-bionic-arm64-16u32g-hk
+    nodeset: ubuntu-bionic-arm64-16u32g

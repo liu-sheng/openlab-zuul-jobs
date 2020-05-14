@@ -1,52 +1,8 @@
 - project:
-    check:
-      jobs:
-        - openlab-zuul-jobs-check
-
-- project:
-    name: liusheng/volcano
-    check:
-      jobs:
-        - tensorflow-benchmarks-volcano-kubeflow-k8s-v1.14.0
-
-- project:
-    name: liusheng/packer
-    check:
-      jobs:
-        - packer-v1.4.1-functional-devstack-stein
-
-- project:
-    name: liusheng/machine
-    check:
-      jobs:
-        - docker-machine-functional-devstack-rocky
-
-- project:
-    name: liusheng/spark
-    check:
-      jobs:
-        - spark-integration-test-minikube-k8s-v1.10.0
-
-- project:
-    name: liusheng/hive
-    check:
-      jobs:
-         - hive-build-arm64
-
-- project:
     name: ZhengZhenyu/kind
     check:
       jobs:
          - kind-integration-test-arm64
-
-- project:
-    name: liusheng/hadoop
-    check:
-      jobs:
-         - hadoop-build-arm64-debug
-    recheck-mitaka:
-      jobs:
-         - hadoop-build-arm64-debug-x86
 
 - project:
     name: bzhaoopenstack/ansible
@@ -60,28 +16,12 @@
       jobs:
         - flink-e2e-test
 
-#- project:
-#    name: liusheng/kudu
-#    check:
-#      jobs:
-#         - kudu-build-test-aarch64-debug
-#         - kudu-build-test-aarch64-release
-#         - kudu-build-test-aarch64-lint
-#         - kudu-build-test-aarch64-iwyu
-#         - kudu-build-test-aarch64-asan
-#         - kudu-build-test-aarch64-tsan
-
 - project:
     name: liusheng/kudu
     check:
       jobs:
          - kudu-build-test-aarch64-in-docker
 
-- project:
-    name: liusheng/kudu
-    recheck-kudu-docker:
-      jobs:
-         - kudu-build-test-aarch64-in-docker
 
 - project:
     name: liusheng/storm
