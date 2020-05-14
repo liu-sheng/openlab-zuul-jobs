@@ -755,25 +755,40 @@
       mysql:
 
 - pipeline:
-    name: recheck-kudu-docker
+    name: mail-kudu
     description: |
-      Commenting "recheck docker" enter this pipeline to run building and testing of Kudu in
-      docker.
+      Newly uploaded patchsets enter this pipeline to receive an
+      initial +/-1 Verified vote.
     manager: independent
     trigger:
       github:
         - event: pull_request
+          action:
+            - opened
+            - changed
+            - reopened
+        - event: pull_request
           action: comment
-          comment: (?i)^\s*recheck\s+docker\s*$
+          comment: (?i)^\s*recheck\s*$
     start:
       github:
         status: pending
         comment: false
+        status-url: http://80.158.17.129/status/change/{change.number},{change.patchset}
     success:
       github:
         status: 'success'
+      smtp:
+        from: info@openlabtesting.org
+        to: liusheng2048@gmail.com
+        subject: Success
       mysql:
+
     failure:
       github:
         status: 'failure'
+      smtp:
+        from: info@openlabtesting.org
+        to: liusheng2048@gmail.com
+        subject: Failed
       mysql:

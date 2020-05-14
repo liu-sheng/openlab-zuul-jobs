@@ -18,7 +18,7 @@
 
 - project:
     name: liusheng/kudu
-    check:
+    mail-kudu:
       jobs:
          - kudu-build-test-aarch64-in-docker
 
