@@ -780,7 +780,7 @@
         status: 'success'
       smtp:
         from: info@openlabtesting.org
-        to: liusheng2048@gmail.com
+        to: huangtianhua223@gmail.com
         subject: Success
       mysql:
 
@@ -789,6 +789,6 @@
         status: 'failure'
       smtp:
         from: info@openlabtesting.org
-        to: liusheng2048@gmail.com
+        to: huangtianhua223@gmail.com
         subject: Failed
       mysql:
