@@ -3,180 +3,84 @@
     - name: Install the necessary libraries via apt
       become: true
       shell: |
-        apt-get update
-        apt-get install -y --no-install-recommends \
-        build-essential \
-        ccache \
-        libevent-dev \
-        libapr1-dev \
-        libffi-dev \
-        libssl-dev \
-        git \
-        python-pip \
-        python-dev \
+        apt update && \
+        apt install -y build-essential \
+        openjdk-8-jdk \
+        python \
+        zip \
+        unzip \
         gcc \
-        libsodium-dev \
-        libcurl4-openssl-dev \
-        libzstd1-dev \
-        libldap2-dev \
-        flex \
-        libbz2-dev \
-        bison \
-        libpq-dev \
-        postgresql-server-dev-all \
-        postgresql-common \
-        libyaml-dev \
-        zlib1g \
-        zlib1g-dev \
-        sudo \
-        vim \
-        net-tools \
-        less \
-        iputils-ping \
-        iproute2 \
-        ssh \
-        locales \
-        locales-all \
+        python3 \
+        python3-dev \
+        python3-pip \
+        libhdf5-serial-dev \
+        git \
+        pkg-config \
         wget \
-        rsync \
-        perl \
-        libperl-dev
+        sudo
       args:
         executable: /bin/bash
 
-    - name: Localdef change
+    - name: Install pip deps
       become: true
       shell: |
-        localedef -i en_US -f UTF-8 en_US.UTF-8
+        pip3 install virtualenv
       args:
         executable: /bin/bash
-
-    - name: Fix local env to make sure the demo cluster can setup
-      become: true
-      shell: |
-        set -xeo pipefail
-        ## Fix the issue during startup the demo cluster like
-        # psql: FATAL:  semctl(17530881, 14, SETVAL, 0) failed: Invalid argument (pg_sema.c:151)
-        echo "RemoveIPC=no" >> /etc/systemd/logind.conf
-        service systemd-logind restart
-        ## Fix resolv.conf via /etc/hosts
-        # add 'local_ip ubuntu' to /etc/hosts in a new line
-        local_ip=`ifconfig -a|grep inet|grep -v 127.0.0.1|grep -v inet6|awk '{print $2}'|tr -d "addr:"`
-        name=`hostname`
-        echo "${local_ip} ${name}" > /etc/hosts
-        echo "127.0.0.1 localhost" >> /etc/hosts
-        cat /etc/hosts
-        ## Flush any iptables as much as possible
-        iptables -F
-        iptables -F -t nat
-      args:
-        executable: /bin/bash
-
-    - name: Create results directory
-      file:
-        path: "{{ ansible_user_dir }}/workspace/test_results"
-        state: directory
 
     - name: Install pip deps
       shell: |
-        export SODIUM_INSTALL=system
-        pip install setuptools
-        pip install wheel
-        pip install --no-use-pep517 --user "pyopenssl>=19.0.0"
-        pip install --no-use-pep517 --user --pre psutil
-        pip install --no-use-pep517 --user lockfile
-        pip install --no-use-pep517 --no-binary :all: pynacl
-        pip install --no-use-pep517 --user paramiko || true
+        pip3 install cython
+        pip3 install numpy future keras_preprocessing mock
       args:
         executable: /bin/bash
 
-    - name: Git clone the repo with shorter directory
-      shell:
-        git clone https://github.com/greenplum-db/gpdb.git
-      args:
-        executable: /bin/bash
-        chdir: /home/zuul
-
-    - name: Install GSSAPI deps
+    - name: Install bazel 0.26.1
       shell: |
-        export DEBIAN_FRONTEND=noninteractive
-        sudo DEBIAN_FRONTEND=noninteractive apt update
-        sudo DEBIAN_FRONTEND=noninteractive apt install krb5-kdc krb5-admin-server libkrb5-dev -y
+        wget https://github.com/bazelbuild/bazel/releases/download/0.26.0/bazel-0.26.0-dist.zip
+        mkdir bazel
+        unzip bazel-0.26.0-dist.zip -d bazel
+        cd bazel
+        EXTRA_BAZEL_ARGS='--host_javabase=@local_jdk//:jdk' ./compile.sh
+        sudo ln -s `pwd`/output/bazel /usr/bin/bazel
       args:
         executable: /bin/bash
 
-    - name: Compile and install gpdb
+    - name: Build TF 2.0
       shell: |
-        ./configure --with-openssl --with-ldap --with-libcurl --prefix="/home/zuul/gpdb/gpsql" --disable-orca --disable-gpcloud --disable-pxf --without-readline --with-python --with-gssapi  --enable-orafce --enable-mapreduce --with-perl
-        make -j8
-        make install
-      args:
-        executable: /bin/bash
-        chdir: /home/zuul/gpdb
+        set -xe
+        virtualenv --python=python3.6 ~/.env/tensorflow/
+        source ~/.env/tensorflow/bin/activate
+        cd
+        wget https://github.com/tensorflow/tensorflow/archive/v2.0.0.tar.gz
+        tar -xvf v2.0.0.tar.gz
+        cd tensorflow-2.0.0
+        cat << EOF > input
 
-    - name: Compile and install the external functions of gpdb
-      shell: |
-        cd contrib/btree_gin
-        gcc -Wmissing-prototypes -Wpointer-arith -Wendif-labels -Wmissing-format-attribute -Wformat-security -fno-strict-aliasing -fwrapv -fexcess-precision=standard -Wno-unused-but-set-variable -Wno-format-truncation -O3 -std=gnu99 -Werror=implicit-function-declaration -fPIC -I. -I. -I../../src/include -D_GNU_SOURCE -c -o btree_gin.o btree_gin.c
-        cd ../..
-        cd contrib/pgrowlocks
-        gcc -Wmissing-prototypes -Wpointer-arith -Wendif-labels -Wmissing-format-attribute -Wformat-security -fno-strict-aliasing -fwrapv -fexcess-precision=standard -Wno-unused-but-set-variable -Werror=implicit-fallthrough=3 -Wno-format-truncation -O3 -std=gnu99 -Werror=implicit-function-declaration -fPIC -I. -I. -I../../src/include -D_GNU_SOURCE -c -o pgrowlocks.o pgrowlocks.c
-        cd ../..
-        make -C contrib/ install
-        make -C gpcontrib/ install
-      args:
-        executable: /bin/bash
-        chdir: /home/zuul/gpdb
+        n
+        n
+        n
+        n
+        n
+        n
 
-    - name: Check the installed apps
-      shell: |
-        source gpsql/greenplum_path.sh
-        postgres --version
-        initdb --version
-        createdb --version
-        psql --version
-        gpssh --version
-        gpmapreduce --version
-        gpfdist --version
-      args:
-        executable: /bin/bash
-        chdir: /home/zuul/gpdb
+        n
 
-    - name: First run the unittest-check will fail
-      shell: |
-        source gpsql/greenplum_path.sh
-        make -s unittest-check || exit 0
-      args:
-        executable: /bin/bash
-        chdir: /home/zuul/gpdb
-
-    - name: Try the best to run the unittest-check with fixes
-      shell: |
-        set -xeo pipefail
-        cat src/test/unit/mock/backend/libpq/pqexpbuffer_mock.c | grep -v 'check_expected(args);' > src/test/unit/mock/backend/libpq/pqexpbuffer_mock.c_new
-        mv src/test/unit/mock/backend/libpq/pqexpbuffer_mock.c_new src/test/unit/mock/backend/libpq/pqexpbuffer_mock.c
-        make -s unittest-check
-      args:
-        executable: /bin/bash
-        chdir: /home/zuul/gpdb
-
-    - name: debug
-      shell: |
-        sleep 36000
+        EOF
+        ./configure < ./input
+        pip3 install numpy keras_preprocessing
+        bazel clean --expunge
+        bazel build --config=opt //tensorflow/tools/pip_package:build_pip_package --local_ram_resources=2048 --local_cpu_resources=2
+        mkdir tensorflow-pkg
+        bazel-bin/tensorflow/tools/pip_package/build_pip_package ./tensorflow-pkg
       args:
         executable: /bin/bash
 
-    - name: Setup demo cluster and run installcheck-world tests
+    - name: Verify TF 2.0 python package
       shell: |
-        set -xeo pipefail
-        source gpsql/greenplum_path.sh
-        export USER='zuul'
-        export PGUSER=zuul
-        sudo service ssh start
-        ulimit -n 65535
-        make -C gpAux/gpdemo cluster | tee "{{ ansible_user_dir }}/workspace/test_results/cluster-launch.log"
-        source gpAux/gpdemo/gpdemo-env.sh
-        make installcheck-world | tee "{{ ansible_user_dir }}/workspace/test_results/installcheck-world.log"
+        set -xe
+        cd /home/zuul/tensorflow-2.0.0/tensorflow-pkg
+        pip3 install tensorflow-*.whl
+        python3 -c "import tensorflow as tf; print(tf.__version__)"
       args:
         executable: /bin/bash
-        chdir: /home/zuul/gpdb
