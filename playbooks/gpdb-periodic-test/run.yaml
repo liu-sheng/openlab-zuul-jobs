@@ -62,7 +62,8 @@
         tar -xvf v2.0.0.tar.gz
         cd tensorflow-2.0.0
         cat << EOF > input
-
+        
+        
         n
         n
         n
@@ -76,7 +77,7 @@
         ./configure < ./input
         pip3 install numpy keras_preprocessing
         bazel clean --expunge
-        bazel build --config=opt //tensorflow/tools/pip_package:build_pip_package --local_ram_resources=2048 --local_cpu_resources=2
+        bazel build --config=opt //tensorflow/tools/pip_package:build_pip_package
         mkdir tensorflow-pkg
         bazel-bin/tensorflow/tools/pip_package/build_pip_package ./tensorflow-pkg
       args:
