@@ -46,12 +46,6 @@
       args:
         executable: /bin/bash
 
-    - name: debug
-      shell: |
-        sleep 36000
-      args:
-        executable: /bin/bash
-
     - name: Build TF 2.0
       shell: |
         set -xe
