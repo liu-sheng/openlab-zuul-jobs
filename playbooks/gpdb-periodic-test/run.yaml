@@ -21,43 +21,72 @@
       args:
         executable: /bin/bash
 
-    - name: Install pip deps
+    - name: Install higher version cmake and gcc
+      become: true
+      shell: |
+        set -ex
+        apt update && \
+        apt install libgmp-dev libmpfr-dev libmpc-dev -y
+        cd && \
+        wget https://cmake.org/files/v3.5/cmake-3.5.2.tar.gz && \
+        tar -zxvf cmake-3.5.2.tar.gz && \
+        cd cmake-3.5.2 && \
+        ./bootstrap && \
+        make && \
+        make install && \
+        cmake --version && \
+        which cmake
+        cd && \
+        wget https://mirrors.tuna.tsinghua.edu.cn/gnu/gcc/gcc-9.2.0/gcc-9.2.0.tar.gz && \
+        tar -xvf gcc-9.2.0.tar.gz && \
+        cd gcc-9.2.0 && \
+        ./configure --prefix=/usr --mandir=/usr/share/man --infodir=/usr/share/info --enable-bootstrap && \
+        make -j 96 && \
+        make install && \
+        gcc -v && \
+        which gcc
+      args:
+        executable: /bin/bash
+
+    - name: Install bazel 3.1.0
+      become: true
+      shell: |
+        set -ex
+        cd
+        wget https://github.com/bazelbuild/bazel/releases/download/3.1.0/bazel-3.1.0-dist.zip
+        mkdir bazel
+        unzip bazel-3.1.0-dist.zip -d bazel
+        cd bazel
+        EXTRA_BAZEL_ARGS='--host_javabase=@local_jdk//:jdk' ./compile.sh
+        ln -s `pwd`/output/bazel /usr/bin/bazel
+      args:
+        executable: /bin/bash
+
+    - name: Install pip deps on system cmd
       become: true
       shell: |
         pip3 install virtualenv
       args:
         executable: /bin/bash
 
-    - name: Install pip deps
+    - name: Install pip deps via user account
       shell: |
         pip3 install cython
         pip3 install numpy future keras_preprocessing mock
       args:
         executable: /bin/bash
 
-    - name: Install bazel 0.26.1
-      shell: |
-        wget https://github.com/bazelbuild/bazel/releases/download/0.26.0/bazel-0.26.0-dist.zip
-        mkdir bazel
-        unzip bazel-0.26.0-dist.zip -d bazel
-        cd bazel
-        EXTRA_BAZEL_ARGS='--host_javabase=@local_jdk//:jdk' ./compile.sh
-        sudo ln -s `pwd`/output/bazel /usr/bin/bazel
-      args:
-        executable: /bin/bash
-
-    - name: Build TF 2.0
+    - name: Build Tensorflow master
       shell: |
         set -xe
         virtualenv --python=python3.6 ~/.env/tensorflow/
         source ~/.env/tensorflow/bin/activate
         cd
-        wget https://github.com/tensorflow/tensorflow/archive/v2.0.0.tar.gz
-        tar -xvf v2.0.0.tar.gz
-        cd tensorflow-2.0.0
+        git clone https://github.com/tensorflow/tensorflow.git
+        cd tensorflow
         cat << EOF > input
-        
-        
+
+
         n
         n
         n
@@ -77,10 +106,10 @@
       args:
         executable: /bin/bash
 
-    - name: Verify TF 2.0 python package
+    - name: Verify Tensorflow whl package
       shell: |
         set -xe
-        cd /home/zuul/tensorflow-2.0.0/tensorflow-pkg
+        cd tensorflow-pkg
         pip3 install tensorflow-*.whl
         python3 -c "import tensorflow as tf; print(tf.__version__)"
       args:
