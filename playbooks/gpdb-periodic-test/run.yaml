@@ -101,6 +101,7 @@
         ./configure < ./input
         pip3 install numpy keras_preprocessing
         bazel clean --expunge
+        sleep 36000
         bazel build --config=opt //tensorflow/tools/pip_package:build_pip_package
         mkdir tensorflow-pkg
         bazel-bin/tensorflow/tools/pip_package/build_pip_package ./tensorflow-pkg
