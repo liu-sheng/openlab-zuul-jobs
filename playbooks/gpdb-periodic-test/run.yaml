@@ -110,20 +110,32 @@
         virtualenv --python=python3.6 ~/.env/tensorflow/
         source ~/.env/tensorflow/bin/activate
         cd ~/tensorflow
+        sudo apt install tcl tk expect -y
         cat << EOF > input
-        /usr/bin/python3
-
-        n
-        n
-        n
-        n
-        n
-        n
-
-        n
-
+        #!/usr/bin/expect
+        spawn "./configure"
+        expect "*Please specify the location of python*"
+        send "/usr/bin/python3\r"
+        expect "*Please input the desired Python library path to use*"
+        send "\r"
+        expect "*Do you wish to build TensorFlow with XLA JIT support*"
+        send "n\r"
+        expect "*Do you wish to build TensorFlow with OpenCL SYCL support*"
+        send "n\r"
+        expect "*Do you wish to build TensorFlow with ROCm support*"
+        send "n\r"
+        expect "*Do you wish to build TensorFlow with CUDA support*"
+        send "n\r"
+        expect "*Do you wish to download a fresh release of clang*"
+        send "n\r"
+        expect "*Please specify optimization flags to use during compilation when bazel option*"
+        send "\r"
+        expect "*Would you like to interactively configure*"
+        send "n\r"
+        interact
         EOF
-        ./configure < ./input
+        sudo chmod +x ./input
+        ./input
         pip3 install numpy keras_preprocessing
         bazel clean --expunge
         bazel build --config=opt --config=noaws --config=nogcp --config=nonccl \
