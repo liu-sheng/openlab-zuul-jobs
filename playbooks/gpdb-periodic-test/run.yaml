@@ -138,8 +138,7 @@
         ./input
         pip3 install numpy keras_preprocessing
         bazel clean --expunge
-        bazel build --config=opt --config=noaws --config=nogcp --config=nonccl \
-        //tensorflow/tools/pip_package:build_pip_package \
+        bazel build --config=opt //tensorflow/tools/pip_package:build_pip_package \
         --local_ram_resources=10240 --local_cpu_resources=4 --verbose_failures
         mkdir tensorflow-pkg
         bazel-bin/tensorflow/tools/pip_package/build_pip_package ./tensorflow-pkg
