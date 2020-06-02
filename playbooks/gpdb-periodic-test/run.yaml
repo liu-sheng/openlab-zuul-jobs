@@ -148,7 +148,7 @@
         executable: /bin/bash
         chdir: '{{ zuul.project.src_dir }}/tensorflow-pkg'
 
- - name: Verify Tensorflow with MNIST test
+    - name: Verify Tensorflow with MNIST test
       shell: |
         set -ex
         cd ~/tensorflow/tensorflow-pkg
