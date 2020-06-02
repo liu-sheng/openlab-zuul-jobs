@@ -127,6 +127,7 @@
         EOF
         ./configure < ./input
         pip3 install numpy keras_preprocessing
+        sleep 36000
         bazel clean --expunge
         bazel build --config=opt --config=noaws --config=nogcp --config=nonccl \
         //tensorflow/tools/pip_package:build_pip_package \
