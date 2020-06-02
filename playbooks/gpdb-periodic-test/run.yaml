@@ -1,5 +1,16 @@
 - hosts: all
   tasks:
+    - name: Set maven env vars
+      set_fact:
+        test_env:
+          RELEASE: v2.0.0
+          BAZEL_VERSION: 3.1.0
+          GCC_VERSION: 7.5.0
+
+    - name: Merge maven env vars into global env
+      set_fact:
+        global_env: '{{ global_env | combine(test_env) }}'
+
     - name: Install the necessary libraries via apt
       become: true
       shell: |
@@ -21,7 +32,21 @@
       args:
         executable: /bin/bash
 
-    - name: Install higher version cmake and gcc
+    - name: Checkout Release
+      shell:
+        cmd: |
+          cd
+          git https://github.com/tensorflow/tensorflow.git
+          cd tensorflow
+          git checkout {{ global_env.RELEASE }} -b {{ global_env.RELEASE }}
+      args:
+        executable: /bin/bash
+        chdir: '{{ zuul.project.src_dir }}'
+      environment: '{{ global_env }}'
+      when:
+        global_env.RELEASE != 'master'
+
+    - name: Install higher version cmake 3.5.2 and gcc {{ global_env.GCC_VERSION }}
       become: true
       shell: |
         set -ex
@@ -37,30 +62,34 @@
         cmake --version && \
         which cmake
         cd && \
-        wget https://mirrors.tuna.tsinghua.edu.cn/gnu/gcc/gcc-9.2.0/gcc-9.2.0.tar.gz && \
-        tar -xvf gcc-9.2.0.tar.gz && \
-        cd gcc-9.2.0 && \
+        wget https://mirrors.tuna.tsinghua.edu.cn/gnu/gcc/gcc-{{ global_env.GCC_VERSION }}/gcc-{{ global_env.GCC_VERSION }}.tar.gz && \
+        tar -xvf gcc-{{ global_env.GCC_VERSION }}.tar.gz && \
+        cd gcc-{{ global_env.GCC_VERSION }} && \
         ./configure --prefix=/usr --mandir=/usr/share/man --infodir=/usr/share/info --enable-bootstrap && \
-        make -j 96 && \
+        make -j8 && \
         make install && \
         gcc -v && \
         which gcc
       args:
         executable: /bin/bash
+      environment: '{{ global_env }}'
 
-    - name: Install bazel 3.1.0
+    - name: Install bazel {{ global_env.BAZEL_VERSION }}
+      become: true
       shell: |
         set -ex
         cd
-        wget https://github.com/bazelbuild/bazel/releases/download/3.1.0/bazel-3.1.0-dist.zip
+        wget https://github.com/bazelbuild/bazel/releases/download/{{ global_env.BAZEL_VERSION }}/bazel-{{ global_env.BAZEL_VERSION }}-dist.zip
         mkdir bazel
-        unzip bazel-3.1.0-dist.zip -d bazel
+        unzip bazel-{{ global_env.BAZEL_VERSION }}-dist.zip -d bazel
         cd bazel
         EXTRA_BAZEL_ARGS='--host_javabase=@local_jdk//:jdk' ./compile.sh
-        sudo ln -s `pwd`/output/bazel /usr/bin/bazel
+        ln -s `pwd`/output/bazel /usr/bin/bazel
+        export PATH=$PATH:/usr/bin/
         which bazel
       args:
         executable: /bin/bash
+      environment: '{{ global_env }}'
 
     - name: Install pip deps on system cmd
       become: true
@@ -76,15 +105,13 @@
       args:
         executable: /bin/bash
 
-    - name: Build Tensorflow master
+    - name: Build Tensorflow {{ global_env.RELEASE }}
       shell: |
         set -xe
         export PATH=$PATH:/usr/bin/
         virtualenv --python=python3.6 ~/.env/tensorflow/
         source ~/.env/tensorflow/bin/activate
-        cd
-        git clone https://github.com/tensorflow/tensorflow.git
-        cd tensorflow
+        cd ~/tensorflow
         cat << EOF > input
 
 
@@ -98,22 +125,66 @@
         n
 
         EOF
-        sudo rm -rf /usr/lib/aarch64-linux-gnu/libstdc++.so.6
-        sudo ln -s /usr/lib64/libstdc++.so.6.0.27 /usr/lib/aarch64-linux-gnu/libstdc++.so.6
         ./configure < ./input
         pip3 install numpy keras_preprocessing
         bazel clean --expunge
-        bazel build --config=opt //tensorflow/tools/pip_package:build_pip_package
+        bazel build --config=opt --config=noaws --config=nogcp --config=nonccl \
+        //tensorflow/tools/pip_package:build_pip_package \
+        --local_ram_resources=10240 --local_cpu_resources=6 --verbose_failures
         mkdir tensorflow-pkg
         bazel-bin/tensorflow/tools/pip_package/build_pip_package ./tensorflow-pkg
       args:
         executable: /bin/bash
+        chdir: '{{ zuul.project.src_dir }}'
+      environment: '{{ global_env }}'
 
     - name: Verify Tensorflow whl package
       shell: |
         set -xe
-        cd tensorflow-pkg
+        cd ~/tensorflow/tensorflow-pkg
         pip3 install tensorflow-*.whl
         python3 -c "import tensorflow as tf; print(tf.__version__)"
       args:
         executable: /bin/bash
+        chdir: '{{ zuul.project.src_dir }}/tensorflow-pkg'
+
+ - name: Verify Tensorflow with MNIST test
+      shell: |
+        set -ex
+        cd ~/tensorflow/tensorflow-pkg
+        export MPLLOCALFREETYPE=1
+        sudo apt install -y libpng12-dev
+        pip3 install matplotlib tensorflow_datasets
+        wget https://raw.githubusercontent.com/bzhaoopenstack/dockertoy/master/tests/ai/examples/test_mnist.py
+        python3 ./test_mnist.py
+      args:
+        executable: /bin/bash
+        chdir: '{{ zuul.project.src_dir }}/tensorflow-pkg'
+
+    - name: Copy the built file
+      shell:
+        cmd: |
+          cd ~/tensorflow/
+          cp tensorflow-pkg/tensorflow-*.whl "{{ ansible_user_dir }}/workspace/test_results/"
+      args:
+        executable: /bin/bash
+        chdir: '{{ zuul.project.src_dir }}'
+      environment: '{{ global_env }}'
+
+    - name: Get whl file name
+      find:
+        paths: "{{ ansible_user_dir }}/workspace/test_results/"
+        patterns: 'tensorflow-*.whl'
+      register: file_name_matched
+
+    - name: Set whl file name
+      set_fact:
+        whl_file_name: "{{ file_name_matched.files[0].path.split('/')[-1] }}"
+
+    - name: Return artifact to Zuul
+      zuul_return:
+        data:
+          zuul:
+            artifacts:
+              - name: "whl file download"
+                url: "test_results/{{ whl_file_name }}"
