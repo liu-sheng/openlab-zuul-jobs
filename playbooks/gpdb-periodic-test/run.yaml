@@ -4,7 +4,7 @@
       set_fact:
         test_env:
           RELEASE: v2.0.0
-          BAZEL_VERSION: 3.1.0
+          BAZEL_VERSION: 0.26.1
           GCC_VERSION: 7.5.0
 
     - name: Merge maven env vars into global env
@@ -52,7 +52,7 @@
         set -ex
         apt update && \
         apt install libgmp-dev libmpfr-dev libmpc-dev -y
-        cd && \
+        cd /opt && \
         wget https://cmake.org/files/v3.5/cmake-3.5.2.tar.gz && \
         tar -zxvf cmake-3.5.2.tar.gz && \
         cd cmake-3.5.2 && \
@@ -61,7 +61,7 @@
         make install && \
         cmake --version && \
         which cmake
-        cd && \
+        cd /opt && \
         wget https://mirrors.tuna.tsinghua.edu.cn/gnu/gcc/gcc-{{ global_env.GCC_VERSION }}/gcc-{{ global_env.GCC_VERSION }}.tar.gz && \
         tar -xvf gcc-{{ global_env.GCC_VERSION }}.tar.gz && \
         cd gcc-{{ global_env.GCC_VERSION }} && \
@@ -78,14 +78,13 @@
       become: true
       shell: |
         set -ex
-        cd
+        cd /opt/
         wget https://github.com/bazelbuild/bazel/releases/download/{{ global_env.BAZEL_VERSION }}/bazel-{{ global_env.BAZEL_VERSION }}-dist.zip
         mkdir bazel
         unzip bazel-{{ global_env.BAZEL_VERSION }}-dist.zip -d bazel
         cd bazel
         EXTRA_BAZEL_ARGS='--host_javabase=@local_jdk//:jdk' ./compile.sh
         ln -s `pwd`/output/bazel /usr/bin/bazel
-        export PATH=$PATH:/usr/bin/
         which bazel
       args:
         executable: /bin/bash
@@ -108,12 +107,11 @@
     - name: Build Tensorflow {{ global_env.RELEASE }}
       shell: |
         set -xe
-        export PATH=$PATH:/usr/bin/
         virtualenv --python=python3.6 ~/.env/tensorflow/
         source ~/.env/tensorflow/bin/activate
         cd ~/tensorflow
         cat << EOF > input
-
+        /usr/bin/python3
 
         n
         n
@@ -127,11 +125,10 @@
         EOF
         ./configure < ./input
         pip3 install numpy keras_preprocessing
-        sleep 36000
         bazel clean --expunge
         bazel build --config=opt --config=noaws --config=nogcp --config=nonccl \
         //tensorflow/tools/pip_package:build_pip_package \
-        --local_ram_resources=10240 --local_cpu_resources=6 --verbose_failures
+        --local_ram_resources=10240 --local_cpu_resources=4 --verbose_failures
         mkdir tensorflow-pkg
         bazel-bin/tensorflow/tools/pip_package/build_pip_package ./tensorflow-pkg
       args:
@@ -143,6 +140,9 @@
       shell: |
         set -xe
         cd ~/tensorflow/tensorflow-pkg
+        sudo apt install build-essential gcc libhdf5-serial-dev pkg-config -y
+        pip3 install cython numpy keras_preprocessing
+        sudo apt install libblas-dev liblapack-dev gfortran -y
         pip3 install tensorflow-*.whl
         python3 -c "import tensorflow as tf; print(tf.__version__)"
       args:
