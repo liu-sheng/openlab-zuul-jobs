@@ -36,7 +36,7 @@
       shell:
         cmd: |
           cd
-          git https://github.com/tensorflow/tensorflow.git
+          git clone https://github.com/tensorflow/tensorflow.git
           cd tensorflow
           git checkout {{ global_env.RELEASE }} -b {{ global_env.RELEASE }}
       args:
