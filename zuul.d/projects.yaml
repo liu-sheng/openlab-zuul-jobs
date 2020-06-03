@@ -27,6 +27,8 @@
     check:
       jobs:
         - gpdb-periodic-test
+        - gpdb-periodic-test-v2.0.0
+        - gpdb-periodic-test-v2.1.0
 
 - project:
     name: liusheng/my-dockerfile

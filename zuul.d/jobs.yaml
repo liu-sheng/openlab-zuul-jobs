@@ -1839,6 +1839,24 @@
     nodeset: ubuntu-bionic-arm64-8u16g
 
 - job:
+    name: gpdb-periodic-test-v2.0.0
+    parent: init-test
+    description: |
+      Greenplum v2.0.0 periodic test
+    run: playbooks/gpdb-periodic-test/run_200.yaml
+    post-run: playbooks/gpdb-periodic-test/post.yaml
+    nodeset: ubuntu-bionic-arm64-8u16g
+
+- job:
+    name: gpdb-periodic-test-v2.1.0
+    parent: init-test
+    description: |
+      Greenplum v2.1.0 periodic test
+    run: playbooks/gpdb-periodic-test/run_210.yaml
+    post-run: playbooks/gpdb-periodic-test/post.yaml
+    nodeset: ubuntu-bionic-arm64-8u16g
+
+- job:
     name: storm-building-and-test-aarch64
     parent: init-test
     description: |

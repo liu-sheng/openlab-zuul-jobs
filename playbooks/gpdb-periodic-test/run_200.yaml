@@ -6,7 +6,6 @@
           RELEASE: v2.0.0
           BAZEL_VERSION: 0.26.1
           GCC_VERSION: 7.5.0
-          ENV_KEEP: y
 
     - name: Merge maven env vars into global env
       set_fact:
@@ -32,15 +31,6 @@
         sudo
       args:
         executable: /bin/bash
-
-    - name: debug
-      shell:
-        cmd: |
-          sleep 36000
-      args:
-        executable: /bin/bash
-      when:
-        global_env.ENV_KEEP == 'y'
 
     - name: Checkout Release
       shell:
