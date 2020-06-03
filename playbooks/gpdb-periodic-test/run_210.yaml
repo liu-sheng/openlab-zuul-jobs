@@ -75,6 +75,8 @@
       args:
         executable: /bin/bash
       environment: '{{ global_env }}'
+      when:
+        global_env.GCC_VERSION in ["7.3.0"]
 
     - name: Install bazel {{ global_env.BAZEL_VERSION }}
       become: true
