@@ -6,7 +6,7 @@
           RELEASE: v2.0.0
           BAZEL_VERSION: 0.26.1
           GCC_VERSION: 7.5.0
-          ENV_KEEP: y
+          ENV_KEEP: n
 
     - name: Merge maven env vars into global env
       set_fact:
