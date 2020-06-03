@@ -122,7 +122,7 @@
         virtualenv --python=python3.6 ~/.env/tensorflow/
         source ~/.env/tensorflow/bin/activate
         release={{ global_env.RELEASE }}
-        if [ $release != 'master' ]; then
+        if [ $release == 'master' ]; then
             cd ~/tensorflow
         fi
         cd ~
