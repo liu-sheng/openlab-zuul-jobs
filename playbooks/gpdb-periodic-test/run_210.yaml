@@ -188,6 +188,7 @@
       shell:
         cmd: |
           cd ~/tensorflow/
+          mkdir -p "{{ ansible_user_dir }}/workspace/test_results/"
           cp tensorflow-pkg/tensorflow-*.whl "{{ ansible_user_dir }}/workspace/test_results/"
       args:
         executable: /bin/bash
