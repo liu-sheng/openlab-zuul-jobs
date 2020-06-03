@@ -122,12 +122,13 @@
         virtualenv --python=python3.6 ~/.env/tensorflow/
         source ~/.env/tensorflow/bin/activate
         release={{ global_env.RELEASE }}
-        if [ $release == 'master' ]; then
+        if [ $release != 'master' ]; then
             cd ~/tensorflow
+        else
+            cd ~
+            git clone https://github.com/tensorflow/tensorflow.git
+            cd tensorflow
         fi
-        cd ~
-        git clone https://github.com/tensorflow/tensorflow.git
-        cd tensorflow
         sudo apt install tcl tk expect -y
         cat << EOF > input
         #!/usr/bin/expect
