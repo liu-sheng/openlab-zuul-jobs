@@ -3,10 +3,10 @@
     - name: Set maven env vars
       set_fact:
         test_env:
-          RELEASE: v2.0.0
-          BAZEL_VERSION: 0.26.1
-          GCC_VERSION: 7.5.0
-          ENV_KEEP: y
+          RELEASE: master
+          BAZEL_VERSION: 3.1.0
+          GCC_VERSION: 7.3.0
+          ENV_KEEP: n
 
     - name: Merge maven env vars into global env
       set_fact:
@@ -85,6 +85,8 @@
       args:
         executable: /bin/bash
       environment: '{{ global_env }}'
+      when:
+        global_env.GCC_VERSION in ["7.3.0"]
 
     - name: Install bazel {{ global_env.BAZEL_VERSION }}
       become: true
@@ -196,6 +198,7 @@
       shell:
         cmd: |
           cd ~/tensorflow/
+          mkdir -p "{{ ansible_user_dir }}/workspace/test_results/"
           cp tensorflow-pkg/tensorflow-*.whl "{{ ansible_user_dir }}/workspace/test_results/"
       args:
         executable: /bin/bash
