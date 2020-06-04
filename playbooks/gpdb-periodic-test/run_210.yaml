@@ -158,32 +158,6 @@
         chdir: '{{ zuul.project.src_dir }}'
       environment: '{{ global_env }}'
 
-    - name: Verify Tensorflow whl package
-      shell: |
-        set -xe
-        cd ~/tensorflow/tensorflow-pkg
-        sudo apt install build-essential gcc libhdf5-serial-dev pkg-config -y
-        pip3 install cython numpy keras_preprocessing
-        sudo apt install libblas-dev liblapack-dev gfortran -y
-        pip3 install tensorflow-*.whl
-        python3 -c "import tensorflow as tf; print(tf.__version__)"
-      args:
-        executable: /bin/bash
-        chdir: '{{ zuul.project.src_dir }}'
-
-    - name: Verify Tensorflow with MNIST test
-      shell: |
-        set -ex
-        cd ~/tensorflow/tensorflow-pkg
-        export MPLLOCALFREETYPE=1
-        sudo apt install -y libpng12-dev
-        pip3 install matplotlib tensorflow_datasets
-        wget https://raw.githubusercontent.com/bzhaoopenstack/dockertoy/master/tests/ai/examples/test_mnist.py
-        python3 ./test_mnist.py
-      args:
-        executable: /bin/bash
-        chdir: '{{ zuul.project.src_dir }}'
-
     - name: Copy the built file
       shell:
         cmd: |
@@ -212,3 +186,30 @@
             artifacts:
               - name: "whl file download"
                 url: "test_results/{{ whl_file_name }}"
+
+    - name: Verify Tensorflow whl package
+      shell: |
+        set -xe
+        cd ~/tensorflow/tensorflow-pkg
+        sudo apt install build-essential gcc libhdf5-serial-dev pkg-config -y
+        pip3 install cython numpy keras_preprocessing
+        sudo apt install libblas-dev liblapack-dev gfortran -y
+        pip3 install tensorflow-*.whl
+        python3 -c "import tensorflow as tf; print(tf.__version__)"
+      args:
+        executable: /bin/bash
+        chdir: '{{ zuul.project.src_dir }}'
+
+    - name: Verify Tensorflow with MNIST test
+      shell: |
+        set -ex
+        cd ~/tensorflow/tensorflow-pkg
+        export MPLLOCALFREETYPE=1
+        sudo apt install -y libpng-dev
+        pip3 install matplotlib tensorflow_datasets
+        wget https://raw.githubusercontent.com/bzhaoopenstack/dockertoy/master/tests/ai/examples/test_mnist.py
+        python3 ./test_mnist.py
+      args:
+        executable: /bin/bash
+        chdir: '{{ zuul.project.src_dir }}'
+
