@@ -116,10 +116,12 @@
         release={{ global_env.RELEASE }}
         if [ $release != 'master' ]; then
             cd ~/tensorflow
+            BUILD_OPTS=""
         else
             cd ~
             git clone https://github.com/tensorflow/tensorflow.git
             cd tensorflow
+            BUILD_OPTS="--config=noaws --config=nogcp --config=nonccl"
         fi
         sudo apt install tcl tk expect -y
         cat << EOF > input
@@ -142,7 +144,7 @@
         ./input
         pip3 install numpy keras_preprocessing
         bazel clean --expunge
-        bazel build --config=opt //tensorflow/tools/pip_package:build_pip_package \
+        bazel build --config=opt ${BUILD_OPTS} //tensorflow/tools/pip_package:build_pip_package \
         --local_ram_resources=10240 --local_cpu_resources=4 --verbose_failures
         mkdir tensorflow-pkg
         bazel-bin/tensorflow/tools/pip_package/build_pip_package ./tensorflow-pkg
