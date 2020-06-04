@@ -5,7 +5,7 @@
         test_env:
           RELEASE: v2.0.0
           BAZEL_VERSION: 0.26.0
-          GCC_VERSION: 7.3.0
+          GCC_VERSION: default
 
     - name: Merge maven env vars into global env
       set_fact:
@@ -76,7 +76,7 @@
         executable: /bin/bash
       environment: '{{ global_env }}'
       when:
-        global_env.GCC_VERSION not in ["7.3.0"]
+        global_env.GCC_VERSION not in ["default"]
 
     - name: Install bazel {{ global_env.BAZEL_VERSION }}
       become: true
