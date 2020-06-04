@@ -1836,6 +1836,7 @@
       Greenplum periodic test
     run: playbooks/gpdb-periodic-test/run.yaml
     post-run: playbooks/gpdb-periodic-test/post.yaml
+    timeout: 54000
     nodeset: ubuntu-bionic-arm64-8u16g
 
 - job:
@@ -1845,6 +1846,7 @@
       Greenplum v2.0.0 periodic test
     run: playbooks/gpdb-periodic-test/run_200.yaml
     post-run: playbooks/gpdb-periodic-test/post.yaml
+    timeout: 54000
     nodeset: ubuntu-bionic-arm64-8u16g
 
 - job:
@@ -1854,6 +1856,7 @@
       Greenplum v2.1.0 periodic test
     run: playbooks/gpdb-periodic-test/run_210.yaml
     post-run: playbooks/gpdb-periodic-test/post.yaml
+    timeout: 54000
     nodeset: ubuntu-bionic-arm64-8u16g
 
 - job:
