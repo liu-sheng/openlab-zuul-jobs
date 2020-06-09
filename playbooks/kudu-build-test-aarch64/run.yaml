@@ -17,10 +17,9 @@
 
         for build_type in {{ build_types  | join(' ') }}; do
             if [[ $build_type == 'debug' ]] || [[ $build_type == 'release' ]];then
-                $docker_cmd --name $build_type {{ docker_img }} $build_type -e EXTRA_BUILD_FLAGS="-DKUDU_LINK=dynamic"
-            else    
-                $docker_cmd --name $build_type {{ docker_img }} $build_type
+                docker_cmd="docker run -e EXTRA_BUILD_FLAGS=-DKUDU_LINK=dynamic -d --cap-add=SYS_PTRACE --security-opt seccomp=unconfined "
             fi
+            $docker_cmd --name $build_type {{ docker_img }} $build_type            
         done
 
         set +x
