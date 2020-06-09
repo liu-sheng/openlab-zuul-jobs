@@ -22,7 +22,6 @@
     check:
       jobs:
          - kudu-build-test-aarch64-ubuntu-16.04
-         - kudu-build-test-aarch64-ubuntu-18.04
 
 - project:
     name: bzhaoopenstack/gpdb
