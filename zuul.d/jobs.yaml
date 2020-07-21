@@ -1912,16 +1912,6 @@
         PYTHON: v3.7
 
 - job:
-    name: tensorflow-arm64-release-build-v1.15.3-py38
-    parent: tensorflow-arm64-release-build-v1.15.3
-    description: |
-      Tensorflow v1.15.3 release build on ARM64 with python3.8
-    provides: tf-cpu-whl-ready-for-1.15.3-py38
-    vars:
-      global_env:
-        PYTHON: v3.8
-
-- job:
     name: tensorflow-arm64-release-build-v2.1.0
     parent: tensorflow-arm64-build-daily
     description: |
@@ -1997,7 +1987,6 @@
       - tf-cpu-whl-ready-for-1.15.3-py35
       - tf-cpu-whl-ready-for-1.15.3-py36
       - tf-cpu-whl-ready-for-1.15.3-py37
-      - tf-cpu-whl-ready-for-1.15.3-py38
 
 - job:
     name: tensorflow-v2.1.0-cpu-arm64-release-build-show
