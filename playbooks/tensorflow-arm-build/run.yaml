@@ -79,7 +79,6 @@
           apt update && \
           apt install -y build-essential \
           openjdk-8-jdk \
-          python \
           zip \
           unzip \
           gcc \
