@@ -1,0 +1,23 @@
+- hosts: all
+  tasks:
+    - name: debug
+      debug:
+        msg: "This item is project: {{ item.project }}, change: {{ item.change }}, patchset: {{ item.patchset }}, job: {{ item.job }}, name: {{ item.name }}, url: {{ item.url }}, metadata: {{ item.metadata }}"
+      vars:
+        whl_file_name: "{{ item.name }}"
+        whl_url: "{{ item.url }}"
+      with_items: "{{ zuul.artifacts.values() | list }}"
+      environment: '{{ global_env }}'
+
+    - name: Return artifact to Zuul
+      zuul_return:
+        data:
+          zuul:
+            artifacts:
+              - name: "{{ whl_file_name }}"
+                url: "{{ whl_url }}"
+      vars:
+        whl_file_name: "{{ item.name }}"
+        whl_url: "{{ item.url }}"
+      with_items: "{{ zuul.artifacts.values() | list }}"
+      environment: '{{ global_env }}'
