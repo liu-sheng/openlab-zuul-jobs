@@ -244,8 +244,8 @@
               - name: "{{ whl_file_name }}"
                 url: "test_results/{{ whl_file_name }}"
                 metadata:
-                  version: {{ global_env.RELEASE }}
-                  python_version: {{ global_env.PYTHON }}
+                  version: "{{ global_env.RELEASE }}"
+                  python_version: "{{ global_env.PYTHON }}"
                   is_cpu : true
       environment: '{{ global_env }}'
 
