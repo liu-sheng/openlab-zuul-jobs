@@ -1987,6 +1987,10 @@
       - tf-cpu-whl-ready-for-1.15.3-py35
       - tf-cpu-whl-ready-for-1.15.3-py36
       - tf-cpu-whl-ready-for-1.15.3-py37
+    dependencies:
+      - tensorflow-arm64-release-build-v1.15.3-py35
+      - tensorflow-arm64-release-build-v1.15.3-py36
+      - tensorflow-arm64-release-build-v1.15.3-py37
 
 - job:
     name: tensorflow-v2.1.0-cpu-arm64-release-build-show
@@ -1998,3 +2002,8 @@
       - tf-cpu-whl-ready-for-2.1.0-py36
       - tf-cpu-whl-ready-for-2.1.0-py37
       - tf-cpu-whl-ready-for-2.1.0-py38
+    dependencies:
+      - tensorflow-arm64-release-build-v2.1.0-py35
+      - tensorflow-arm64-release-build-v2.1.0-py36
+      - tensorflow-arm64-release-build-v2.1.0-py37
+      - tensorflow-arm64-release-build-v2.1.0-py38
