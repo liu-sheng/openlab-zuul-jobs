@@ -1,14 +1,14 @@
-- project:
-    name: ZhengZhenyu/kind
-    check:
-      jobs:
-         - kind-integration-test-arm64
+#- project:
+#    name: ZhengZhenyu/kind
+#    check:
+#      jobs:
+#         - kind-integration-test-arm64
 
-- project:
-    name: bzhaoopenstack/ansible
-    check:
-      jobs:
-        - openstacksdk-ansible-v2.8.0-functional-devstack-mitaka-check
+#- project:
+#    name: bzhaoopenstack/ansible
+#    check:
+#      jobs:
+#        - openstacksdk-ansible-v2.8.0-functional-devstack-mitaka-check
         
 - project:
     name: wangxiyuan/flink
