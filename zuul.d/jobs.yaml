@@ -149,17 +149,17 @@
       cloud_name: telefonica
 
 # terraform-provider-openstack acceptance tests with Open Telekom cloud
-- job:
-    name: terraform-provider-openstack-acceptance-test-opentelekomcloud
-    parent: golang-test
-    description: |
-      Run acceptance tests of terraform-provider-openstack repo against opentelekomcloud
-    run: playbooks/terraform-provider-openstack-acceptance-test-public-clouds/run.yaml
-    post-run: playbooks/terraform-provider-openstack-acceptance-test-public-clouds/post.yaml
-    secrets:
-      - opentelekomcloud_credentials
-    vars:
-      cloud_name: opentelekomcloud
+#- job:
+#    name: terraform-provider-openstack-acceptance-test-opentelekomcloud
+#    parent: golang-test
+#    description: |
+#      Run acceptance tests of terraform-provider-openstack repo against opentelekomcloud
+#    run: playbooks/terraform-provider-openstack-acceptance-test-public-clouds/run.yaml
+#    post-run: playbooks/terraform-provider-openstack-acceptance-test-public-clouds/post.yaml
+#    secrets:
+#      - opentelekomcloud_credentials
+#    vars:
+#      cloud_name: opentelekomcloud
 
 # terraform-provider-openstack acceptance tests with orange cloud
 - job:
@@ -253,30 +253,30 @@
     nodeset: ubuntu-xenial
 
 # Kubernetes cloud-provider-openstack jobs
-- job:
-    name: cloud-provider-openstack-test
-    parent: golang-test
-    description: |
-      Base job for all types of cloud-provider-openstack test jobs
-    pre-run: playbooks/cloud-provider-openstack-test/pre.yaml
-    post-run: playbooks/cloud-provider-openstack-test/post.yaml
-    nodeset: ubuntu-xenial-vexxhost
-    secrets:
-      - vexxhost_credentials
-    vars:
-      k8s_os_provider_src_dir: '{{ ansible_user_dir }}/src/k8s.io/cloud-provider-openstack'
-      k8s_src_dir: '{{ ansible_user_dir }}/src/k8s.io/kubernetes'
-      k8s_log_dir: '{{ ansible_user_dir }}/workspace/logs/kubernetes'
-      kubectl: '{{ ansible_user_dir }}/src/k8s.io/kubernetes/cluster/kubectl.sh'
+#- job:
+#    name: cloud-provider-openstack-test
+#    parent: golang-test
+#    description: |
+#      Base job for all types of cloud-provider-openstack test jobs
+#    pre-run: playbooks/cloud-provider-openstack-test/pre.yaml
+#    post-run: playbooks/cloud-provider-openstack-test/post.yaml
+#    nodeset: ubuntu-xenial-vexxhost
+#    secrets:
+#      - vexxhost_credentials
+#    vars:
+#      k8s_os_provider_src_dir: '{{ ansible_user_dir }}/src/k8s.io/cloud-provider-openstack'
+#      k8s_src_dir: '{{ ansible_user_dir }}/src/k8s.io/kubernetes'
+#      k8s_log_dir: '{{ ansible_user_dir }}/workspace/logs/kubernetes'
+#      kubectl: '{{ ansible_user_dir }}/src/k8s.io/kubernetes/cluster/kubectl.sh'
 
-- job:
-    name: cloud-provider-openstack-unittest
-    parent: cloud-provider-openstack-test
-    description: |
-      Run unit test of cloud-provider-openstack
-    run: playbooks/cloud-provider-openstack-unittest/run.yaml
-    secrets:
-      - vexxhost_credentials
+#- job:
+#    name: cloud-provider-openstack-unittest
+#    parent: cloud-provider-openstack-test
+#    description: |
+#      Run unit test of cloud-provider-openstack
+#    run: playbooks/cloud-provider-openstack-unittest/run.yaml
+#    secrets:
+#      - vexxhost_credentials
 
 #- job:
 #    name: kind-integration-test-arm64
@@ -286,37 +286,37 @@
 #    run: playbooks/kind-integration-test-arm64/run.yaml
 #    nodeset: ubuntu-xenial-arm64
 
-- job:
-    name: cloud-provider-openstack-format
-    parent: cloud-provider-openstack-test
-    description: |
-      Run gofmt and typo checking of cloud-provider-openstack
-    run: playbooks/cloud-provider-openstack-format/run.yaml
-    nodeset: ubuntu-xenial-ut
+#- job:
+#    name: cloud-provider-openstack-format
+#    parent: cloud-provider-openstack-test
+#    description: |
+#      Run gofmt and typo checking of cloud-provider-openstack
+#    run: playbooks/cloud-provider-openstack-format/run.yaml
+#    nodeset: ubuntu-xenial-ut
 
-- job:
-    name: cloud-provider-openstack-acceptance-test-k8s-cinder
-    parent: cloud-provider-openstack-test
-    description: |
-      Run cinder in-tree acceptance tests of cloud-provider-openstack
-    run: playbooks/cloud-provider-openstack-acceptance-test-k8s-cinder/run.yaml
-    post-run: playbooks/cloud-provider-openstack-acceptance-test-k8s-cinder/post.yaml
-    secrets:
-      - vexxhost_credentials
+#- job:
+#    name: cloud-provider-openstack-acceptance-test-k8s-cinder
+#    parent: cloud-provider-openstack-test
+#    description: |
+#      Run cinder in-tree acceptance tests of cloud-provider-openstack
+#    run: playbooks/cloud-provider-openstack-acceptance-test-k8s-cinder/run.yaml
+#    post-run: playbooks/cloud-provider-openstack-acceptance-test-k8s-cinder/post.yaml
+#    secrets:
+#      - vexxhost_credentials
 
-- job:
-    name: cloud-provider-openstack-acceptance-test-e2e-conformance
-    parent: cloud-provider-openstack-test
-    description: |
-      Run Kubernetes E2E Conformance tests against Kubernetes master
-    vars:
-      go_version: '1.12.1'
-    run: playbooks/cloud-provider-openstack-acceptance-test-e2e-conformance/run.yaml
-    post-run: playbooks/cloud-provider-openstack-acceptance-test-e2e-conformance/post.yaml
-    secrets:
-      - vexxhost_credentials
-      - gcp_account
-      - dockerhub
+#- job:
+#    name: cloud-provider-openstack-acceptance-test-e2e-conformance
+#    parent: cloud-provider-openstack-test
+#    description: |
+#      Run Kubernetes E2E Conformance tests against Kubernetes master
+#    vars:
+#      go_version: '1.12.1'
+#    run: playbooks/cloud-provider-openstack-acceptance-test-e2e-conformance/run.yaml
+#    post-run: playbooks/cloud-provider-openstack-acceptance-test-e2e-conformance/post.yaml
+#    secrets:
+#      - vexxhost_credentials
+#      - gcp_account
+#      - dockerhub
 
 - job:
     name: cloud-provider-openstack-acceptance-test-e2e-conformance-stable-branch-v1.10
@@ -363,71 +363,71 @@
       go_version: '1.12.1'
       k8s_version: 'release-1.14'
 
-- job:
-    name: cloud-provider-openstack-acceptance-test-standalone-cinder
-    parent: cloud-provider-openstack-test
-    description: |
-      Run cinder standalone acceptance tests of cloud-provider-openstack
-    run: playbooks/cloud-provider-openstack-acceptance-test-standalone-cinder/run.yaml
-    post-run: playbooks/cloud-provider-openstack-acceptance-test-standalone-cinder/post.yaml
-    nodeset: ubuntu-xenial
+#- job:
+#    name: cloud-provider-openstack-acceptance-test-standalone-cinder
+#    parent: cloud-provider-openstack-test
+#    description: |
+#      Run cinder standalone acceptance tests of cloud-provider-openstack
+#    run: playbooks/cloud-provider-openstack-acceptance-test-standalone-cinder/run.yaml
+#    post-run: playbooks/cloud-provider-openstack-acceptance-test-standalone-cinder/post.yaml
+#    nodeset: ubuntu-xenial
 
-- job:
-    name: cloud-provider-openstack-acceptance-test-csi-cinder
-    parent: cloud-provider-openstack-test
-    description: |
-      Run cinder csi acceptance tests of cloud-provider-openstack
-    run: playbooks/cloud-provider-openstack-acceptance-test-csi-cinder/run.yaml
-    post-run: playbooks/cloud-provider-openstack-acceptance-test-csi-cinder/post.yaml
-    secrets:
-      - vexxhost_credentials
+#- job:
+#    name: cloud-provider-openstack-acceptance-test-csi-cinder
+#    parent: cloud-provider-openstack-test
+#    description: |
+#      Run cinder csi acceptance tests of cloud-provider-openstack
+#    run: playbooks/cloud-provider-openstack-acceptance-test-csi-cinder/run.yaml
+#    post-run: playbooks/cloud-provider-openstack-acceptance-test-csi-cinder/post.yaml
+#    secrets:
+#      - vexxhost_credentials
 
-- job:
-    name: cloud-provider-openstack-acceptance-test-manila-provisioner
-    parent: cloud-provider-openstack-test
-    description: |
-      Run Manila provisioner acceptance tests of cloud-provider-openstack
-    run: playbooks/cloud-provider-openstack-acceptance-test-manila-provisioner/run.yaml
-    post-run: playbooks/cloud-provider-openstack-acceptance-test-manila-provisioner/post.yaml
-    nodeset: ubuntu-xenial
+#- job:
+#    name: cloud-provider-openstack-acceptance-test-manila-provisioner
+#    parent: cloud-provider-openstack-test
+#    description: |
+#      Run Manila provisioner acceptance tests of cloud-provider-openstack
+#    run: playbooks/cloud-provider-openstack-acceptance-test-manila-provisioner/run.yaml
+#    post-run: playbooks/cloud-provider-openstack-acceptance-test-manila-provisioner/post.yaml
+#    nodeset: ubuntu-xenial
 
-- job:
-    name: cloud-provider-openstack-acceptance-test-lb-octavia
-    parent: cloud-provider-openstack-test
-    description: |
-      Run lb acceptance tests of cloud-provider-openstack
-    run: playbooks/cloud-provider-openstack-acceptance-test-lb-octavia/run.yaml
-    post-run: playbooks/cloud-provider-openstack-acceptance-test-lb-octavia/post.yaml
-    secrets:
-      - vexxhost_credentials
+#- job:
+#    name: cloud-provider-openstack-acceptance-test-lb-octavia
+#    parent: cloud-provider-openstack-test
+#    description: |
+#      Run lb acceptance tests of cloud-provider-openstack
+#    run: playbooks/cloud-provider-openstack-acceptance-test-lb-octavia/run.yaml
+#    post-run: playbooks/cloud-provider-openstack-acceptance-test-lb-octavia/post.yaml
+#    secrets:
+#      - vexxhost_credentials
 
-- job:
-    name: cloud-provider-openstack-acceptance-test-keystone-authentication-authorization
-    parent: cloud-provider-openstack-test
-    description: |
-      Run keystone auth acceptance tests of cloud-provider-openstack
-    run: playbooks/cloud-provider-openstack-acceptance-test-keystone-authentication-authorization/run.yaml
-    nodeset: ubuntu-xenial
+#- job:
+#    name: cloud-provider-openstack-acceptance-test-keystone-authentication-authorization
+#    parent: cloud-provider-openstack-test
+#    description: |
+#      Run keystone auth acceptance tests of cloud-provider-openstack
+#    run: playbooks/cloud-provider-openstack-acceptance-test-keystone-authentication-authorization/run.yaml
+#    nodeset: ubuntu-xenial
 
-- job:
-    name: cloud-provider-openstack-acceptance-test-flexvolume-cinder
-    parent: cloud-provider-openstack-test
-    description: |
-      Run cinder flexvolume acceptance tests of cloud-provider-openstack
-    run: playbooks/cloud-provider-openstack-acceptance-test-flexvolume-cinder/run.yaml
-    nodeset: ubuntu-xenial
+#- job:
+#    name: cloud-provider-openstack-acceptance-test-flexvolume-cinder
+#    parent: cloud-provider-openstack-test
+#    description: |
+#      Run cinder flexvolume acceptance tests of cloud-provider-openstack
+#    run: playbooks/cloud-provider-openstack-acceptance-test-flexvolume-cinder/run.yaml
+#    nodeset: ubuntu-xenial
 
-- job:
-    name: cluster-api-provider-openstack-image-build
-    parent: cloud-provider-openstack-test
-    description: |
-      Run the image build and publish jobs
-    run: playbooks/cluster-api-provider-openstack-image-build/run.yaml
-    vars:
-      k8s_cluster_api_provider_os_src_dir: '{{ ansible_user_dir }}/src/sigs.k8s.io/cluster-api-provider-openstack'
-    nodeset: ubuntu-xenial
-    secrets:
-      - dockerhub
+#- job:
+#    name: cluster-api-provider-openstack-image-build
+#    parent: cloud-provider-openstack-test
+#    description: |
+#      Run the image build and publish jobs
+#    run: playbooks/cluster-api-provider-openstack-image-build/run.yaml
+#    vars:
+#      k8s_cluster_api_provider_os_src_dir: '{{ ansible_user_dir }}/src/sigs.k8s.io/cluster-api-provider-openstack'
+#    nodeset: ubuntu-xenial
+#    secrets:
+#      - dockerhub
 
 - job:
     name: cf-openstack-validator-acceptance-test-newton
@@ -841,22 +841,22 @@
       - telefonica_credentials
     override-checkout: stable-2.7
 
-- job:
-    name: openstacksdk-ansible-functional-huaweicloud
-    parent: init-test
-    description: |
-      Run openstacksdk ansible functional tests against huaweicloud using git stable-2.7 branch version of ansible.
-    run: playbooks/ansible-functional-public-clouds/run.yaml
-    required-projects:
-      - openstack/openstacksdk
-    vars:
-      cloud_name: huaweicloud
-      os_sdk: openstacksdk
-      # Disable public cloud policy limit roles: group keystone_domain keystone_role nova_flavor user user_group object
-      test_cases: auth image keypair network port router security_group server subnet volume
-    secrets:
-      - huaweicloud_credentials
-    override-checkout: stable-2.7
+#- job:
+#    name: openstacksdk-ansible-functional-huaweicloud
+#    parent: init-test
+#    description: |
+#      Run openstacksdk ansible functional tests against huaweicloud using git stable-2.7 branch version of ansible.
+#    run: playbooks/ansible-functional-public-clouds/run.yaml
+#    required-projects:
+#      - openstack/openstacksdk
+#    vars:
+#      cloud_name: huaweicloud
+#      os_sdk: openstacksdk
+#      # Disable public cloud policy limit roles: group keystone_domain keystone_role nova_flavor user user_group object
+#      test_cases: auth image keypair network port router security_group server subnet volume
+#    secrets:
+#      - huaweicloud_credentials
+#    override-checkout: stable-2.7
 
 # packer jobs
 # the job is disabled
@@ -1264,17 +1264,17 @@
       postgresql_version: 10
 
 # terraform-provider-huaweicloud acceptance tests against FusionCloud
-- job:
-    name: terraform-provider-huaweicloud-v1.2.0-acceptance-test-fusioncloud
-    parent: golang-test
-    description: |
-      Run acceptance tests of terraform-provider-huaweicloud repo against fusioncloud
-    run: playbooks/terraform-provider-huaweicloud-acceptance-test-fusioncloud/run.yaml
-    post-run: playbooks/terraform-provider-huaweicloud-acceptance-test-fusioncloud/post.yaml
-    timeout: 14400
-    secrets:
-      - fusioncloud_credentials
-    override-checkout: v1.2.0
+#- job:
+#    name: terraform-provider-huaweicloud-v1.2.0-acceptance-test-fusioncloud
+#    parent: golang-test
+#    description: |
+#      Run acceptance tests of terraform-provider-huaweicloud repo against fusioncloud
+#    run: playbooks/terraform-provider-huaweicloud-acceptance-test-fusioncloud/run.yaml
+#    post-run: playbooks/terraform-provider-huaweicloud-acceptance-test-fusioncloud/post.yaml
+#    timeout: 14400
+#    secrets:
+#      - fusioncloud_credentials
+#    override-checkout: v1.2.0
 
 # terraform-provider-openstack acceptance tests against FusionCloud
 - job:
@@ -1349,20 +1349,20 @@
     secrets:
       - telefonica_credentials
 
-- job:
-    name: openshift-origin-v3.9.0-functional-test-orange
-    parent: init-test
-    description: |
-      Run functional tests of openshift-origin repo of v3.9.0 release against orange cloud
-    run: playbooks/openshift-orgin-functional-test-public-clouds/run.yaml
-    post-run: playbooks/openshift-orgin-functional-test-public-clouds/post.yaml
-    required-projects:
-      - huaweicloud/openshift-ansible
-    vars:
-      cloud_name: orange
-      inventory_name: orange
-    secrets:
-      - orange_credentials
+#- job:
+#    name: openshift-origin-v3.9.0-functional-test-orange
+#    parent: init-test
+#    description: |
+#      Run functional tests of openshift-origin repo of v3.9.0 release against orange cloud
+#    run: playbooks/openshift-orgin-functional-test-public-clouds/run.yaml
+#    post-run: playbooks/openshift-orgin-functional-test-public-clouds/post.yaml
+#    required-projects:
+#      - huaweicloud/openshift-ansible
+#    vars:
+#      cloud_name: orange
+#      inventory_name: orange
+#    secrets:
+#      - orange_credentials
 
 - job:
     name: ai-on-openlab-test-tensorflow-k8s
