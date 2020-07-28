@@ -71,13 +71,13 @@
     name: ubuntu-xenial-arm64
     nodes:
       - name: ubuntu-xenial-arm64
-        label: ubuntu-xenial-arm64
+        label: ubuntu-xenial-arm64-huaweicloud-allinone
 
 - nodeset:
     name: ubuntu-xenial-arm64-8u16g
     nodes:
       - name: ubuntu-xenial-arm64-8u16g
-        label: ubuntu-xenial-arm64-8u16g
+        label: ubuntu-xenial-arm64-huaweicloud-allinone-large
 
 # ---------------------------------------------------
 
@@ -85,13 +85,13 @@
     name: ubuntu-bionic-arm64-8u16g
     nodes:
       - name: ubuntu-bionic-arm64-8u16g
-        label: ubuntu-bionic-arm64-8u16g
+        label: ubuntu-bionic-arm64-huaweicloud-allinone-8u16g
 
 - nodeset:
     name: ubuntu-bionic-arm64-16u32g
     nodes:
       - name: ubuntu-bionic-arm64-16u32g
-        label: ubuntu-bionic-arm64-16u32g
+        label: ubuntu-bionic-arm64-huaweicloud-allinone-16u32g
 
 - nodeset:
     name: ubuntu-bionic-arm64-32u64g
