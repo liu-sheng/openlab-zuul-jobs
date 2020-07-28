@@ -136,17 +136,17 @@
     run: playbooks/terraform-provider-openstack-acceptance-test-fwaas/run.yaml
 
 # terraform-provider-openstack acceptance tests with Telefonica cloud
-- job:
-    name: terraform-provider-openstack-acceptance-test-telefonica
-    parent: golang-test
-    description: |
-      Run acceptance tests of terraform-provider-openstack repo against telefonica cloud
-    run: playbooks/terraform-provider-openstack-acceptance-test-public-clouds/run.yaml
-    post-run: playbooks/terraform-provider-openstack-acceptance-test-public-clouds/post.yaml
-    secrets:
-      - telefonica_credentials
-    vars:
-      cloud_name: telefonica
+#- job:
+#    name: terraform-provider-openstack-acceptance-test-telefonica
+#    parent: golang-test
+#    description: |
+#      Run acceptance tests of terraform-provider-openstack repo against telefonica cloud
+#    run: playbooks/terraform-provider-openstack-acceptance-test-public-clouds/run.yaml
+#    post-run: playbooks/terraform-provider-openstack-acceptance-test-public-clouds/post.yaml
+#    secrets:
+#      - telefonica_credentials
+#    vars:
+#      cloud_name: telefonica
 
 # terraform-provider-openstack acceptance tests with Open Telekom cloud
 #- job:
@@ -162,30 +162,30 @@
 #      cloud_name: opentelekomcloud
 
 # terraform-provider-openstack acceptance tests with orange cloud
-- job:
-    name: terraform-provider-openstack-acceptance-test-orange
-    parent: golang-test
-    description: |
-      Run acceptance tests of terraform-provider-openstack repo against orange cloud
-    run: playbooks/terraform-provider-openstack-acceptance-test-public-clouds/run.yaml
-    post-run: playbooks/terraform-provider-openstack-acceptance-test-public-clouds/post.yaml
-    secrets:
-      - orange_credentials
-    vars:
-      cloud_name: orange
+#- job:
+#    name: terraform-provider-openstack-acceptance-test-orange
+#    parent: golang-test
+#    description: |
+#      Run acceptance tests of terraform-provider-openstack repo against orange cloud
+#    run: playbooks/terraform-provider-openstack-acceptance-test-public-clouds/run.yaml
+#    post-run: playbooks/terraform-provider-openstack-acceptance-test-public-clouds/post.yaml
+#    secrets:
+#      - orange_credentials
+#    vars:
+#      cloud_name: orange
 
 # terraform-provider-openstack acceptance tests with huawei cloud
-- job:
-    name: terraform-provider-openstack-acceptance-test-huaweicloud
-    parent: golang-test
-    description: |
-      Run acceptance tests of terraform-provider-openstack repo against huaweicloud
-    run: playbooks/terraform-provider-openstack-acceptance-test-public-clouds/run.yaml
-    post-run: playbooks/terraform-provider-openstack-acceptance-test-public-clouds/post.yaml
-    secrets:
-      - huaweicloud_credentials
-    vars:
-      cloud_name: huaweicloud
+#- job:
+#    name: terraform-provider-openstack-acceptance-test-huaweicloud
+#    parent: golang-test
+#    description: |
+#      Run acceptance tests of terraform-provider-openstack repo against huaweicloud
+#    run: playbooks/terraform-provider-openstack-acceptance-test-public-clouds/run.yaml
+#    post-run: playbooks/terraform-provider-openstack-acceptance-test-public-clouds/post.yaml
+#    secrets:
+#      - huaweicloud_credentials
+#    vars:
+#      cloud_name: huaweicloud
 
 # Gophercloud acceptance tests with Telefonica cloud
 - job:
@@ -219,14 +219,14 @@
     #  - orange_credentials
 
 # terraform-provider-opentelekomcloud acceptance tests with Open Telekom cloud
-- job:
-    name: terraform-provider-opentelekomcloud-acceptance-test-opentelekomcloud
-    parent: golang-test
-    description: |
-      Run acceptance tests of terraform-provider-opentelekomcloud repo against open telekom cloud
-    run: playbooks/terraform-provider-opentelekomcloud-acceptance-test-opentelekomcloud/run.yaml
-    secrets:
-      - opentelekomcloud_credentials
+#- job:
+#    name: terraform-provider-opentelekomcloud-acceptance-test-opentelekomcloud
+#    parent: golang-test
+#    description: |
+#      Run acceptance tests of terraform-provider-opentelekomcloud repo against open telekom cloud
+#    run: playbooks/terraform-provider-opentelekomcloud-acceptance-test-opentelekomcloud/run.yaml
+#    secrets:
+#      - opentelekomcloud_credentials
 
 # OpenLab job self-check jobs
 - job:
@@ -533,16 +533,16 @@
         OS_BRANCH: stable/mitaka
     nodeset: ubuntu-trusty
 
-- job:
-    name: bosh-acceptance-test-opentelekomcloud
-    parent: init-test
-    description: |
-      Run acceptance tests of bosh-acceptance-test against opentelekomcloud
-    run: playbooks/bosh-acceptance-test-public-clouds/run.yaml
-    post-run: playbooks/bosh-acceptance-test-public-clouds/post.yaml
-    nodeset: ubuntu-xenial-otc
-    secrets:
-      - opentelekomcloud_credentials
+#- job:
+#    name: bosh-acceptance-test-opentelekomcloud
+#    parent: init-test
+#    description: |
+#      Run acceptance tests of bosh-acceptance-test against opentelekomcloud
+#    run: playbooks/bosh-acceptance-test-public-clouds/run.yaml
+#    post-run: playbooks/bosh-acceptance-test-public-clouds/post.yaml
+#    nodeset: ubuntu-xenial-otc
+#    secrets:
+#      - opentelekomcloud_credentials
 
 - job:
     name: bosh-acceptance-tests-devstack
@@ -790,56 +790,56 @@
 #    vars:
 #      os_sdk: shade
 
-- job:
-    name: openstacksdk-ansible-functional-opentelekomcloud
-    parent: init-test
-    description: |
-      Run openstacksdk ansible functional tests against a opentelekomcloud using git stable-2.7 branch version of ansible.
-    run: playbooks/ansible-functional-public-clouds/run.yaml
-    required-projects:
-      - openstack/openstacksdk
-    vars:
-      cloud_name: opentelekomcloud
-      os_sdk: openstacksdk
-      # Disable public cloud policy limit roles: group keystone_domain keystone_role nova_flavor user user_group
-      test_cases: auth image keypair network object port router security_group server subnet volume
-    secrets:
-      - opentelekomcloud_credentials
-    override-checkout: stable-2.7
+#- job:
+#    name: openstacksdk-ansible-functional-opentelekomcloud
+#    parent: init-test
+#    description: |
+#      Run openstacksdk ansible functional tests against a opentelekomcloud using git stable-2.7 branch version of ansible.
+#    run: playbooks/ansible-functional-public-clouds/run.yaml
+#    required-projects:
+#      - openstack/openstacksdk
+#    vars:
+#      cloud_name: opentelekomcloud
+#      os_sdk: openstacksdk
+#      # Disable public cloud policy limit roles: group keystone_domain keystone_role nova_flavor user user_group
+#      test_cases: auth image keypair network object port router security_group server subnet volume
+#    secrets:
+#      - opentelekomcloud_credentials
+#    override-checkout: stable-2.7
 
-- job:
-    name: openstacksdk-ansible-functional-orange
-    parent: init-test
-    description: |
-      Run openstacksdk ansible functional tests against orange cloud using git stable-2.7 branch version of ansible.
-    run: playbooks/ansible-functional-public-clouds/run.yaml
-    required-projects:
-      - openstack/openstacksdk
-    vars:
-      cloud_name: orange
-      os_sdk: openstacksdk
-      # Disable public cloud policy limit roles: group keystone_domain keystone_role nova_flavor user user_group object
-      test_cases: auth image keypair network port router security_group server subnet volume
-    secrets:
-      - orange_credentials
-    override-checkout: stable-2.7
+#- job:
+#    name: openstacksdk-ansible-functional-orange
+#    parent: init-test
+#    description: |
+#      Run openstacksdk ansible functional tests against orange cloud using git stable-2.7 branch version of ansible.
+#    run: playbooks/ansible-functional-public-clouds/run.yaml
+#    required-projects:
+#      - openstack/openstacksdk
+#    vars:
+#      cloud_name: orange
+#      os_sdk: openstacksdk
+#      # Disable public cloud policy limit roles: group keystone_domain keystone_role nova_flavor user user_group object
+#      test_cases: auth image keypair network port router security_group server subnet volume
+#    secrets:
+#      - orange_credentials
+#    override-checkout: stable-2.7
 
-- job:
-    name: openstacksdk-ansible-functional-telefonica
-    parent: init-test
-    description: |
-      Run openstacksdk ansible functional tests against telefonica cloud using git stable-2.7 branch version of ansible.
-    run: playbooks/ansible-functional-public-clouds/run.yaml
-    required-projects:
-      - openstack/openstacksdk
-    vars:
-      cloud_name: telefonica
-      os_sdk: openstacksdk
-      # Disable public cloud policy limit roles: group keystone_domain keystone_role nova_flavor user user_group object
-      test_cases: auth image keypair network port router security_group server subnet volume
-    secrets:
-      - telefonica_credentials
-    override-checkout: stable-2.7
+#- job:
+#    name: openstacksdk-ansible-functional-telefonica
+#    parent: init-test
+#    description: |
+#      Run openstacksdk ansible functional tests against telefonica cloud using git stable-2.7 branch version of ansible.
+#    run: playbooks/ansible-functional-public-clouds/run.yaml
+#    required-projects:
+#      - openstack/openstacksdk
+#    vars:
+#      cloud_name: telefonica
+#      os_sdk: openstacksdk
+#      # Disable public cloud policy limit roles: group keystone_domain keystone_role nova_flavor user user_group object
+#      test_cases: auth image keypair network port router security_group server subnet volume
+#    secrets:
+#      - telefonica_credentials
+#    override-checkout: stable-2.7
 
 #- job:
 #    name: openstacksdk-ansible-functional-huaweicloud
@@ -860,56 +860,56 @@
 
 # packer jobs
 # the job is disabled
-- job:
-    name: packer-functional-opentelekomcloud
-    parent: init-test
-    description: |
-      Test image building functionality of Packer of v1.3.3 against opentelekomcloud.
-    run: playbooks/packer-functional-public-clouds/run.yaml
-    vars:
-      cloud_name: opentelekomcloud
-    secrets:
-      - opentelekomcloud_credentials
-    override-checkout: v1.3.3
+#- job:
+#    name: packer-functional-opentelekomcloud
+#    parent: init-test
+#    description: |
+#      Test image building functionality of Packer of v1.3.3 against opentelekomcloud.
+#    run: playbooks/packer-functional-public-clouds/run.yaml
+#    vars:
+#      cloud_name: opentelekomcloud
+#    secrets:
+#      - opentelekomcloud_credentials
+#    override-checkout: v1.3.3
 
 # the job is disabled
-- job:
-    name: packer-functional-orange
-    parent: init-test
-    description: |
-      Test image building functionality of Packer of v1.3.3 against orange.
-    run: playbooks/packer-functional-public-clouds/run.yaml
-    vars:
-      cloud_name: orange
-    secrets:
-      - orange_credentials
-    override-checkout: v1.3.3
+#- job:
+#    name: packer-functional-orange
+#    parent: init-test
+#    description: |
+#      Test image building functionality of Packer of v1.3.3 against orange.
+#    run: playbooks/packer-functional-public-clouds/run.yaml
+#    vars:
+#      cloud_name: orange
+#    secrets:
+#      - orange_credentials
+#    override-checkout: v1.3.3
 
 # the job is disabled
-- job:
-    name: packer-functional-telefonica
-    parent: init-test
-    description: |
-      Test image building functionality of Packer of v1.3.3 against telefonica.
-    run: playbooks/packer-functional-public-clouds/run.yaml
-    vars:
-      cloud_name: telefonica
-    secrets:
-      - telefonica_credentials
-    override-checkout: v1.3.3
+#- job:
+#    name: packer-functional-telefonica
+#    parent: init-test
+#    description: |
+#      Test image building functionality of Packer of v1.3.3 against telefonica.
+#    run: playbooks/packer-functional-public-clouds/run.yaml
+#    vars:
+#      cloud_name: telefonica
+#    secrets:
+#      - telefonica_credentials
+#    override-checkout: v1.3.3
 
 # the job is disabled
-- job:
-    name: packer-functional-huaweicloud
-    parent: init-test
-    description: |
-      Test image building functionality of Packer of v1.3.3 against huaweicloud.
-    run: playbooks/packer-functional-public-clouds/run.yaml
-    vars:
-      cloud_name: huaweicloud
-    secrets:
-      - huaweicloud_credentials
-    override-checkout: v1.3.3
+#- job:
+#    name: packer-functional-huaweicloud
+#    parent: init-test
+#    description: |
+#      Test image building functionality of Packer of v1.3.3 against huaweicloud.
+#    run: playbooks/packer-functional-public-clouds/run.yaml
+#    vars:
+#      cloud_name: huaweicloud
+#    secrets:
+#      - huaweicloud_credentials
+#    override-checkout: v1.3.3
 
 # parent job
 - job:
@@ -1096,54 +1096,54 @@
       - BuildType:Integration test
 
 # docker machine jobs
-- job:
-    name: docker-machine-functional-opentelekomcloud
-    parent: init-test
-    description: |
-      Test functionalities of Docker machine of v0.16.1 version against opentelekomcloud.
-    run: playbooks/docker-machine-functional-public-clouds/run.yaml
-    vars:
-      cloud_name: opentelekomcloud
-    override-checkout: v0.16.1
-    secrets:
-      - opentelekomcloud_credentials
+#- job:
+#    name: docker-machine-functional-opentelekomcloud
+#    parent: init-test
+#    description: |
+#      Test functionalities of Docker machine of v0.16.1 version against opentelekomcloud.
+#    run: playbooks/docker-machine-functional-public-clouds/run.yaml
+#    vars:
+#      cloud_name: opentelekomcloud
+#    override-checkout: v0.16.1
+#    secrets:
+#      - opentelekomcloud_credentials
 
-- job:
-    name: docker-machine-functional-orange
-    parent: init-test
-    description: |
-      Test functionalities of Docker machine of v0.16.1 version against orange.
-    run: playbooks/docker-machine-functional-public-clouds/run.yaml
-    vars:
-      cloud_name: orange
-    override-checkout: v0.16.1
-    secrets:
-      - orange_credentials
+#- job:
+#    name: docker-machine-functional-orange
+#    parent: init-test
+#    description: |
+#      Test functionalities of Docker machine of v0.16.1 version against orange.
+#    run: playbooks/docker-machine-functional-public-clouds/run.yaml
+#    vars:
+#      cloud_name: orange
+#    override-checkout: v0.16.1
+#    secrets:
+#      - orange_credentials
 
-- job:
-    name: docker-machine-functional-telefonica
-    parent: init-test
-    description: |
-      Test functionalities of Docker machine of v0.16.1 version against telefonica.
-    run: playbooks/docker-machine-functional-public-clouds/run.yaml
-    vars:
-      cloud_name: telefonica
-      ssh_user: linux
-    override-checkout: v0.16.1
-    secrets:
-      - telefonica_credentials
+#- job:
+#    name: docker-machine-functional-telefonica
+#    parent: init-test
+#    description: |
+#      Test functionalities of Docker machine of v0.16.1 version against telefonica.
+#    run: playbooks/docker-machine-functional-public-clouds/run.yaml
+#    vars:
+#      cloud_name: telefonica
+#      ssh_user: linux
+#    override-checkout: v0.16.1
+#    secrets:
+#      - telefonica_credentials
 
-- job:
-    name: docker-machine-functional-huaweicloud
-    parent: init-test
-    description: |
-      Test functionalities of Docker machine of v0.16.1 version against huaweicloud.
-    run: playbooks/docker-machine-functional-public-clouds/run.yaml
-    vars:
-      cloud_name: huaweicloud
-    override-checkout: v0.16.1
-    secrets:
-      - huaweicloud_credentials
+#- job:
+#    name: docker-machine-functional-huaweicloud
+#    parent: init-test
+#    description: |
+#      Test functionalities of Docker machine of v0.16.1 version against huaweicloud.
+#    run: playbooks/docker-machine-functional-public-clouds/run.yaml
+#    vars:
+#      cloud_name: huaweicloud
+#    override-checkout: v0.16.1
+#    secrets:
+#      - huaweicloud_credentials
 
 - job:
     name: docker-machine-functional-devstack-mitaka
@@ -1230,29 +1230,29 @@
 #      - huaweicloud_credentials
 #    nodeset: ubuntu-xenial-huaweicloud
 
-- job:
-    name: bosh-acceptance-test-huaweicloud
-    parent: init-test
-    description: |
-      This job run tests of bosh-acceptance-test aganist Huaweicloud
-    run: playbooks/bosh-acceptance-test-huaweicloud/run.yaml
-    post-run: playbooks/bosh-acceptance-test-huaweicloud/post.yaml
-    required-projects:
-      - liusheng/bosh-acceptance-tests
-    secrets:
-      - huaweicloud_credentials
-    nodeset: ubuntu-xenial-huaweicloud
+#- job:
+#    name: bosh-acceptance-test-huaweicloud
+#    parent: init-test
+#    description: |
+#      This job run tests of bosh-acceptance-test aganist Huaweicloud
+#    run: playbooks/bosh-acceptance-test-huaweicloud/run.yaml
+#    post-run: playbooks/bosh-acceptance-test-huaweicloud/post.yaml
+#    required-projects:
+#      - liusheng/bosh-acceptance-tests
+#    secrets:
+#      - huaweicloud_credentials
+#    nodeset: ubuntu-xenial-huaweicloud
 
-- job:
-    name: osb-checker-test-huaweicloud
-    parent: init-test
-    description: |
-      This job run tests of osb-checker aganist Huaweicloud
-    run: playbooks/osb-checker-test-huaweicloud/run.yaml
-    required-projects:
-      - openservicebrokerapi/osb-checker
-    secrets:
-      - huaweicloud_credentials
+#- job:
+#    name: osb-checker-test-huaweicloud
+#    parent: init-test
+#    description: |
+#      This job run tests of osb-checker aganist Huaweicloud
+#    run: playbooks/osb-checker-test-huaweicloud/run.yaml
+#    required-projects:
+#      - openservicebrokerapi/osb-checker
+#    secrets:
+#      - huaweicloud_credentials
 
 - job:
     name: manageiq-providers-openstack-test-devstack
@@ -1277,77 +1277,77 @@
 #    override-checkout: v1.2.0
 
 # terraform-provider-openstack acceptance tests against FusionCloud
-- job:
-    name: terraform-provider-openstack-acceptance-test-fusioncloud
-    parent: golang-test
-    description: |
-      Run acceptance tests of terraform-provider-openstack repo against fusioncloud
-    run: playbooks/terraform-provider-openstack-acceptance-test-fusioncloud/run.yaml
-    secrets:
-      - fusioncloud_credentials
+#- job:
+#    name: terraform-provider-openstack-acceptance-test-fusioncloud
+#    parent: golang-test
+#    description: |
+#      Run acceptance tests of terraform-provider-openstack repo against fusioncloud
+#    run: playbooks/terraform-provider-openstack-acceptance-test-fusioncloud/run.yaml
+#    secrets:
+#      - fusioncloud_credentials
 
 # OpenShift-Origin v3.9.0 test against Fusioncloud
-- job:
-    name: openshift-origin-v3.9.0-functional-test-fusioncloud
-    parent: init-test
-    description: |
-      Run functional tests of openshift-origin repo of v3.9.0 release against fusioncloud
-    run: playbooks/openshift-orgin-functional-test-fusioncloud/run.yaml
-    post-run: playbooks/openshift-orgin-functional-test-fusioncloud/post.yaml
-    required-projects:
-      - huaweicloud/openshift-ansible
-    vars:
-      cloud_name: fusioncloud
-      inventory_name: fusioncloud
-      openshift_external_net_name: eip_external_net2
-    secrets:
-      - fusioncloud_credentials
+#- job:
+#    name: openshift-origin-v3.9.0-functional-test-fusioncloud
+#    parent: init-test
+#    description: |
+#      Run functional tests of openshift-origin repo of v3.9.0 release against fusioncloud
+#    run: playbooks/openshift-orgin-functional-test-fusioncloud/run.yaml
+#    post-run: playbooks/openshift-orgin-functional-test-fusioncloud/post.yaml
+#    required-projects:
+#      - huaweicloud/openshift-ansible
+#    vars:
+#      cloud_name: fusioncloud
+#      inventory_name: fusioncloud
+#      openshift_external_net_name: eip_external_net2
+#    secrets:
+#      - fusioncloud_credentials
 
-- job:
-    name: openshift-origin-v3.9.0-functional-test-huaweicloud
-    parent: init-test
-    description: |
-      Run functional tests of openshift-origin repo of v3.9.0 release against huaweicloud
-    run: playbooks/openshift-orgin-functional-test-public-clouds/run.yaml
-    post-run: playbooks/openshift-orgin-functional-test-public-clouds/post.yaml
-    required-projects:
-      - huaweicloud/openshift-ansible
-    vars:
-      cloud_name: huaweicloud
-      inventory_name: huawei
-      openshift_image_name: "CentOS 7.5 64bit"
-    secrets:
-      - huaweicloud_credentials
+#- job:
+#    name: openshift-origin-v3.9.0-functional-test-huaweicloud
+#    parent: init-test
+#    description: |
+#      Run functional tests of openshift-origin repo of v3.9.0 release against huaweicloud
+#    run: playbooks/openshift-orgin-functional-test-public-clouds/run.yaml
+#    post-run: playbooks/openshift-orgin-functional-test-public-clouds/post.yaml
+#    required-projects:
+#      - huaweicloud/openshift-ansible
+#    vars:
+#      cloud_name: huaweicloud
+#      inventory_name: huawei
+#      openshift_image_name: "CentOS 7.5 64bit"
+#    secrets:
+#      - huaweicloud_credentials
 
-- job:
-    name: openshift-origin-v3.9.0-functional-test-opentelekomcloud
-    parent: init-test
-    description: |
-      Run functional tests of openshift-origin repo of v3.9.0 release against opentelekomcloud
-    run: playbooks/openshift-orgin-functional-test-public-clouds/run.yaml
-    post-run: playbooks/openshift-orgin-functional-test-public-clouds/post.yaml
-    required-projects:
-      - huaweicloud/openshift-ansible
-    vars:
-      cloud_name: opentelekomcloud
-      inventory_name: otc
-    secrets:
-      - opentelekomcloud_credentials
+#- job:
+#    name: openshift-origin-v3.9.0-functional-test-opentelekomcloud
+#    parent: init-test
+#    description: |
+#      Run functional tests of openshift-origin repo of v3.9.0 release against opentelekomcloud
+#    run: playbooks/openshift-orgin-functional-test-public-clouds/run.yaml
+#    post-run: playbooks/openshift-orgin-functional-test-public-clouds/post.yaml
+#    required-projects:
+#      - huaweicloud/openshift-ansible
+#    vars:
+#      cloud_name: opentelekomcloud
+#      inventory_name: otc
+#    secrets:
+#      - opentelekomcloud_credentials
 
-- job:
-    name: openshift-origin-v3.9.0-functional-test-telefonica
-    parent: init-test
-    description: |
-      Run functional tests of openshift-origin repo of v3.9.0 release against telefonica cloud
-    run: playbooks/openshift-orgin-functional-test-public-clouds/run.yaml
-    post-run: playbooks/openshift-orgin-functional-test-public-clouds/post.yaml
-    required-projects:
-      - huaweicloud/openshift-ansible
-    vars:
-      cloud_name: telefonica
-      inventory_name: telefonica
-    secrets:
-      - telefonica_credentials
+#- job:
+#    name: openshift-origin-v3.9.0-functional-test-telefonica
+#    parent: init-test
+#    description: |
+#      Run functional tests of openshift-origin repo of v3.9.0 release against telefonica cloud
+#    run: playbooks/openshift-orgin-functional-test-public-clouds/run.yaml
+#    post-run: playbooks/openshift-orgin-functional-test-public-clouds/post.yaml
+#    required-projects:
+#      - huaweicloud/openshift-ansible
+#    vars:
+#      cloud_name: telefonica
+#      inventory_name: telefonica
+#    secrets:
+#      - telefonica_credentials
 
 #- job:
 #    name: openshift-origin-v3.9.0-functional-test-orange
@@ -1371,29 +1371,29 @@
       Test tensorflow in openlab k8s cluster.
     run: playbooks/ai-on-openlab-tensorflow-k8s/run.yaml
 
-- job:
-    name: ai-on-openlab-test-vm
-    parent: init-test
-    description: |
-      Train and inference AI model in openlab VM.
-    run: playbooks/ai-on-openlab/run.yaml
-    nodeset: ubuntu-xenial
-    secrets:
-      - moo_github_account
-    vars:
-      is_gpu_enabled: false
+#- job:
+#    name: ai-on-openlab-test-vm
+#    parent: init-test
+#    description: |
+#      Train and inference AI model in openlab VM.
+#    run: playbooks/ai-on-openlab/run.yaml
+#    nodeset: ubuntu-xenial
+#    secrets:
+#      - moo_github_account
+#    vars:
+#      is_gpu_enabled: false
 
-- job:
-    name: ai-on-openlab-test-vm-with-gpu
-    parent: init-test
-    description: |
-      Train and inference AI model on GPU in openlab VM.
-    run: playbooks/ai-on-openlab/run.yaml
-    nodeset: ubuntu-xenial-gpu-P100-hwcloud
-    secrets:
-      - moo_github_account
-    vars:
-      is_gpu_enabled: true
+#- job:
+#    name: ai-on-openlab-test-vm-with-gpu
+#    parent: init-test
+#    description: |
+#      Train and inference AI model on GPU in openlab VM.
+#    run: playbooks/ai-on-openlab/run.yaml
+#    nodeset: ubuntu-xenial-gpu-P100-hwcloud
+#    secrets:
+#      - moo_github_account
+#    vars:
+#      is_gpu_enabled: true
 
 #- job:
 #    name: arm-on-openlab-test
