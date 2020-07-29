@@ -39,6 +39,12 @@
          - hadoop-benchmark-arm
 
 - project:
+    name: bzhaoopenstack/dockertoy
+    check:
+      jobs:
+         - check-env-is-ok
+
+- project:
     name: tensorflow/tensorflow
     periodic-18:
       jobs:

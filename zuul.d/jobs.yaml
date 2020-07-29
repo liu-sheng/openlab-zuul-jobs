@@ -2007,3 +2007,12 @@
       - tensorflow-arm64-release-build-v2.1.0-py36
       - tensorflow-arm64-release-build-v2.1.0-py37
       - tensorflow-arm64-release-build-v2.1.0-py38
+
+- job:
+    name: check-env-is-ok
+    parent: init-test
+    description: |
+      Normal check for whether the zuul env is good via a PR trigger
+    run: playbooks/check-env-is-ok/run.yaml
+    nodeset: ubuntu-bionic-arm64-8u16g
+    timeout: 600
