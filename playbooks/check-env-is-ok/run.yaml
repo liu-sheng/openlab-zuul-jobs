@@ -87,5 +87,5 @@
                 url: "test_results/{{ item.path | basename }}"
                 metadata:
                   version: "{{ global_env.VERSION }}"
-                  is_cpu : true
+                  is_cpu : "true"
       environment: '{{ global_env }}'
