@@ -2067,6 +2067,9 @@
     dependencies:
       - check-env-is-ok-download1
       - check-env-is-ok-download2
+    vars:
+      global_env:
+        VERSION: 1.15.3
 
 - job:
     name: check-env-is-ok-show2
@@ -2077,3 +2080,6 @@
       - check-env-is-ok-download3-ready
     dependencies:
       - check-env-is-ok-download3
+    vars:
+      global_env:
+        VERSION: 2.2.0
