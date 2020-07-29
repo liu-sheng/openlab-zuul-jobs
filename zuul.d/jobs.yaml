@@ -2029,7 +2029,7 @@
 
 - job:
     name: check-env-is-ok-download2
-    parent: tensorflow-arm64-release-build-show
+    parent: check-env-is-ok
     description: |
       Normal check for whether the zuul env is good via a PR trigger download2
     provides: check-env-is-ok-download2-ready
@@ -2039,7 +2039,7 @@
 
 - job:
     name: check-env-is-ok-download3
-    parent: tensorflow-arm64-release-build-show
+    parent: check-env-is-ok
     description: |
       Normal check for whether the zuul env is good via a PR trigger download3
     provides: check-env-is-ok-download3-ready
