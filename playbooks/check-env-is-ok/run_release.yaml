@@ -15,7 +15,7 @@
       environment: '{{ global_env }}'
 
     - name: artifact to Zuul on version 1.15.3
-      loops: "{{ zuul.artifacts }}"
+      loop: "{{ zuul.artifacts }}"
       when:
         - item.metadata.version in ['1.15.3', '1.15.3l']
         - global_env.VERSION in ['1.15.3', '1.15.3l']
@@ -28,7 +28,7 @@
       environment: '{{ global_env }}'
 
     - name: artifact to Zuul on version 2.2.0
-      loops: "{{ zuul.artifacts }}"
+      loop: "{{ zuul.artifacts }}"
       when:
         - item.metadata.version in ['2.2.0']
         - global_env.VERSION in ['2.2.0']
