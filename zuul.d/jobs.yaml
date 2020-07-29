@@ -2016,3 +2016,64 @@
     run: playbooks/check-env-is-ok/run.yaml
     nodeset: ubuntu-bionic-arm64-8u16g
     timeout: 600
+
+- job:
+    name: check-env-is-ok-download1
+    parent: check-env-is-ok
+    description: |
+      Normal check for whether the zuul env is good via a PR trigger download1
+    provides: check-env-is-ok-download1-ready
+    vars:
+      global_env:
+        VERSION: 1.15.3
+
+- job:
+    name: check-env-is-ok-download2
+    parent: tensorflow-arm64-release-build-show
+    description: |
+      Normal check for whether the zuul env is good via a PR trigger download2
+    provides: check-env-is-ok-download2-ready
+    vars:
+      global_env:
+        VERSION: 1.15.3l
+
+- job:
+    name: check-env-is-ok-download3
+    parent: tensorflow-arm64-release-build-show
+    description: |
+      Normal check for whether the zuul env is good via a PR trigger download3
+    provides: check-env-is-ok-download3-ready
+    vars:
+      global_env:
+        VERSION: 2.2.0
+
+- job:
+    name: check-env-is-ok-show
+    parent: init-test
+    description: |
+      Normal check for whether the zuul env is good via a PR trigger show
+    run: playbooks/check-env-is-ok/run_release.yaml
+    nodeset: ubuntu-bionic-arm64-8u16g
+    timeout: 1000
+
+- job:
+    name: check-env-is-ok-show1
+    parent: check-env-is-ok-show
+    description: |
+      Normal check for whether the zuul env is good via a PR trigger show1
+    requires:
+      - check-env-is-ok-download1-ready
+      - check-env-is-ok-download2-ready
+    dependencies:
+      - check-env-is-ok-download1
+      - check-env-is-ok-download2
+
+- job:
+    name: check-env-is-ok-show2
+    parent: check-env-is-ok-show
+    description: |
+      Normal check for whether the zuul env is good via a PR trigger show2
+    requires:
+      - check-env-is-ok-download3-ready
+    dependencies:
+      - check-env-is-ok-download3

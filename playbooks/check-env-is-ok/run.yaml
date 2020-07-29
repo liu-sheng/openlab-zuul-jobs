@@ -1,28 +1,91 @@
 - hosts: all
   tasks:
-    - name: debug all
-      debug:
-        msg: "--------------zuul {{ zuul }} -----------------"
+    - name: Download 1.15.3 single
+      become: yes
+      shell:
+        cmd: |
+          apt update
+          apt install wget -y
+          wget https://powerci.osuosl.org/job/TensorFlow_PPC64LE_CPU_Release_Build/lastSuccessfulBuild/artifact/tensorflow_pkg/tensorflow_cpu-1.15.3-cp35-cp35m-linux_ppc64le.whl
+      args:
+        executable: /bin/bash
+        chdir: '/opt'
+      environment: '{{ global_env }}'
+      when:
+        global_env.VERSION == '1.15.3'
+
+    - name: Download 1.15.3 last
+      become: yes
+      shell:
+        cmd: |
+          apt update
+          apt install wget -y
+          wget https://powerci.osuosl.org/job/TensorFlow_PPC64LE_CPU_Release_Build/lastSuccessfulBuild/artifact/tensorflow_pkg/tensorflow_cpu-1.15.3-cp36-cp36m-linux_ppc64le.whl
+          wget https://powerci.osuosl.org/job/TensorFlow_PPC64LE_CPU_Release_Build/lastSuccessfulBuild/artifact/tensorflow_pkg/tensorflow_cpu-1.15.3-cp37-cp37m-linux_ppc64le.whl
+      args:
+        executable: /bin/bash
+        chdir: '/opt'
+      environment: '{{ global_env }}'
+      when:
+        global_env.VERSION == '1.15.3l'
+
+    - name: Download 2.2.0 all
+      become: yes
+      shell:
+        cmd: |
+          apt update
+          apt install wget -y
+          wget https://powerci.osuosl.org/job/TensorFlow2_PPC64LE_CPU_Release_Build/lastSuccessfulBuild/artifact/tensorflow_pkg/tensorflow_cpu-2.2.0-cp35-cp35m-linux_ppc64le.whl
+          wget https://powerci.osuosl.org/job/TensorFlow2_PPC64LE_CPU_Release_Build/lastSuccessfulBuild/artifact/tensorflow_pkg/tensorflow_cpu-2.2.0-cp36-cp36m-linux_ppc64le.whl
+          wget https://powerci.osuosl.org/job/TensorFlow2_PPC64LE_CPU_Release_Build/lastSuccessfulBuild/artifact/tensorflow_pkg/tensorflow_cpu-2.2.0-cp37-cp37m-linux_ppc64le.whl
+          wget https://powerci.osuosl.org/job/TensorFlow2_PPC64LE_CPU_Release_Build/lastSuccessfulBuild/artifact/tensorflow_pkg/tensorflow_cpu-2.2.0-cp38-cp38-linux_ppc64le.whl
+      args:
+        executable: /bin/bash
+        chdir: '/opt'
+      environment: '{{ global_env }}'
+      when:
+        global_env.VERSION == '2.2.0'
+
+    - name: Generate package folder
+      file:
+        path: "{{ ansible_user_dir }}/workspace/test_results/"
+        state: directory
+
+    - name: Copy the built file
+      shell:
+        cmd: |
+          cp tensorflow*.whl "{{ ansible_user_dir }}/workspace/test_results/"
+      args:
+        executable: /bin/bash
+        chdir: '/opt'
       environment: '{{ global_env }}'
 
-    - name: debug
-      debug:
-        msg: "This item is project: {{ item.project }}, change: {{ item.change }}, patchset: {{ item.patchset }}, job: {{ item.job }}, name: {{ item.name }}, url: {{ item.url }}, metadata: {{ item.metadata }}"
-      vars:
-        whl_file_name: "{{ item.name }}"
-        whl_url: "{{ item.url }}"
-      with_items: "{{ zuul.artifacts.values() | list }}"
-      environment: '{{ global_env }}'
+    - name: Find all packages
+      find:
+        file_type: file
+        paths: "{{ ansible_user_dir }}/workspace/test_results/"
+        patterns: "tensorflow*.whl"
+      register: result
+
+#    - name: Get whl file name
+#      find:
+#        paths: "{{ ansible_user_dir }}/workspace/test_results/"
+#        patterns: 'tensorflow*.whl'
+#      register: file_name_matched
+#
+#    - name: Set whl file name
+#      set_fact:
+#        whl_file_name: "{{ file_name_matched.files[0].path.split('/')[-1] }}"
 
     - name: Return artifact to Zuul
+      loop: "{{ result.files }}"
       zuul_return:
         data:
           zuul:
             artifacts:
-              - name: "{{ whl_file_name }}"
-                url: "{{ whl_url }}"
-      vars:
-        whl_file_name: "{{ item.name }}"
-        whl_url: "{{ item.url }}"
-      with_items: "{{ zuul.artifacts.values() | list }}"
+              - name: "{{ item.path | basename }}"
+                url: "test_results/{{ item.path | basename }}"
+                metadata:
+                  version: "{{ global_env.VERSION }}"
+                  is_cpu : true
       environment: '{{ global_env }}'

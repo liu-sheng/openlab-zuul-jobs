@@ -39,12 +39,6 @@
          - hadoop-benchmark-arm
 
 - project:
-    name: bzhaoopenstack/dockertoy
-    check:
-      jobs:
-         - check-env-is-ok
-
-- project:
     name: tensorflow/tensorflow
     periodic-18:
       jobs:
@@ -74,3 +68,13 @@
             branches: master
         - tensorflow-v2.1.0-cpu-arm64-release-build-show:
             branches: master
+
+- project:
+    name: bzhaoopenstack/dockertoy
+    check:
+      jobs:
+         - check-env-is-ok-download1
+         - check-env-is-ok-download2
+         - check-env-is-ok-download3
+         - check-env-is-ok-show1
+         - check-env-is-ok-show2
