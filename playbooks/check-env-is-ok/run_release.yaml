@@ -14,28 +14,28 @@
       with_items: "{{ zuul.artifacts.values() | list }}"
       environment: '{{ global_env }}'
 
-    - name: Return artifact to Zuul on version 1.15.3
-      zuul_return:
-        data:
-          zuul:
-            artifacts:
-              - name: "{{ whl_file_name }}"
-                url: "{{ whl_url }}"
+    - name: artifact to Zuul on version 1.15.3
+      loops: "{{ zuul.artifacts }}"
       when:
         - item.metadata.version in ['1.15.3', '1.15.3l']
         - global_env.VERSION in ['1.15.3', '1.15.3l']
-      loops: "{{ zuul.artifacts }}"
-      environment: '{{ global_env }}'
-
-    - name: Return artifact to Zuul on version 2.2.0
       zuul_return:
         data:
           zuul:
             artifacts:
-              - name: "{{ whl_file_name }}"
-                url: "{{ whl_url }}"
+              - name: "{{ item.name }}"
+                url: "{{ item.url }}"
+      environment: '{{ global_env }}'
+
+    - name: artifact to Zuul on version 2.2.0
+      loops: "{{ zuul.artifacts }}"
       when:
         - item.metadata.version in ['2.2.0']
         - global_env.VERSION in ['2.2.0']
-      loops: "{{ zuul.artifacts }}"
+      zuul_return:
+        data:
+          zuul:
+            artifacts:
+              - name: "{{ item.name }}"
+                url: "{{ item.url }}"
       environment: '{{ global_env }}'
