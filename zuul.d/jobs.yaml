@@ -2101,9 +2101,9 @@
     timeout: 864000
     vars:
       global_env:
-        RELEASE: master
+        RELEASE: 8.0
         IS_OPTIMIZED: 'no'
-        GOOGLE_TEST_VERSION: '1.8.0'
+        GOOGLE_TEST_VERSION: 1.8.0
 
 - job:
     name: mysql-5.7-upstream-full-test-on-arm64

@@ -36,7 +36,7 @@
         chdir: '{{ zuul.project.src_dir }}'
       environment: '{{ global_env }}'
       when:
-        - global_env.RELEASE != 'master'
+        - global_env.RELEASE != '8.0'
         - global_env.IS_OPTIMIZED == 'no'
 
     - name: Clone optimized version
@@ -49,7 +49,7 @@
         chdir: '{{ global_env.OPTIMIZED_SRC_DIR }}'
       environment: '{{ global_env }}'
       when:
-        - global_env.RELEASE != 'master'
+        - global_env.RELEASE != '8.0'
         - global_env.IS_OPTIMIZED == 'yes'
 
     - name: Generate boost folder
@@ -64,7 +64,7 @@
         state: directory
       environment: '{{ global_env }}'
       when:
-        - global_env.RELEASE != 'master'
+        - global_env.RELEASE != '8.0'
         - global_env.IS_OPTIMIZED == 'yes'
 
     - name: Download googletest {{ global_env.GOOGLE_TEST_VERSION }}
@@ -76,7 +76,7 @@
         chdir: "{{ global_env.GOOGLE_TEST_DIR }}"
       environment: '{{ global_env }}'
       when:
-        - global_env.RELEASE != 'master'
+        - global_env.RELEASE != '8.0'
         - global_env.IS_OPTIMIZED == 'yes'
 
     - name: Generate Mysql data dir
