@@ -69,12 +69,19 @@
         - tensorflow-v2.1.0-cpu-arm64-release-build-show:
             branches: master
 
+#- project:
+#    name: bzhaoopenstack/dockertoy
+#    check:
+#      jobs:
+#         - check-env-is-ok-download1
+#         - check-env-is-ok-download2
+#         - check-env-is-ok-download3
+#         - check-env-is-ok-show1
+#         - check-env-is-ok-show2
+
 - project:
-    name: bzhaoopenstack/dockertoy
-    check:
+    name: mysql/mysql-server
+    periodic-2-weekly-7:
       jobs:
-         - check-env-is-ok-download1
-         - check-env-is-ok-download2
-         - check-env-is-ok-download3
-         - check-env-is-ok-show1
-         - check-env-is-ok-show2
+        - mysql-5.7-upstream-full-test-on-arm64
+        - mysql-5.7-optimization-full-test-on-arm64

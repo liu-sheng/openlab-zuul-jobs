@@ -822,3 +822,18 @@
       mysql:
     failure:
       mysql:
+
+# The pipelines below use for Mysql verify test on 5.7.27.
+- pipeline:
+    name: periodic-2-weekly-7
+    description: |
+      Jobs in this queue are triggered on a timer. UTC-2 22:00 on each Tuesday, Thursday and Saturday.
+    manager: independent
+    precedence: high
+    trigger:
+      timer:
+        - time: '0 2 * * 7'
+    success:
+      mysql:
+    failure:
+      mysql:

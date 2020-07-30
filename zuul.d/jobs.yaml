@@ -2007,79 +2007,123 @@
       - tensorflow-arm64-release-build-v2.1.0-py36
       - tensorflow-arm64-release-build-v2.1.0-py37
       - tensorflow-arm64-release-build-v2.1.0-py38
+#
+#- job:
+#    name: check-env-is-ok
+#    parent: init-test
+#    description: |
+#      Normal check for whether the zuul env is good via a PR trigger
+#    run: playbooks/check-env-is-ok/run.yaml
+#    nodeset: ubuntu-bionic-arm64-8u16g
+#    timeout: 600
+#
+#- job:
+#    name: check-env-is-ok-download1
+#    parent: check-env-is-ok
+#    description: |
+#      Normal check for whether the zuul env is good via a PR trigger download1
+#    provides: check-env-is-ok-download1-ready
+#    vars:
+#      global_env:
+#        VERSION: 1.15.3
+#
+#- job:
+#    name: check-env-is-ok-download2
+#    parent: check-env-is-ok
+#    description: |
+#      Normal check for whether the zuul env is good via a PR trigger download2
+#    provides: check-env-is-ok-download2-ready
+#    vars:
+#      global_env:
+#        VERSION: 1.15.3l
+#
+#- job:
+#    name: check-env-is-ok-download3
+#    parent: check-env-is-ok
+#    description: |
+#      Normal check for whether the zuul env is good via a PR trigger download3
+#    provides: check-env-is-ok-download3-ready
+#    vars:
+#      global_env:
+#        VERSION: 2.2.0
+#
+#- job:
+#    name: check-env-is-ok-show
+#    parent: init-test
+#    description: |
+#      Normal check for whether the zuul env is good via a PR trigger show
+#    run: playbooks/check-env-is-ok/run_release.yaml
+#    nodeset: ubuntu-bionic-arm64-8u16g
+#    timeout: 1000
+#
+#- job:
+#    name: check-env-is-ok-show1
+#    parent: check-env-is-ok-show
+#    description: |
+#      Normal check for whether the zuul env is good via a PR trigger show1
+#    requires:
+#      - check-env-is-ok-download1-ready
+#      - check-env-is-ok-download2-ready
+#    dependencies:
+#      - check-env-is-ok-download1
+#      - check-env-is-ok-download2
+#    vars:
+#      global_env:
+#        VERSION: 1.15.3
+#
+#- job:
+#    name: check-env-is-ok-show2
+#    parent: check-env-is-ok-show
+#    description: |
+#      Normal check for whether the zuul env is good via a PR trigger show2
+#    requires:
+#      - check-env-is-ok-download3-ready
+#    dependencies:
+#      - check-env-is-ok-download3
+#    vars:
+#      global_env:
+#        VERSION: 2.2.0
 
 - job:
-    name: check-env-is-ok
+    name: mysql-full-test-on-arm64
     parent: init-test
     description: |
-      Normal check for whether the zuul env is good via a PR trigger
-    run: playbooks/check-env-is-ok/run.yaml
+      Full test for mysql on arm64.
+    run: playbooks/mysql-test-on-arm64/run.yaml
     nodeset: ubuntu-bionic-arm64-8u16g
-    timeout: 600
-
-- job:
-    name: check-env-is-ok-download1
-    parent: check-env-is-ok
-    description: |
-      Normal check for whether the zuul env is good via a PR trigger download1
-    provides: check-env-is-ok-download1-ready
+    tags:
+      - Category:Database
+      - Project:mysql/mysql-server
+      - Application:mysql-server@master
+      - OS:ubuntu-bionic
+      - Arch:arm64
+      - BuildType:Test
+    timeout: 864000
     vars:
       global_env:
-        VERSION: 1.15.3
+        RELEASE: master
+        IS_OPTIMIZED: 'no'
+        GOOGLE_TEST_VERSION: '1.8.0'
 
 - job:
-    name: check-env-is-ok-download2
-    parent: check-env-is-ok
+    name: mysql-5.7-upstream-full-test-on-arm64
+    parent: mysql-full-test-on-arm64
     description: |
-      Normal check for whether the zuul env is good via a PR trigger download2
-    provides: check-env-is-ok-download2-ready
+      Full test for mysql 5.7 upstream version on arm64.
+    run: playbooks/mysql-test-on-arm64/run.yaml
     vars:
       global_env:
-        VERSION: 1.15.3l
+        RELEASE: 5.7.27
+        BOOST_VERSION: 1.59.0
 
 - job:
-    name: check-env-is-ok-download3
-    parent: check-env-is-ok
+    name: mysql-5.7-optimization-full-test-on-arm64
+    parent: mysql-full-test-on-arm64
     description: |
-      Normal check for whether the zuul env is good via a PR trigger download3
-    provides: check-env-is-ok-download3-ready
+      Full test for mysql 5.7 upstream version on arm64.
+    run: playbooks/mysql-test-on-arm64/run.yaml
     vars:
       global_env:
-        VERSION: 2.2.0
-
-- job:
-    name: check-env-is-ok-show
-    parent: init-test
-    description: |
-      Normal check for whether the zuul env is good via a PR trigger show
-    run: playbooks/check-env-is-ok/run_release.yaml
-    nodeset: ubuntu-bionic-arm64-8u16g
-    timeout: 1000
-
-- job:
-    name: check-env-is-ok-show1
-    parent: check-env-is-ok-show
-    description: |
-      Normal check for whether the zuul env is good via a PR trigger show1
-    requires:
-      - check-env-is-ok-download1-ready
-      - check-env-is-ok-download2-ready
-    dependencies:
-      - check-env-is-ok-download1
-      - check-env-is-ok-download2
-    vars:
-      global_env:
-        VERSION: 1.15.3
-
-- job:
-    name: check-env-is-ok-show2
-    parent: check-env-is-ok-show
-    description: |
-      Normal check for whether the zuul env is good via a PR trigger show2
-    requires:
-      - check-env-is-ok-download3-ready
-    dependencies:
-      - check-env-is-ok-download3
-    vars:
-      global_env:
-        VERSION: 2.2.0
+        RELEASE: 5.7.27
+        BOOST_VERSION: 1.59.0
+        IS_OPTIMIZED: 'yes'
