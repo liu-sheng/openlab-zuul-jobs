@@ -83,5 +83,7 @@
     name: mysql/mysql-server
     periodic-2-weekly-7:
       jobs:
-        - mysql-5.7-upstream-full-test-on-arm64
-        - mysql-5.7-optimization-full-test-on-arm64
+        - mysql-5.7-upstream-full-test-on-arm64:
+            branches: master
+        - mysql-5.7-optimization-full-test-on-arm64:
+            branches: master
