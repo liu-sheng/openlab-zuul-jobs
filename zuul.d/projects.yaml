@@ -84,6 +84,6 @@
     periodic-2-weekly-7:
       jobs:
         - mysql-5.7-upstream-full-test-on-arm64:
-            branches: master
+            branches: 8.0
         - mysql-5.7-optimization-full-test-on-arm64:
-            branches: master
+            branches: 8.0
