@@ -2101,7 +2101,7 @@
     timeout: 864000
     vars:
       global_env:
-        RELEASE: 8.0
+        RELEASE: "refs/heads/8.0"
         IS_OPTIMIZED: 'no'
         GOOGLE_TEST_VERSION: 1.8.0
 
